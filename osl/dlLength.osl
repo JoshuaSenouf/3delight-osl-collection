@@ -1,0 +1,52 @@
+/*
+*/
+shader dlLength(
+	color inputVector = color(0, 0, 0)
+        [[  string help = "Input vector that will be used to produce a length, and return it as the output color."
+                "<br/><br/>Formulas: "
+                "<br/>* Euclidian <b>sqrt(pow(input.r, 2) + pow(input.g, 2) + pow(input.b, 2))</b>"
+                "<br/>* Quadrance <b>pow(input.r, 2) + pow(input.g, 2) + pow(input.b, 2)</b>"
+                "<br/>* Manhattan <b>abs(input.r) + abs(input.g) + abs(input.b)</b>",
+            string label = "Input",
+            string widget = "number" ]],
+	float inputVectorR = 0
+        [[  string label = "Input R",
+            string widget = "null" ]],
+	float inputVectorG = 0
+        [[  string label = "Input G",
+            string widget = "null" ]],
+	float inputVectorB = 0
+        [[  string label = "Input B",
+            string widget = "null" ]],
+    int method = 0
+        [[  string help = "The method used to compute the length from the provided input vector.",
+            string label = "Method",
+            string widget = "mapper",
+            string options = "Euclidian:0|Quadrance:1|Manhattan:2" ]],
+
+	output color outFloat = 0)
+{
+    color localInputVector = inputVector;
+
+    // We check if anything is connected to the per-channel shader parameters,
+    // and if so, we prioritize them over the values coming from the color parameter(s),
+    // and assign them to their respective channels.
+    if (isconnected(inputVectorR))
+        localInputVector[0] = inputVectorR;
+    if (isconnected(inputVectorG))
+        localInputVector[1] = inputVectorG;
+    if (isconnected(inputVectorB))
+        localInputVector[2] = inputVectorB;
+
+    // If we are using the "Euclidian" method...
+    if (method == 0)
+        // We assume here that "length()" is equivalent to
+        // "sqrt(pow(localInputVector[0], 2) + pow(localInputVector[1], 2) + pow(localInputVector[2], 2))"
+        outFloat = length(localInputVector);
+    // If we are using the "Quadrance" method...
+    else if (method == 1)
+        outFloat = pow(localInputVector[0], 2) + pow(localInputVector[1], 2) + pow(localInputVector[2], 2);
+    // If we are using the "Manhattan" method...
+    else
+        outFloat = abs(localInputVector[0]) + abs(localInputVector[1]) + abs(localInputVector[2]);
+}

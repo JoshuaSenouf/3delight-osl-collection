@@ -1,0 +1,61 @@
+/*
+*/
+shader dlDot(
+	vector inputVector1 = vector(0, 0, 0)
+        [[  string help = "First input vector that will be used to produce a dot product with the second one, "
+                "and return it as the output vector.<br/><br/>Formula: <b>dot(input1, input2)</b>",
+            string label = "Input 1",
+            string widget = "number" ]],
+	float inputVector1X = 0
+        [[  string label = "Input 1 X",
+            string widget = "null" ]],
+	float inputVector1Y = 0
+        [[  string label = "Input 1 Y",
+            string widget = "null" ]],
+	float inputVector1Z = 0
+        [[  string label = "Input 1 Z",
+            string widget = "null" ]],
+	vector inputVector2 = vector(0, 0, 0)
+        [[  string help = "Second input vector that will be used to produce a dot product with the first one, "
+                "and return it as the output vector.<br/><br/>Formula: <b>dot(input1, input2)</b>",
+            string label = "Input 2",
+            string widget = "number" ]],
+	float inputVector2X = 0
+        [[  string label = "Input 2 X",
+            string widget = "null" ]],
+	float inputVector2Y = 0
+        [[  string label = "Input 2 Y",
+            string widget = "null" ]],
+	float inputVector2Z = 0
+        [[  string label = "Input 2 Z",
+            string widget = "null" ]],
+
+	output vector outVector = vector(0, 0, 0),
+	output float outVectorX = 0,
+	output float outVectorY = 0,
+	output float outVectorZ = 0)
+{
+    vector localInputVector1 = inputVector1;
+    vector localInputVector2 = inputVector2;
+
+    // We check if anything is connected to the per-channel shader parameters,
+    // and if so, we prioritize them over the values coming from the vector parameters,
+    // and assign them to their respective channels.
+    if (isconnected(inputVector1X))
+        localInputVector1[0] = inputVector1X;
+    if (isconnected(inputVector1Y))
+        localInputVector1[1] = inputVector1Y;
+    if (isconnected(inputVector1Z))
+        localInputVector1[2] = inputVector1Z;
+    if (isconnected(inputVector2X))
+        localInputVector2[0] = inputVector2X;
+    if (isconnected(inputVector2Y))
+        localInputVector2[1] = inputVector2Y;
+    if (isconnected(inputVector2Z))
+        localInputVector2[2] = inputVector2Z;
+
+    outVector = dot(localInputVector1, localInputVector2);
+    outVectorX = outVector[0];
+    outVectorY = outVector[1];
+    outVectorZ = outVector[2];
+}

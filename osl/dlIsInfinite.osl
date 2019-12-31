@@ -1,0 +1,35 @@
+/*
+*/
+shader dlIsInfinite(
+	color inputColor = color(0, 0, 0)
+        [[  string help = "Input color that will be used to check if at least one of its channels is an infinite "
+                "number, and output the result as the output boolean.<br/><br/>Formula: <b>isinf(input)</b>",
+            string label = "Input",
+            string widget = "number" ]],
+	float inputColorR = 0
+        [[  string label = "Input R",
+            string widget = "null" ]],
+	float inputColorG = 0
+        [[  string label = "Input G",
+            string widget = "null" ]],
+	float inputColorB = 0
+        [[  string label = "Input B",
+            string widget = "null" ]],
+
+	output int outBoolean = 0)
+{
+    color localInputColor = inputColor;
+
+    // We check if anything is connected to the per-channel shader parameters,
+    // and if so, we prioritize them over the values coming from the color parameter,
+    // and assign them to their respective channels.
+    if (isconnected(inputColorR))
+        localInputColor[0] = inputColorR;
+    if (isconnected(inputColorG))
+        localInputColor[1] = inputColorG;
+    if (isconnected(inputColorB))
+        localInputColor[2] = inputColorB;
+
+    // We check each 3 components of the color parameter, instead of just a single float.
+    outBoolean = (isinf(inputColorR) || isinf(inputColorG) || isinf(inputColorB));
+}

@@ -1,0 +1,40 @@
+/*
+*/
+shader dlNormalize(
+	color inputVector = color(0, 0, 0)
+        [[  string help = "Input vector that will be returned normalized as the output color."
+                "<br/><br/>Formula: <b>normalize(input)</b>",
+            string label = "Input",
+            string widget = "number" ]],
+	float inputVectorR = 0
+        [[  string label = "Input R",
+            string widget = "null" ]],
+	float inputVectorG = 0
+        [[  string label = "Input G",
+            string widget = "null" ]],
+	float inputVectorB = 0
+        [[  string label = "Input B",
+            string widget = "null" ]],
+
+	output vector outVector = vector(0, 0, 0),
+	output float outVectorX = 0,
+	output float outVectorY = 0,
+	output float outVectorZ = 0)
+{
+    color localInputVector = inputVector;
+
+    // We check if anything is connected to the per-channel shader parameters,
+    // and if so, we prioritize them over the values coming from the vector parameter,
+    // and assign them to their respective channels.
+    if (isconnected(inputVectorR))
+        localInputVector[0] = inputVectorR;
+    if (isconnected(inputVectorG))
+        localInputVector[1] = inputVectorG;
+    if (isconnected(inputVectorB))
+        localInputVector[2] = inputVectorB;
+
+    outVector = normalize(localInputVector);
+    outVectorX = outVector[0];
+    outVectorY = outVector[1];
+    outVectorZ = outVector[2];
+}

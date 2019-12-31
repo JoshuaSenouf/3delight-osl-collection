@@ -1,0 +1,96 @@
+/*
+*/
+shader dlCompare(
+	color inputColor1 = color(0, 0, 0)
+        [[  string help = "First input color that will be compared against the second one, returning the result "
+                "as the output boolean."
+                "<br/>In the case of the 'greater/less (or equal)' methods of comparisons, we"
+                "are comparing the length of the input colors/vectors, and not each of their channels individually."
+                "<br/><br/>Formulas: "
+                "<br/>* Equal <b>input1 == input2</b>"
+                "<br/>* Not Equal <b>input1 != input2</b>"
+                "<br/>* Greater Than <b>input1 > input2</b>"
+                "<br/>* Greater Than or Equal <b>input1 >= input2</b>"
+                "<br/>* Less than <b>input1 < input2</b>"
+                "<br/>* Less Than or Equal <b>input1 <= input2</b>",
+            string label = "Input 1",
+            string widget = "number" ]],
+	float inputColor1R = 0
+        [[  string label = "Input 1 R",
+            string widget = "null" ]],
+	float inputColor1G = 0
+        [[  string label = "Input 1 G",
+            string widget = "null" ]],
+	float inputColor1B = 0
+        [[  string label = "Input 1 B",
+            string widget = "null" ]],
+	color inputColor2 = color(0, 0, 0)
+        [[  string help = "Second input color that will be compared against the first one, returning the result "
+                "as the output boolean."
+                "<br/>In the case of the 'greater/less (or equal)' methods of comparisons, we"
+                "are comparing the length of the input colors/vectors, and not each of their channels individually."
+                "<br/><br/>Formulas: "
+                "<br/>* Equal <b>input1 == input2</b>"
+                "<br/>* Not Equal <b>input1 != input2</b>"
+                "<br/>* Greater Than <b>input1 > input2</b>"
+                "<br/>* Greater Than or Equal <b>input1 >= input2</b>"
+                "<br/>* Less than <b>input1 < input2</b>"
+                "<br/>* Less Than or Equal <b>input1 <= input2</b>",
+            string label = "Input 2",
+            string widget = "number" ]],
+	float inputColor2R = 0
+        [[  string label = "Input 2 R",
+            string widget = "null" ]],
+	float inputColor2G = 0
+        [[  string label = "Input 2 G",
+            string widget = "null" ]],
+	float inputColor2B = 0
+        [[  string label = "Input 2 B",
+            string widget = "null" ]],
+    int method = 0
+        [[  string help = "The method of comparison that will be used.",
+            string label = "Method",
+            string widget = "mapper",
+            string options = "Equal:0|Not Equal:1|Greater Than:2|Greater Than or Equal:3|Less Than:4"
+                "|Less Than or Equal:5" ]],
+
+	output int outBoolean = 0)
+{
+    color localInputColor1 = inputColor1;
+    color localInputColor2 = inputColor2;
+
+    // We check if anything is connected to the per-channel shader parameters,
+    // and if so, we prioritize them over the values coming from the color parameter(s),
+    // and assign them to their respective channels.
+    if (isconnected(inputColor1R))
+        localInputColor1[0] = inputColor1R;
+    if (isconnected(inputColor1G))
+        localInputColor1[1] = inputColor1G;
+    if (isconnected(inputColor1B))
+        localInputColor1[2] = inputColor1B;
+    if (isconnected(inputColor2R))
+        localInputColor2[0] = inputColor2R;
+    if (isconnected(inputColor2G))
+        localInputColor2[1] = inputColor2G;
+    if (isconnected(inputColor2B))
+        localInputColor2[2] = inputColor2B;
+
+    // If we are using the "Equal" method...
+    if (method == 0)
+        outBoolean = (localInputColor1 == localInputColor2);
+    // If we are using the "Not Equal" method...
+    else if (method == 1)
+        outBoolean = (localInputColor1 != localInputColor2);
+    // If we are using the "Greater Than" method...
+    else if (method == 2)
+        outBoolean = (length(localInputColor1) > length(localInputColor2));
+    // If we are using the "Greater Than Or Equal" method...
+    else if (method == 3)
+        outBoolean = (length(localInputColor1) >= length(localInputColor2));
+    // If we are using the "Less Than" method...
+    else if (method == 4)
+        outBoolean = (length(localInputColor1) < length(localInputColor2));
+    // If we are using the "Less Than Or Equal" method...
+    else
+        outBoolean = (length(localInputColor1) <= length(localInputColor2));
+}

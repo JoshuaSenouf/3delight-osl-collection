@@ -1,0 +1,61 @@
+/*
+*/
+shader dlPow(
+	color inputBase = color(0, 0, 0)
+        [[  string help = "Input base that will be used to compute its power over the input exponent, and return the "
+                "result as the output color.<br/><br/>Formula: <b>pow(base, exponent)</b>",
+            string label = "Input 1",
+            string widget = "number" ]],
+	float inputBaseR = 0
+        [[  string label = "Input 1 R",
+            string widget = "null" ]],
+	float inputBaseG = 0
+        [[  string label = "Input 1 G",
+            string widget = "null" ]],
+	float inputBaseB = 0
+        [[  string label = "Input 1 B",
+            string widget = "null" ]],
+	color inputExponent = color(0, 0, 0)
+        [[  string help = "Input exponent that will be used to compute the power from the input base, and return the "
+                "result as the output color.<br/><br/>Formula: <b>pow(base, exponent)</b>",
+            string label = "Input 2",
+            string widget = "number" ]],
+	float inputExponentR = 0
+        [[  string label = "Input 2 R",
+            string widget = "null" ]],
+	float inputExponentG = 0
+        [[  string label = "Input 2 G",
+            string widget = "null" ]],
+	float inputExponentB = 0
+        [[  string label = "Input 2 B",
+            string widget = "null" ]],
+
+	output color outColor = color(0, 0, 0),
+	output float outColorR = 0,
+	output float outColorG = 0,
+	output float outColorB = 0)
+{
+    color localInputBase = inputBase;
+    color localInputExponent = inputExponent;
+
+    // We check if anything is connected to the per-channel shader parameters,
+    // and if so, we prioritize them over the values coming from the color parameters,
+    // and assign them to their respective channels.
+    if (isconnected(inputBaseR))
+        localInputBase[0] = inputBaseR;
+    if (isconnected(inputBaseG))
+        localInputBase[1] = inputBaseG;
+    if (isconnected(inputBaseB))
+        localInputBase[2] = inputBaseB;
+    if (isconnected(inputExponentR))
+        localInputExponent[0] = inputExponentR;
+    if (isconnected(inputExponentG))
+        localInputExponent[1] = inputExponentG;
+    if (isconnected(inputExponentB))
+        localInputExponent[2] = inputExponentB;
+
+    outColor = pow(localInputBase, localInputExponent);
+    outColorR = outColor[0];
+    outColorG = outColor[1];
+    outColorB = outColor[2];
+}

@@ -1,0 +1,82 @@
+/*
+*/
+shader dlClamp(
+	color inputColor = color(0, 0, 0)
+        [[  string help = "Input color that will be clamped between the two minimum and maximum input colors, and "
+                "return the result as the output color.<br/><br/>Formula: <b>clamp(input, min, max)</b>",
+            string label = "Input",
+            string widget = "number" ]],
+	float inputColorR = 0
+        [[  string label = "Input R",
+            string widget = "null" ]],
+	float inputColorG = 0
+        [[  string label = "Input G",
+            string widget = "null" ]],
+	float inputColorB = 0
+        [[  string label = "Input B",
+            string widget = "null" ]],
+	color inputMin = color(0, 0, 0)
+        [[  string help = "Input minimum color that will be used to clamp the input color, and "
+                "return the result as the output color.<br/><br/>Formula: <b>clamp(input, min, max)</b>",
+            string label = "Min",
+            string widget = "number" ]],
+	float inputMinR = 0
+        [[  string label = "Min R",
+            string widget = "null" ]],
+	float inputMinG = 0
+        [[  string label = "Min G",
+            string widget = "null" ]],
+	float inputMinB = 0
+        [[  string label = "Min B",
+            string widget = "null" ]],
+	color inputMax = color(0, 0, 0)
+        [[  string help = "Input maximum color that will be used to clamp the input color, and "
+                "return the result as the output color.<br/><br/>Formula: <b>clamp(input, min, max)</b>",
+            string label = "Max",
+            string widget = "number" ]],
+	float inputMaxR = 0
+        [[  string label = "Max R",
+            string widget = "null" ]],
+	float inputMaxG = 0
+        [[  string label = "Max G",
+            string widget = "null" ]],
+	float inputMaxB = 0
+        [[  string label = "Max B",
+            string widget = "null" ]],
+
+	output color outColor = color(0, 0, 0),
+	output float outColorR = 0,
+	output float outColorG = 0,
+	output float outColorB = 0)
+{
+    color localInputColor = inputColor;
+    color localInputMin = inputMin;
+    color localInputMax = inputMax;
+
+    // We check if anything is connected to the per-channel shader parameters,
+    // and if so, we prioritize them over the values coming from the color parameters,
+    // and assign them to their respective channels.
+    if (isconnected(inputColorR))
+        localInputColor[0] = inputColorR;
+    if (isconnected(inputColorG))
+        localInputColor[1] = inputColorG;
+    if (isconnected(inputColorB))
+        localInputColor[2] = inputColorB;
+    if (isconnected(inputMinR))
+        localInputMin[0] = inputMinR;
+    if (isconnected(inputMinG))
+        localInputMin[1] = inputMinG;
+    if (isconnected(inputMinB))
+        localInputMin[2] = inputMinB;
+    if (isconnected(inputMaxR))
+        localInputMax[0] = inputMaxR;
+    if (isconnected(inputMaxG))
+        localInputMax[1] = inputMaxG;
+    if (isconnected(inputMaxB))
+        localInputMax[2] = inputMaxB;
+
+    outColor = clamp(localInputColor, localInputMin, localInputMax);
+    outColorR = outColor[0];
+    outColorG = outColor[1];
+    outColorB = outColor[2];
+}

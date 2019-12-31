@@ -1,0 +1,40 @@
+/*
+*/
+shader dlExp(
+	color InputExponent = color(0, 0, 0)
+        [[  string help = "Input exponent that will be used to produce the exponential of that exponent, and return "
+                "it as the output color.<br/><br/>Formula: <b>exp(exponent)</b>",
+            string label = "Input",
+            string widget = "number" ]],
+	float InputExponentR = 0
+        [[  string label = "Input R",
+            string widget = "null" ]],
+	float InputExponentG = 0
+        [[  string label = "Input G",
+            string widget = "null" ]],
+	float InputExponentB = 0
+        [[  string label = "Input B",
+            string widget = "null" ]],
+
+	output color outColor = color(0, 0, 0),
+	output float outColorR = 0,
+	output float outColorG = 0,
+	output float outColorB = 0)
+{
+    color localInputExponent = InputExponent;
+
+    // We check if anything is connected to the per-channel shader parameters,
+    // and if so, we prioritize them over the values coming from the color parameter,
+    // and assign them to their respective channels.
+    if (isconnected(InputExponentR))
+        localInputExponent[0] = InputExponentR;
+    if (isconnected(InputExponentG))
+        localInputExponent[1] = InputExponentG;
+    if (isconnected(InputExponentB))
+        localInputExponent[2] = InputExponentB;
+
+    outColor = exp(localInputExponent);
+    outColorR = outColor[0];
+    outColorG = outColor[1];
+    outColorB = outColor[2];
+}

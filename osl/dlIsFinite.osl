@@ -56,7 +56,8 @@ shader dlIsFinite(
     // We fall back to "1" in case we exclude specific channel(s) in order to not disturb the logic
     // behind the algorithm. It means that excluding all channels would yield "1" as the output boolean,
     // and while that is technically not very intuitive, excluding *all* channels is not either in the first place...
-    outBoolean = ((useRedChannel ? isfinite(inputColorR) : 1)
+    outBoolean = (
+        (useRedChannel ? isfinite(inputColorR) : 1)
         && (useGreenChannel ? isfinite(inputColorG) : 1)
         && (useBlueChannel ? isfinite(inputColorB) : 1));
 }

@@ -55,7 +55,8 @@ shader dlNegate(
         localInputColor[2] = inputColorB;
 
     // We are computing each channel individually depending on which the user wants to affect.
-    outColor = color(useRedChannel ? (-localInputColor[0]) : localInputColor[0],
+    outColor = color(
+        useRedChannel ? (-localInputColor[0]) : localInputColor[0],
         useGreenChannel ? (-localInputColor[1]) : localInputColor[1],
         useBlueChannel ? (-localInputColor[2]) : localInputColor[2]);
 

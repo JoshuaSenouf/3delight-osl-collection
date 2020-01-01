@@ -75,7 +75,8 @@ shader dlModulo(
         localInputDivisor[2] = inputDivisorB;
 
     // We are computing each channel individually depending on which the user wants to affect.
-    outColor = color(useRedChannel ? mod(localInputColor[0], localInputDivisor[0]) : localInputColor[0],
+    outColor = color(
+        useRedChannel ? mod(localInputColor[0], localInputDivisor[0]) : localInputColor[0],
         useGreenChannel ? mod(localInputColor[1], localInputDivisor[1]) : localInputColor[1],
         useBlueChannel ? mod(localInputColor[2], localInputDivisor[2]) : localInputColor[2]);
 

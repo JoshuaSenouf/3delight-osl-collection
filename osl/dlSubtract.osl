@@ -73,7 +73,8 @@ shader dlSubtract(
         localInputColor2[2] = inputColor2B;
 
     // We are computing each channel individually depending on which the user wants to affect.
-    outColor = color(useRedChannel ? localInputColor1[0] - localInputColor2[0] : 0,
+    outColor = color(
+        useRedChannel ? localInputColor1[0] - localInputColor2[0] : 0,
         useGreenChannel ? localInputColor1[1] - localInputColor2[1] : 0,
         useBlueChannel ? localInputColor1[2] - localInputColor2[2] : 0);
 

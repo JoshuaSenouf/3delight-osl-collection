@@ -75,7 +75,8 @@ shader dlMin(
         localInputColor2[2] = inputColor2B;
 
     // We are computing each channel individually depending on which the user wants to affect.
-    outColor = color(useRedChannel ? min(localInputColor1[0], localInputColor2[0]) : 0,
+    outColor = color(
+        useRedChannel ? min(localInputColor1[0], localInputColor2[0]) : 0,
         useGreenChannel ? min(localInputColor1[1], localInputColor2[1]) : 0,
         useBlueChannel ? min(localInputColor1[2], localInputColor2[2]) : 0);
 

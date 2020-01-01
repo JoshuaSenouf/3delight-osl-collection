@@ -82,13 +82,15 @@ shader dlAtan(
     // If we are outputting the result using radians...
     if (units == 0)
         // We are computing each channel individually depending on which the user wants to affect.
-        outColor = color(useRedChannel ? atan2(localInputColor2[0], localInputColor1[0]) : 0,
+        outColor = color(
+            useRedChannel ? atan2(localInputColor2[0], localInputColor1[0]) : 0,
             useGreenChannel ? atan2(localInputColor2[1], localInputColor1[1]) : 0,
             useBlueChannel ? atan2(localInputColor2[2], localInputColor1[2]) : 0);
     // If we are outputting the result using degrees...
     else
         // We are computing each channel individually depending on which the user wants to affect.
-        outColor = degrees(color(useRedChannel ? atan2(localInputColor2[0], localInputColor1[0]) : 0,
+        outColor = degrees(
+            color(useRedChannel ? atan2(localInputColor2[0], localInputColor1[0]) : 0,
             useGreenChannel ? atan2(localInputColor2[1], localInputColor1[1]) : 0,
             useBlueChannel ? atan2(localInputColor2[2], localInputColor1[2]) : 0));
 

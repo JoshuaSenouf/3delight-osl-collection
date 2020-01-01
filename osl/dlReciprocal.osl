@@ -56,7 +56,8 @@ shader dlReciprocal(
         localInputColor[2] = inputColorB;
 
     // We are computing each channel individually depending on which the user wants to affect.
-    outColor = color(useRedChannel ? (1 / localInputColor[0]) : localInputColor[0],
+    outColor = color(
+        useRedChannel ? (1 / localInputColor[0]) : localInputColor[0],
         useGreenChannel ? (1 / localInputColor[1]) : localInputColor[1],
         useBlueChannel ? (1 / localInputColor[2]) : localInputColor[2]);
 

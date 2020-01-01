@@ -75,7 +75,8 @@ shader dlPow(
         localInputExponent[2] = inputExponentB;
 
     // We are computing each channel individually depending on which the user wants to affect.
-    outColor = color(useRedChannel ? pow(localInputBase[0], localInputExponent[0]) : 0,
+    outColor = color(
+        useRedChannel ? pow(localInputBase[0], localInputExponent[0]) : 0,
         useGreenChannel ? pow(localInputBase[1], localInputExponent[1]) : 0,
         useBlueChannel ? pow(localInputBase[2], localInputExponent[2]) : 0);
 

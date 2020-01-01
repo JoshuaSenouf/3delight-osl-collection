@@ -53,7 +53,8 @@ shader dlExp(
         localInputExponent[2] = InputExponentB;
 
     // We are computing each channel individually depending on which the user wants to affect.
-    outColor = color(useRedChannel ? exp(localInputExponent[0]) : 0,
+    outColor = color(
+        useRedChannel ? exp(localInputExponent[0]) : 0,
         useGreenChannel ? exp(localInputExponent[1]) : 0,
         useBlueChannel ? exp(localInputExponent[2]) : 0);
 

@@ -78,7 +78,8 @@ shader dlMix(
         localInputColor2[2] = inputColor2B;
 
     // We are computing each channel individually depending on which the user wants to affect.
-    outColor = color(useRedChannel ? mix(localInputColor1[0], localInputColor2[0], inputMixLevel) : 0,
+    outColor = color(
+        useRedChannel ? mix(localInputColor1[0], localInputColor2[0], inputMixLevel) : 0,
         useGreenChannel ? mix(localInputColor1[1], localInputColor2[1], inputMixLevel) : 0,
         useBlueChannel ? mix(localInputColor1[2], localInputColor2[2], inputMixLevel) : 0);
 

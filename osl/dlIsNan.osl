@@ -53,7 +53,8 @@ shader dlIsNan(
         localInputColor[2] = inputColorB;
 
     // We are computing each channel individually depending on which the user wants to affect.
-    outBoolean = ((useRedChannel ? isnan(inputColorR) : 0)
+    outBoolean = (
+        (useRedChannel ? isnan(inputColorR) : 0)
         || (useGreenChannel ? isnan(inputColorG) : 0)
         || (useBlueChannel ? isnan(inputColorB) : 0));
 }

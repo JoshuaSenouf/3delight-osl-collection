@@ -77,7 +77,8 @@ shader dlMax(
     outColor = max(localInputColor1, localInputColor2);
 
     // We are computing each channel individually depending on which the user wants to affect.
-    outColor = color(useRedChannel ? max(localInputColor1[0], localInputColor2[0]) : 0,
+    outColor = color(
+        useRedChannel ? max(localInputColor1[0], localInputColor2[0]) : 0,
         useGreenChannel ? max(localInputColor1[1], localInputColor2[1]) : 0,
         useBlueChannel ? max(localInputColor1[2], localInputColor2[2]) : 0);
 

@@ -78,7 +78,8 @@ shader dlLog(
     // We are computing each channel individually depending on which the user wants to affect.
     // Instead of computing the whole vector using the same logarithmic base, we let
     // the user the ability to use a different base per color channel.
-    outColor = color(useRedChannel ? log(localInputColor[0], localInputBase[0]) : localInputColor[0],
+    outColor = color(
+        useRedChannel ? log(localInputColor[0], localInputBase[0]) : localInputColor[0],
         useGreenChannel ? log(localInputColor[1], localInputBase[1]) : localInputColor[1],
         useBlueChannel ? log(localInputColor[2], localInputBase[2]) : localInputColor[2]);
 

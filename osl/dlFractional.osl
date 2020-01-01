@@ -56,7 +56,8 @@ shader dlFractional(
         localInputColor[2] = inputColorB;
 
     if (localInputColor != color (0, 0, 0))
-        outColor = color(useRedChannel ? localInputColor[0] - (
+        outColor = color(
+            useRedChannel ? localInputColor[0] - (
                 localInputColor[0] >= 0 ? floor(localInputColor[0]) : ceil(localInputColor[0])) : localInputColor[0],
             useGreenChannel ? localInputColor[1] - (
                 localInputColor[1] >= 0 ? floor(localInputColor[1]) : ceil(localInputColor[1])) : localInputColor[1],

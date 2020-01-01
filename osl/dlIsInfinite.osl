@@ -56,7 +56,8 @@ shader dlIsInfinite(
         localInputColor[2] = inputColorB;
 
     // We are computing each channel individually depending on which the user wants to affect.
-    outBoolean = ((useRedChannel ? isinf(inputColorR) : 0)
+    outBoolean = (
+        (useRedChannel ? isinf(inputColorR) : 0)
         || (useGreenChannel ? isinf(inputColorG) : 0)
         || (useBlueChannel ? isinf(inputColorB) : 0));
 }

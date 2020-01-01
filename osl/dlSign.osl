@@ -15,6 +15,27 @@ shader dlSign(
 	float inputColorB = 0
         [[  string label = "Input B",
             string widget = "null" ]],
+    int useRedChannel = 1
+        [[  string help = "Define whether or not the red channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the untouched value coming from the "
+                "chosen input.",
+            string label = "Red",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+    int useGreenChannel = 1
+        [[  string help = "Define whether or not the green channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the untouched value coming from the "
+                "chosen input.",
+            string label = "Green",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+    int useBlueChannel = 1
+        [[  string help = "Define whether or not the blue channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the untouched value coming from the "
+                "chosen input.",
+            string label = "Blue",
+            string page = "Channels",
+            string widget = "checkBox" ]],
 
 	output color outColor = color(0, 0, 0),
 	output float outColorR = 0,
@@ -33,7 +54,11 @@ shader dlSign(
     if (isconnected(inputColorB))
         localInputColor[2] = inputColorB;
 
-    outColor = sign(localInputColor);
+    // We are computing each channel individually depending on which the user wants to affect.
+    outColor = color(useRedChannel ? sign(localInputColor[0]) : localInputColor[0],
+        useGreenChannel ? sign(localInputColor[1]) : localInputColor[1],
+        useBlueChannel ? sign(localInputColor[2]) : localInputColor[2]);
+
     outColorR = outColor[0];
     outColorG = outColor[1];
     outColorB = outColor[2];

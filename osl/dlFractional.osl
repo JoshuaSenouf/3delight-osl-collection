@@ -3,7 +3,8 @@
 shader dlFractional(
 	color inputColor = color(0, 0, 0)
         [[  string help = "Input color that will be used to get its fractional part, and return it as the output "
-                "color.<br/><br/>Formula: <b>input - abs(input)</b>",
+                "color."
+                "<br/><br/>Formula: <b>input - floor(input)</b> if <b>input >= 0</b>, else <b>input - ceil(input)</b>",
             string label = "Input",
             string widget = "number" ]],
 	float inputColorR = 0
@@ -15,6 +16,27 @@ shader dlFractional(
 	float inputColorB = 0
         [[  string label = "Input B",
             string widget = "null" ]],
+    int useRedChannel = 1
+        [[  string help = "Define whether or not the red channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the untouched value coming from the "
+                "chosen input.",
+            string label = "Red",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+    int useGreenChannel = 1
+        [[  string help = "Define whether or not the green channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the untouched value coming from the "
+                "chosen input.",
+            string label = "Green",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+    int useBlueChannel = 1
+        [[  string help = "Define whether or not the blue channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the untouched value coming from the "
+                "chosen input.",
+            string label = "Blue",
+            string page = "Channels",
+            string widget = "checkBox" ]],
 
 	output color outColor = color(0, 0, 0),
 	output float outColorR = 0,
@@ -34,7 +56,12 @@ shader dlFractional(
         localInputColor[2] = inputColorB;
 
     if (localInputColor != color (0, 0, 0))
-        outColor = localInputColor - abs(localInputColor);
+        outColor = color(useRedChannel ? localInputColor[0] - (
+                localInputColor[0] >= 0 ? floor(localInputColor[0]) : ceil(localInputColor[0])) : localInputColor[0],
+            useGreenChannel ? localInputColor[1] - (
+                localInputColor[1] >= 0 ? floor(localInputColor[1]) : ceil(localInputColor[1])) : localInputColor[1],
+            useBlueChannel ? localInputColor[2] - (
+                localInputColor[2] >= 0 ? floor(localInputColor[2]) : ceil(localInputColor[2])) : localInputColor[2]);
 
     outColorR = outColor[0];
     outColorG = outColor[1];

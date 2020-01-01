@@ -3,7 +3,8 @@
 shader dlIsNan(
 	color inputColor = color(0, 0, 0)
         [[  string help = "Input color that will be used to check if at least one of its channels is a NaN, "
-                "and output the result as the output boolean.<br/><br/>Formula: <b>isnan(input)</b>",
+                "and output the result as the output boolean."
+                "<br/><br/>Formula: <b>isnan(input)</b>",
             string label = "Input",
             string widget = "number" ]],
 	float inputColorR = 0
@@ -15,6 +16,27 @@ shader dlIsNan(
 	float inputColorB = 0
         [[  string label = "Input B",
             string widget = "null" ]],
+    int useRedChannel = 1
+        [[  string help = "Define whether or not the red channel should be affected."
+                "<br/><br/>If turned off, the channel will not be taken into account when verifying if at least one "
+                "of the channel value is a NaN, and thus will instead output the value 0 on that specific channel.",
+            string label = "Red",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+    int useGreenChannel = 1
+        [[  string help = "Define whether or not the green channel should be affected."
+                "<br/><br/>If turned off, the channel will not be taken into account when verifying if at least one "
+                "of the channel value is a NaN, and thus will instead output the value 0 on that specific channel.",
+            string label = "Green",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+    int useBlueChannel = 1
+        [[  string help = "Define whether or not the blue channel should be affected."
+                "<br/><br/>If turned off, the channel will not be taken into account when verifying if at least one "
+                "of the channel value is a NaN, and thus will instead output the value 0 on that specific channel.",
+            string label = "Blue",
+            string page = "Channels",
+            string widget = "checkBox" ]],
 
 	output int outBoolean = 0)
 {
@@ -30,6 +52,8 @@ shader dlIsNan(
     if (isconnected(inputColorB))
         localInputColor[2] = inputColorB;
 
-    // We check each 3 components of the color parameter, instead of just a single float.
-    outBoolean = (isnan(inputColorR) || isnan(inputColorG) || isnan(inputColorB));
+    // We are computing each channel individually depending on which the user wants to affect.
+    outBoolean = ((useRedChannel ? isnan(inputColorR) : 0)
+        || (useGreenChannel ? isnan(inputColorG) : 0)
+        || (useBlueChannel ? isnan(inputColorB) : 0));
 }

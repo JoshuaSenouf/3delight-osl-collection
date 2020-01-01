@@ -3,7 +3,8 @@
 shader dlPow(
 	color inputBase = color(0, 0, 0)
         [[  string help = "Input base that will be used to compute its power over the input exponent, and return the "
-                "result as the output color.<br/><br/>Formula: <b>pow(base, exponent)</b>",
+                "result as the output color."
+                "<br/><br/>Formula: <b>pow(base, exponent)</b>",
             string label = "Input 1",
             string widget = "number" ]],
 	float inputBaseR = 0
@@ -17,7 +18,8 @@ shader dlPow(
             string widget = "null" ]],
 	color inputExponent = color(0, 0, 0)
         [[  string help = "Input exponent that will be used to compute the power from the input base, and return the "
-                "result as the output color.<br/><br/>Formula: <b>pow(base, exponent)</b>",
+                "result as the output color."
+                "<br/><br/>Formula: <b>pow(base, exponent)</b>",
             string label = "Input 2",
             string widget = "number" ]],
 	float inputExponentR = 0
@@ -29,6 +31,24 @@ shader dlPow(
 	float inputExponentB = 0
         [[  string label = "Input 2 B",
             string widget = "null" ]],
+    int useRedChannel = 1
+        [[  string help = "Define whether or not the red channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the value 0.",
+            string label = "Red",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+    int useGreenChannel = 1
+        [[  string help = "Define whether or not the green channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the value 0.",
+            string label = "Green",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+    int useBlueChannel = 1
+        [[  string help = "Define whether or not the blue channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the value 0.",
+            string label = "Blue",
+            string page = "Channels",
+            string widget = "checkBox" ]],
 
 	output color outColor = color(0, 0, 0),
 	output float outColorR = 0,
@@ -54,7 +74,11 @@ shader dlPow(
     if (isconnected(inputExponentB))
         localInputExponent[2] = inputExponentB;
 
-    outColor = pow(localInputBase, localInputExponent);
+    // We are computing each channel individually depending on which the user wants to affect.
+    outColor = color(useRedChannel ? pow(localInputBase[0], localInputExponent[0]) : 0,
+        useGreenChannel ? pow(localInputBase[1], localInputExponent[1]) : 0,
+        useBlueChannel ? pow(localInputBase[2], localInputExponent[2]) : 0);
+
     outColorR = outColor[0];
     outColorG = outColor[1];
     outColorB = outColor[2];

@@ -18,7 +18,8 @@ shader dlAtan(
             string widget = "null" ]],
 	color inputColor2 = color(0, 0, 0)
         [[  string help = "Second input vector that will be used to produce its arctangent, and return it as the "
-                "output vector.<br/><br/>Formula: <b>atan2(input2/input1)</b>",
+                "output vector."
+                "<br/><br/>Formula: <b>atan2(input2 / input1)</b>",
             string label = "Input 2",
             string widget = "number" ]],
 	float inputColor2R = 0
@@ -35,6 +36,24 @@ shader dlAtan(
             string label = "Units",
             string widget = "mapper",
             string options = "Radians:0|Degrees:1" ]],
+    int useRedChannel = 1
+        [[  string help = "Define whether or not the red channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the value 0.",
+            string label = "Red",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+    int useGreenChannel = 1
+        [[  string help = "Define whether or not the green channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the value 0.",
+            string label = "Green",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+    int useBlueChannel = 1
+        [[  string help = "Define whether or not the blue channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the value 0.",
+            string label = "Blue",
+            string page = "Channels",
+            string widget = "checkBox" ]],
 
 	output color outColor = color(0, 0, 0),
 	output float outColorR = 0,
@@ -62,10 +81,16 @@ shader dlAtan(
 
     // If we are outputting the result using radians...
     if (units == 0)
-        outColor = atan2(localInputColor2, localInputColor1);
+        // We are computing each channel individually depending on which the user wants to affect.
+        outColor = color(useRedChannel ? atan2(localInputColor2[0], localInputColor1[0]) : 0,
+            useGreenChannel ? atan2(localInputColor2[1], localInputColor1[1]) : 0,
+            useBlueChannel ? atan2(localInputColor2[2], localInputColor1[2]) : 0);
     // If we are outputting the result using degrees...
     else
-        outColor = degrees(atan2(localInputColor2, localInputColor1));
+        // We are computing each channel individually depending on which the user wants to affect.
+        outColor = degrees(color(useRedChannel ? atan2(localInputColor2[0], localInputColor1[0]) : 0,
+            useGreenChannel ? atan2(localInputColor2[1], localInputColor1[1]) : 0,
+            useBlueChannel ? atan2(localInputColor2[2], localInputColor1[2]) : 0));
 
     outColorR = outColor[0];
     outColorG = outColor[1];

@@ -3,7 +3,8 @@
 shader dlClamp(
 	color inputColor = color(0, 0, 0)
         [[  string help = "Input color that will be clamped between the two minimum and maximum input colors, and "
-                "return the result as the output color.<br/><br/>Formula: <b>clamp(input, min, max)</b>",
+                "return the result as the output color."
+                "<br/><br/>Formula: <b>clamp(input, min, max)</b>",
             string label = "Input",
             string widget = "number" ]],
 	float inputColorR = 0
@@ -17,7 +18,8 @@ shader dlClamp(
             string widget = "null" ]],
 	color inputMin = color(0, 0, 0)
         [[  string help = "Input minimum color that will be used to clamp the input color, and "
-                "return the result as the output color.<br/><br/>Formula: <b>clamp(input, min, max)</b>",
+                "return the result as the output color."
+                "<br/><br/>Formula: <b>clamp(input, min, max)</b>",
             string label = "Min",
             string widget = "number" ]],
 	float inputMinR = 0
@@ -29,9 +31,10 @@ shader dlClamp(
 	float inputMinB = 0
         [[  string label = "Min B",
             string widget = "null" ]],
-	color inputMax = color(0, 0, 0)
+	color inputMax = color(1, 1, 1)
         [[  string help = "Input maximum color that will be used to clamp the input color, and "
-                "return the result as the output color.<br/><br/>Formula: <b>clamp(input, min, max)</b>",
+                "return the result as the output color."
+                "<br/><br/>Formula: <b>clamp(input, min, max)</b>",
             string label = "Max",
             string widget = "number" ]],
 	float inputMaxR = 0
@@ -43,6 +46,27 @@ shader dlClamp(
 	float inputMaxB = 0
         [[  string label = "Max B",
             string widget = "null" ]],
+    int useRedChannel = 1
+        [[  string help = "Define whether or not the red channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the untouched value coming from the "
+                "chosen input.",
+            string label = "Red",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+    int useGreenChannel = 1
+        [[  string help = "Define whether or not the green channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the untouched value coming from the "
+                "chosen input.",
+            string label = "Green",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+    int useBlueChannel = 1
+        [[  string help = "Define whether or not the blue channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the untouched value coming from the "
+                "chosen input.",
+            string label = "Blue",
+            string page = "Channels",
+            string widget = "checkBox" ]],
 
 	output color outColor = color(0, 0, 0),
 	output float outColorR = 0,
@@ -75,7 +99,12 @@ shader dlClamp(
     if (isconnected(inputMaxB))
         localInputMax[2] = inputMaxB;
 
-    outColor = clamp(localInputColor, localInputMin, localInputMax);
+    // We are computing each channel individually depending on which the user wants to affect.
+    outColor = color(
+        useRedChannel ? clamp(localInputColor[0], localInputMin[0], localInputMax[0]) : localInputColor[0],
+        useGreenChannel ? clamp(localInputColor[1], localInputMin[1], localInputMax[1]) : localInputColor[1],
+        useBlueChannel ? clamp(localInputColor[2], localInputMin[2], localInputMax[2]) : localInputColor[2]);
+
     outColorR = outColor[0];
     outColorG = outColor[1];
     outColorB = outColor[2];

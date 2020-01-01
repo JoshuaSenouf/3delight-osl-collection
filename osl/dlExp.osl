@@ -3,7 +3,8 @@
 shader dlExp(
 	color InputExponent = color(0, 0, 0)
         [[  string help = "Input exponent that will be used to produce the exponential of that exponent, and return "
-                "it as the output color.<br/><br/>Formula: <b>exp(exponent)</b>",
+                "it as the output color."
+                "<br/><br/>Formula: <b>exp(exponent)</b>",
             string label = "Input",
             string widget = "number" ]],
 	float InputExponentR = 0
@@ -15,6 +16,24 @@ shader dlExp(
 	float InputExponentB = 0
         [[  string label = "Input B",
             string widget = "null" ]],
+    int useRedChannel = 1
+        [[  string help = "Define whether or not the red channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the value 0.",
+            string label = "Red",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+    int useGreenChannel = 1
+        [[  string help = "Define whether or not the green channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the value 0.",
+            string label = "Green",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+    int useBlueChannel = 1
+        [[  string help = "Define whether or not the blue channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the value 0.",
+            string label = "Blue",
+            string page = "Channels",
+            string widget = "checkBox" ]],
 
 	output color outColor = color(0, 0, 0),
 	output float outColorR = 0,
@@ -33,7 +52,11 @@ shader dlExp(
     if (isconnected(InputExponentB))
         localInputExponent[2] = InputExponentB;
 
-    outColor = exp(localInputExponent);
+    // We are computing each channel individually depending on which the user wants to affect.
+    outColor = color(useRedChannel ? exp(localInputExponent[0]) : 0,
+        useGreenChannel ? exp(localInputExponent[1]) : 0,
+        useBlueChannel ? exp(localInputExponent[2]) : 0);
+
     outColorR = outColor[0];
     outColorG = outColor[1];
     outColorB = outColor[2];

@@ -34,6 +34,7 @@ shader dlNormalize(
         localInputVector[2] = inputVectorB;
 
     outVector = normalize(localInputVector);
+
     outVectorX = outVector[0];
     outVectorY = outVector[1];
     outVectorZ = outVector[2];

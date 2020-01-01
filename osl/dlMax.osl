@@ -3,7 +3,8 @@
 shader dlMax(
 	color inputColor1 = color(0, 0, 0)
         [[  string help = "First input color that will be used to determine the maximum values with the second "
-                "one, and return the result as the output color.<br/><br/>Formula: <b>max(input1, input2)</b>",
+                "one, and return the result as the output color."
+                "<br/><br/>Formula: <b>max(input1, input2)</b>",
             string label = "Input 1",
             string widget = "number" ]],
 	float inputColor1R = 0
@@ -17,7 +18,8 @@ shader dlMax(
             string widget = "null" ]],
 	color inputColor2 = color(0, 0, 0)
         [[  string help = "Second input color that will be used to determine the maximum values with the first "
-                "one, and return the result as the output color.<br/><br/>Formula: <b>max(input1, input2)</b>",
+                "one, and return the result as the output color."
+                "<br/><br/>Formula: <b>max(input1, input2)</b>",
             string label = "Input 2",
             string widget = "number" ]],
 	float inputColor2R = 0
@@ -29,6 +31,24 @@ shader dlMax(
 	float inputColor2B = 0
         [[  string label = "Input 2 B",
             string widget = "null" ]],
+    int useRedChannel = 1
+        [[  string help = "Define whether or not the red channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the value 0.",
+            string label = "Red",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+    int useGreenChannel = 1
+        [[  string help = "Define whether or not the green channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the value 0.",
+            string label = "Green",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+    int useBlueChannel = 1
+        [[  string help = "Define whether or not the blue channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the value 0.",
+            string label = "Blue",
+            string page = "Channels",
+            string widget = "checkBox" ]],
 
 	output color outColor = color(0, 0, 0),
 	output float outColorR = 0,
@@ -55,6 +75,12 @@ shader dlMax(
         localInputColor2[2] = inputColor2B;
 
     outColor = max(localInputColor1, localInputColor2);
+
+    // We are computing each channel individually depending on which the user wants to affect.
+    outColor = color(useRedChannel ? max(localInputColor1[0], localInputColor2[0]) : 0,
+        useGreenChannel ? max(localInputColor1[1], localInputColor2[1]) : 0,
+        useBlueChannel ? max(localInputColor1[2], localInputColor2[2]) : 0);
+
     outColorR = outColor[0];
     outColorG = outColor[1];
     outColorB = outColor[2];

@@ -1,8 +1,8 @@
 /*
 */
 shader dlLength(
-	color inputVector = color(0, 0, 0)
-        [[  string help = "Input vector that will be used to produce a length, and return it as the output color."
+	vector inputVector = vector(0, 0, 0)
+        [[  string help = "Input vector that will be used to produce a length, and return it as the output vector."
                 "<br/><br/>Formulas: "
                 "<br/>* Euclidian <b>sqrt(pow(input.r, 2) + pow(input.g, 2) + pow(input.b, 2))</b>"
                 "<br/>* Quadrance <b>pow(input.r, 2) + pow(input.g, 2) + pow(input.b, 2)</b>"
@@ -19,17 +19,21 @@ shader dlLength(
         [[  string label = "Input B",
             string widget = "null" ]],
     int method = 0
-        [[  string help = "The method used to compute the length from the provided input vector.",
+        [[  string help = "The method used to compute the length from the provided input vector."
+                "<br/><br/>Formulas: "
+                "<br/>* Euclidian <b>sqrt(pow(input.r, 2) + pow(input.g, 2) + pow(input.b, 2))</b>"
+                "<br/>* Quadrance <b>pow(input.r, 2) + pow(input.g, 2) + pow(input.b, 2)</b>"
+                "<br/>* Manhattan <b>abs(input.r) + abs(input.g) + abs(input.b)</b>",
             string label = "Method",
             string widget = "mapper",
             string options = "Euclidian:0|Quadrance:1|Manhattan:2" ]],
 
-	output color outFloat = 0)
+	output float outFloat = 0)
 {
-    color localInputVector = inputVector;
+    vector localInputVector = inputVector;
 
     // We check if anything is connected to the per-channel shader parameters,
-    // and if so, we prioritize them over the values coming from the color parameter(s),
+    // and if so, we prioritize them over the values coming from the vector parameter,
     // and assign them to their respective channels.
     if (isconnected(inputVectorR))
         localInputVector[0] = inputVectorR;

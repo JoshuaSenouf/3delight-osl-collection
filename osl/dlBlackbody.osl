@@ -1,0 +1,27 @@
+/*
+*/
+shader dlBlackbody(
+	float inputTemperature = 6500
+        [[  string help = "Input temperature in Kelvin (K) that will be used to compute the corresponding color, and "
+                "return the result as the output color."
+                "<br/><br/>A value of 6500K is considered a standard daylight white. Below that would produce a "
+                "warmer color, getting closer to a red, and above would produce a cooler color, getting closer "
+                "to a blue.",
+            string label = "Temperature",
+            string widget = "number" ]],
+
+	output color outColor = 0,
+	output float outColorR = 0,
+	output float outColorG = 0,
+	output float outColorB = 0)
+{
+    // We scale down the blackbody emission using the input temperature in order to be able
+    // to see it.
+    color blackbodyColor = blackbody(inputTemperature) / inputTemperature;
+
+    outColor = blackbodyColor / luminance(blackbodyColor);
+
+    outColorR = outColor[0];
+    outColorG = outColor[1];
+    outColorB = outColor[2];
+}

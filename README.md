@@ -9,6 +9,7 @@ List
 * dlAbs
 * dlAdd
 * dlAtan
+* dlBlackbody
 * dlClamp
 * dlCompare
 * dlComplement
@@ -32,5 +33,6 @@ List
 * dlPow
 * dlReciprocal
 * dlSign
+* dlSpectrum
 * dlSqrt
 * dlSubtract

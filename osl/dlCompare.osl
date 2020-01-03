@@ -1,7 +1,7 @@
 /*
 */
 shader dlCompare(
-	color inputColor1 = color(0, 0, 0)
+	color inputColor1 = color(0)
         [[  string help = "First input color that will be compared against the second one, returning the result "
                 "as the output boolean."
                 "<br/>In the case of the 'Greater/Less (or Equal)' methods of comparison, we"
@@ -24,7 +24,7 @@ shader dlCompare(
 	float inputColor1B = 0
         [[  string label = "Input 1 B",
             string widget = "null" ]],
-	color inputColor2 = color(0, 0, 0)
+	color inputColor2 = color(0)
         [[  string help = "Second input color that will be compared against the first one, returning the result "
                 "as the output boolean."
                 "<br/>In the case of the 'Greater/Less (or Equal)' methods of comparison, we"

@@ -1,7 +1,7 @@
 /*
 */
 shader dlDot(
-	vector inputVector1 = vector(0, 0, 0)
+	vector inputVector1 = vector(0)
         [[  string help = "First input vector that will be used to produce a dot product with the second one, "
                 "and return it as the output vector."
                 "<br/><br/>Formula: <b>dot(input1, input2)</b>",
@@ -16,7 +16,7 @@ shader dlDot(
 	float inputVector1Z = 0
         [[  string label = "Input 1 Z",
             string widget = "null" ]],
-	vector inputVector2 = vector(0, 0, 0)
+	vector inputVector2 = vector(0)
         [[  string help = "Second input vector that will be used to produce a dot product with the first one, "
                 "and return it as the output vector."
                 "<br/><br/>Formula: <b>dot(input1, input2)</b>",
@@ -32,7 +32,7 @@ shader dlDot(
         [[  string label = "Input 2 Z",
             string widget = "null" ]],
 
-	output vector outVector = vector(0, 0, 0),
+	output vector outVector = vector(0),
 	output float outVectorX = 0,
 	output float outVectorY = 0,
 	output float outVectorZ = 0)

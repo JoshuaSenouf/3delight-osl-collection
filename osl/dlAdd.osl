@@ -1,7 +1,7 @@
 /*
 */
 shader dlAdd(
-	color inputColor1 = color(0, 0, 0)
+	color inputColor1 = color(0)
         [[  string help = "First input color that will be added to the second one to produce the output color."
                 "<br/><br/>Formula: <b>input1 + input2</b>",
             string label = "Input 1",
@@ -15,7 +15,7 @@ shader dlAdd(
 	float inputColor1B = 0
         [[  string label = "Input 1 B",
             string widget = "null" ]],
-	color inputColor2 = color(0, 0, 0)
+	color inputColor2 = color(0)
         [[  string help = "Second input color that will be added to the first one to produce the output color."
                 "<br/><br/>Formula: <b>input1 + input2</b>",
             string label = "Input 2",
@@ -48,7 +48,7 @@ shader dlAdd(
             string page = "Channels",
             string widget = "checkBox" ]],
 
-	output color outColor = color(0, 0, 0),
+	output color outColor = color(0),
 	output float outColorR = 0,
 	output float outColorG = 0,
 	output float outColorB = 0)

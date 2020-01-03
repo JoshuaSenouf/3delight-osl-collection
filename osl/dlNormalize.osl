@@ -1,7 +1,7 @@
 /*
 */
 shader dlNormalize(
-	color inputVector = color(0, 0, 0)
+	color inputVector = color(0)
         [[  string help = "Input vector that will be returned normalized as the output color."
                 "<br/><br/>Formula: <b>normalize(input)</b>",
             string label = "Input",
@@ -16,7 +16,7 @@ shader dlNormalize(
         [[  string label = "Input B",
             string widget = "null" ]],
 
-	output vector outVector = vector(0, 0, 0),
+	output vector outVector = vector(0),
 	output float outVectorX = 0,
 	output float outVectorY = 0,
 	output float outVectorZ = 0)

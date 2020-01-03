@@ -1,7 +1,7 @@
 /*
 */
 shader dlSqrt(
-	color inputColor = color(0, 0, 0)
+	color inputColor = color(0)
         [[  string help = "Input color that will be used to return its square root as the output color."
                 "<br/><br/>Formula: <b>sqrt(input)</b>",
             string label = "Input",
@@ -37,7 +37,7 @@ shader dlSqrt(
             string page = "Channels",
             string widget = "checkBox" ]],
 
-	output color outColor = color(0, 0, 0),
+	output color outColor = color(0),
 	output float outColorR = 0,
 	output float outColorG = 0,
 	output float outColorB = 0)

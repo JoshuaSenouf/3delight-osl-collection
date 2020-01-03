@@ -1,7 +1,7 @@
 /*
 */
 shader dlFractional(
-	color inputColor = color(0, 0, 0)
+	color inputColor = color(0)
         [[  string help = "Input color that will be used to get its fractional part, and return it as the output "
                 "color."
                 "<br/><br/>Formula: <b>input - floor(input)</b> if <b>input >= 0</b>, else <b>input - ceil(input)</b>",
@@ -38,7 +38,7 @@ shader dlFractional(
             string page = "Channels",
             string widget = "checkBox" ]],
 
-	output color outColor = color(0, 0, 0),
+	output color outColor = color(0),
 	output float outColorR = 0,
 	output float outColorG = 0,
 	output float outColorB = 0)
@@ -55,7 +55,7 @@ shader dlFractional(
     if (isconnected(inputColorB))
         localInputColor[2] = inputColorB;
 
-    if (localInputColor != color (0, 0, 0))
+    if (localInputColor != color (0))
         outColor = color(
             useRedChannel ? localInputColor[0] - (
                 localInputColor[0] >= 0 ? floor(localInputColor[0]) : ceil(localInputColor[0])) : localInputColor[0],

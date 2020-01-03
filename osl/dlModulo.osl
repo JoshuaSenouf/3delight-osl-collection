@@ -1,7 +1,7 @@
 /*
 */
 shader dlModulo(
-	color inputColor = color(0, 0, 0)
+	color inputColor = color(0)
         [[  string help = "Input color that will be used to produce a modulo, and return the result as the output "
                 "color."
                 "<br/><br/>Formula: <b>mod(input, divisor)</b>",
@@ -16,7 +16,7 @@ shader dlModulo(
 	float inputColorB = 0
         [[  string label = "Input B",
             string widget = "null" ]],
-	color inputDivisor = color(0, 0, 0)
+	color inputDivisor = color(0)
         [[  string help = "Input divisor by which we are going to modulo the input color."
                 "<br/><br/>Formula: <b>mod(input, divisor)</b>",
             string label = "Divisor",
@@ -50,7 +50,7 @@ shader dlModulo(
             string page = "Channels",
             string widget = "checkBox" ]],
 
-	output color outColor = color(0, 0, 0),
+	output color outColor = color(0),
 	output float outColorR = 0,
 	output float outColorG = 0,
 	output float outColorB = 0)

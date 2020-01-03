@@ -1,7 +1,7 @@
 /*
 */
 shader dlAtan(
-	color inputColor1 = color(0, 0, 0)
+	color inputColor1 = color(0)
         [[  string help = "First input vector that will be used to produce its arctangent, and return it as the "
                 "output vector. The result will in the range of <b>[-pi/2 ; pi/2]</b>."
                 "<br/><br/>Formula: <b>atan2(input2 / input1)</b>",
@@ -16,7 +16,7 @@ shader dlAtan(
 	float inputColor1B = 0
         [[  string label = "Input 1 B",
             string widget = "null" ]],
-	color inputColor2 = color(0, 0, 0)
+	color inputColor2 = color(0)
         [[  string help = "Second input vector that will be used to produce its arctangent, and return it as the "
                 "output vector."
                 "<br/><br/>Formula: <b>atan2(input2 / input1)</b>",
@@ -55,7 +55,7 @@ shader dlAtan(
             string page = "Channels",
             string widget = "checkBox" ]],
 
-	output color outColor = color(0, 0, 0),
+	output color outColor = color(0),
 	output float outColorR = 0,
 	output float outColorG = 0,
 	output float outColorB = 0)

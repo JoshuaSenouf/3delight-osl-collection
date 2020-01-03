@@ -1,7 +1,7 @@
 /*
 */
 shader dlPow(
-	color inputBase = color(0, 0, 0)
+	color inputBase = color(0)
         [[  string help = "Input base that will be used to compute its power over the input exponent, and return the "
                 "result as the output color."
                 "<br/><br/>Formula: <b>pow(base, exponent)</b>",
@@ -16,7 +16,7 @@ shader dlPow(
 	float inputBaseB = 0
         [[  string label = "Input 1 B",
             string widget = "null" ]],
-	color inputExponent = color(0, 0, 0)
+	color inputExponent = color(0)
         [[  string help = "Input exponent that will be used to compute the power from the input base, and return the "
                 "result as the output color."
                 "<br/><br/>Formula: <b>pow(base, exponent)</b>",
@@ -50,7 +50,7 @@ shader dlPow(
             string page = "Channels",
             string widget = "checkBox" ]],
 
-	output color outColor = color(0, 0, 0),
+	output color outColor = color(0),
 	output float outColorR = 0,
 	output float outColorG = 0,
 	output float outColorB = 0)

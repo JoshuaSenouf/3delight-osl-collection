@@ -15,10 +15,9 @@ shader dlBlackbody(
 	output float outColorG = 0,
 	output float outColorB = 0)
 {
-    // We scale down the blackbody emission using the input temperature in order to be able
-    // to see it.
-    color blackbodyColor = blackbody(inputTemperature) / inputTemperature;
+    color blackbodyColor = blackbody(inputTemperature);
 
+    // We scale down the blackbody emission by its luminance in order to be able to see it.
     outColor = blackbodyColor / luminance(blackbodyColor);
 
     outColorR = outColor[0];

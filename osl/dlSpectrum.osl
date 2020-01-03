@@ -4,7 +4,7 @@ shader dlSpectrum(
 	float inputWavelength = 500
         [[  string help = "Input wavelength in nanometers (nm) that will be used to compute the corresponding RGB "
                 "color, and return the result as the output color."
-                "<br/><br/>The light visible spectrum range from around 380nm and 780. The closer it gets to "
+                "<br/><br/>The light visible spectrum range from around 380nm and 780nm. The closer it gets to "
                 "380nm, the more violet the color becomes, and the closer it gets to 780, the more red the "
                 "color becomes."
                 "<br/><br/>As such, using a value outside of that range might prove to be less than useful in "

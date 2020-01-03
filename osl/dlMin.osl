@@ -1,7 +1,7 @@
 /*
 */
 shader dlMin(
-	color inputColor1 = color(0, 0, 0)
+	color inputColor1 = color(0)
         [[  string help = "First input color that will be used to determine the minimum values with the second "
                 "one, and return the result as the output color."
                 "<br/><br/>Formula: <b>min(input1, input2)</b>",
@@ -16,7 +16,7 @@ shader dlMin(
 	float inputColor1B = 0
         [[  string label = "Input 1 B",
             string widget = "null" ]],
-	color inputColor2 = color(0, 0, 0)
+	color inputColor2 = color(0)
         [[  string help = "Second input color that will be used to determine the minimum values with the first "
                 "one, and return the result as the output color."
                 "<br/><br/>Formula: <b>min(input1, input2)</b>",
@@ -50,7 +50,7 @@ shader dlMin(
             string page = "Channels",
             string widget = "checkBox" ]],
 
-	output color outColor = color(0, 0, 0),
+	output color outColor = color(0),
 	output float outColorR = 0,
 	output float outColorG = 0,
 	output float outColorB = 0)

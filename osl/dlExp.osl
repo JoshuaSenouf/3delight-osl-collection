@@ -1,7 +1,7 @@
 /*
 */
 shader dlExp(
-	color InputExponent = color(0, 0, 0)
+	color InputExponent = color(0)
         [[  string help = "Input exponent that will be used to produce the exponential of that exponent, and return "
                 "it as the output color."
                 "<br/><br/>Formula: <b>exp(exponent)</b>",
@@ -35,7 +35,7 @@ shader dlExp(
             string page = "Channels",
             string widget = "checkBox" ]],
 
-	output color outColor = color(0, 0, 0),
+	output color outColor = color(0),
 	output float outColorR = 0,
 	output float outColorG = 0,
 	output float outColorB = 0)

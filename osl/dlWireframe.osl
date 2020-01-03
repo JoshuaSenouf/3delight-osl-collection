@@ -1,0 +1,89 @@
+/*
+*/
+shader dlWireframe(
+	color inputWireframeColor = color(1)
+        [[  string help = "Input color that will be used as the wireframe color.",
+            string label = "Wireframe Color",
+            string widget = "number" ]],
+	float inputWireframeColorR = 0
+        [[  string label = "Wireframe Color R",
+            string widget = "null" ]],
+	float inputWireframeColorG = 0
+        [[  string label = "Wireframe Color G",
+            string widget = "null" ]],
+	float inputWireframeColorB = 0
+        [[  string label = "Wireframe Color B",
+            string widget = "null" ]],
+	color inputBackgroundColor = color(0)
+        [[  string help = "Input color that will be used as the background surface color of the wireframe.",
+            string label = "Background Color",
+            string widget = "number" ]],
+	float inputBackgroundColorR = 0
+        [[  string label = "Background Color R",
+            string widget = "null" ]],
+	float inputBackgroundColorG = 0
+        [[  string label = "Background Color G",
+            string widget = "null" ]],
+	float inputBackgroundColorB = 0
+        [[  string label = "Background Color B",
+            string widget = "null" ]],
+	float inputWidth = 1
+        [[  string help = "Input width that will be used to set the wireframe width/thickness.",
+            string label = "Width",
+            string widget = "number",
+            float min = 0,
+            float max = 5 ]],
+    float inputOpacity = 1
+    [[  string help = "Input opacity that will be used to set the wireframe opacity/visibility.",
+        string label = "Opacity",
+        string widget = "number",
+        float min = 0,
+        float max = 1 ]],
+
+	output color outColor = color(0),
+	output float outColorR = 0,
+	output float outColorG = 0,
+	output float outColorB = 0)
+{
+    color localInputWireframeColor = inputWireframeColor;
+    color localInputBackgroundColor = inputBackgroundColor;
+
+    // We check if anything is connected to the per-channel shader parameters,
+    // and if so, we prioritize them over the values coming from the color parameters,
+    // and assign them to their respective channels.
+    if (isconnected(inputWireframeColorR))
+        localInputWireframeColor[0] = inputWireframeColorR;
+    if (isconnected(inputWireframeColorG))
+        localInputWireframeColor[1] = inputWireframeColorG;
+    if (isconnected(inputWireframeColorB))
+        localInputWireframeColor[2] = inputWireframeColorB;
+    if (isconnected(inputBackgroundColorR))
+        localInputBackgroundColor[0] = inputBackgroundColorR;
+    if (isconnected(inputBackgroundColorG))
+        localInputBackgroundColor[1] = inputBackgroundColorG;
+    if (isconnected(inputBackgroundColorB))
+        localInputBackgroundColor[2] = inputBackgroundColorB;
+
+    float edgeU = (u >= 0.5) ? (1.0 - u) : u;
+    float edgeV = (v >= 0.5) ? (1.0 - v) : v;
+    float derivU = Dx(u);
+    float derivV = Dy(v);
+
+    int stepEdgeU = step(edgeU, derivU * inputWidth);
+    int stepEdgeV = step(edgeV, derivV * inputWidth);
+
+    // Will act as a boolean that will determine whether or not we should draw
+    // the wireframe on that shading point, as per the settings the user chose.
+    int isWireframe = max(stepEdgeU, stepEdgeV);
+
+    // We use a "mix()" call instead of doing if/else statements using the "isWireframe"
+    // boolean, as the OSL compiler would create needless branches.
+    outColor = mix(
+        localInputBackgroundColor,
+        localInputWireframeColor,
+        (isWireframe * inputOpacity));
+
+    outColorR = outColor[0];
+    outColorG = outColor[1];
+    outColorB = outColor[2];
+}

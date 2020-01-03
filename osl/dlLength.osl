@@ -1,12 +1,12 @@
 /*
 */
 shader dlLength(
-	vector inputVector = vector(0, 0, 0)
+	vector inputVector = vector(0)
         [[  string help = "Input vector that will be used to produce a length, and return it as the output vector."
                 "<br/><br/>Formulas: "
                 "<br/>* Euclidian <b>sqrt(pow(input.r, 2) + pow(input.g, 2) + pow(input.b, 2))</b>"
                 "<br/>* Quadrance <b>pow(input.r, 2) + pow(input.g, 2) + pow(input.b, 2)</b>"
-                "<br/>* Manhattan <b>abs(input.r) + abs(input.g) + abs(input.b)</b>",
+                "<br/>* Manhattan <b>fabs(input.r) + fabs(input.g) + fabs(input.b)</b>",
             string label = "Input",
             string widget = "number" ]],
 	float inputVectorR = 0
@@ -23,7 +23,7 @@ shader dlLength(
                 "<br/><br/>Formulas: "
                 "<br/>* Euclidian <b>sqrt(pow(input.r, 2) + pow(input.g, 2) + pow(input.b, 2))</b>"
                 "<br/>* Quadrance <b>pow(input.r, 2) + pow(input.g, 2) + pow(input.b, 2)</b>"
-                "<br/>* Manhattan <b>abs(input.r) + abs(input.g) + abs(input.b)</b>",
+                "<br/>* Manhattan <b>fabs(input.r) + fabs(input.g) + fabs(input.b)</b>",
             string label = "Method",
             string widget = "mapper",
             string options = "Euclidian:0|Quadrance:1|Manhattan:2" ]],
@@ -52,5 +52,5 @@ shader dlLength(
         outFloat = pow(localInputVector[0], 2) + pow(localInputVector[1], 2) + pow(localInputVector[2], 2);
     // If we are using the "Manhattan" method...
     else
-        outFloat = abs(localInputVector[0]) + abs(localInputVector[1]) + abs(localInputVector[2]);
+        outFloat = fabs(localInputVector[0]) + fabs(localInputVector[1]) + fabs(localInputVector[2]);
 }

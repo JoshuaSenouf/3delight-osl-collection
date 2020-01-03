@@ -1,7 +1,7 @@
 /*
 */
 shader dlClamp(
-	color inputColor = color(0, 0, 0)
+	color inputColor = color(0)
         [[  string help = "Input color that will be clamped between the two minimum and maximum input colors, and "
                 "return the result as the output color."
                 "<br/><br/>Formula: <b>clamp(input, min, max)</b>",
@@ -16,7 +16,7 @@ shader dlClamp(
 	float inputColorB = 0
         [[  string label = "Input B",
             string widget = "null" ]],
-	color inputMin = color(0, 0, 0)
+	color inputMin = color(0)
         [[  string help = "Input minimum color that will be used to clamp the input color, and "
                 "return the result as the output color."
                 "<br/><br/>Formula: <b>clamp(input, min, max)</b>",
@@ -31,7 +31,7 @@ shader dlClamp(
 	float inputMinB = 0
         [[  string label = "Min B",
             string widget = "null" ]],
-	color inputMax = color(1, 1, 1)
+	color inputMax = color(1)
         [[  string help = "Input maximum color that will be used to clamp the input color, and "
                 "return the result as the output color."
                 "<br/><br/>Formula: <b>clamp(input, min, max)</b>",
@@ -68,7 +68,7 @@ shader dlClamp(
             string page = "Channels",
             string widget = "checkBox" ]],
 
-	output color outColor = color(0, 0, 0),
+	output color outColor = color(0),
 	output float outColorR = 0,
 	output float outColorG = 0,
 	output float outColorB = 0)

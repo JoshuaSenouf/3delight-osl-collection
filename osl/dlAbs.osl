@@ -1,10 +1,10 @@
 /*
 */
 shader dlAbs(
-	color inputColor = color(0, 0, 0)
+	color inputColor = color(0)
         [[  string help = "Input color that will be used to produce its absolute value, and return it as the "
                 "output color."
-                "<br/><br/>Formula: <b>abs(input)</b>",
+                "<br/><br/>Formula: <b>fabs(input)</b>",
             string label = "Input",
             string widget = "number" ]],
 	float inputColorR = 0
@@ -38,7 +38,7 @@ shader dlAbs(
             string page = "Channels",
             string widget = "checkBox" ]],
 
-	output color outColor = color(0, 0, 0),
+	output color outColor = color(0),
 	output float outColorR = 0,
 	output float outColorG = 0,
 	output float outColorB = 0)
@@ -57,9 +57,9 @@ shader dlAbs(
 
     // We are computing each channel individually depending on which the user wants to affect.
     outColor = color(
-        useRedChannel ? abs(localInputColor[0]) : localInputColor[0],
-        useGreenChannel ? abs(localInputColor[1]) : localInputColor[1],
-        useBlueChannel ? abs(localInputColor[2]) : localInputColor[2]);
+        useRedChannel ? fabs(localInputColor[0]) : localInputColor[0],
+        useGreenChannel ? fabs(localInputColor[1]) : localInputColor[1],
+        useBlueChannel ? fabs(localInputColor[2]) : localInputColor[2]);
 
     outColorR = outColor[0];
     outColorG = outColor[1];

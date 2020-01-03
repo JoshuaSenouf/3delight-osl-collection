@@ -1,7 +1,7 @@
 /*
 */
 shader dlIsNan(
-	color inputColor = color(0, 0, 0)
+	color inputColor = color(0)
         [[  string help = "Input color that will be used to check if at least one of its channels is a NaN, "
                 "and output the result as the output boolean."
                 "<br/><br/>Formula: <b>isnan(input)</b>",

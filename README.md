@@ -32,6 +32,7 @@ List
 * dlNormalize
 * dlPow
 * dlReciprocal
+* dlRemap
 * dlSign
 * dlSpectrum
 * dlSqrt

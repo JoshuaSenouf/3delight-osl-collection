@@ -1,6 +1,6 @@
 /*
 */
-shader dlDivide(
+shader dlMultiply(
 	color inputColor1 = color(0)
         [[  string help = "First input color that will be multiplied by the second one to produce the output color."
                 "<br/><br/>Formula: <b>input1 * input2</b>",

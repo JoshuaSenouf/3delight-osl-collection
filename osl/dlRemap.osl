@@ -1,0 +1,205 @@
+/*
+*/
+shader dlRemap(
+	color inputColor = color(0)
+        [[  string help = "Input color that will be remapped using two ranges, one for the input and the other for "
+                "the output, as return the result as the output color."
+                "<br/><br/>Formula: <b>outputMin + ((inputColor - inputMin) * (outputMax - outputMin)) / (inputMax - "
+                "inputMin)</b>",
+            string label = "Input",
+            string widget = "number" ]],
+	float inputColorR = 0
+        [[  string label = "Input R",
+            string widget = "null" ]],
+	float inputColorG = 0
+        [[  string label = "Input G",
+            string widget = "null" ]],
+	float inputColorB = 0
+        [[  string label = "Input B",
+            string widget = "null" ]],
+	color inputMin = color(0)
+        [[  string help = "Minimum of the input range that will be used to remap the input color.",
+            string label = "Input Min",
+            string page = "Range.Input",
+            string widget = "number" ]],
+	float inputMinR = 0
+        [[  string label = "Input Min R",
+            string page = "Range.Input",
+            string widget = "null" ]],
+	float inputMinG = 0
+        [[  string label = "Input Min G",
+            string page = "Range.Input",
+            string widget = "null" ]],
+	float inputMinB = 0
+        [[  string label = "Input Min B",
+            string page = "Range.Input",
+            string widget = "null" ]],
+	color inputMax = color(1)
+        [[  string help = "Maximum of the input range that will be used to remap the input color.",
+            string label = "Input Max",
+            string page = "Range.Input",
+            string widget = "number" ]],
+	float inputMaxR = 0
+        [[  string label = "Input Max R",
+            string page = "Range.Input",
+            string widget = "null" ]],
+	float inputMaxG = 0
+        [[  string label = "Input Max G",
+            string page = "Range.Input",
+            string widget = "null" ]],
+	float inputMaxB = 0
+        [[  string label = "Input Max B",
+            string page = "Range.Input",
+            string widget = "null" ]],
+    int clampInput = 0
+        [[  string help = "Define whether or not the input color should be clamped between the input min and max.",
+            string label = "Clamp Input",
+            string page = "Range.Input",
+            string widget = "checkBox" ]],
+    color outputMin = color(0)
+        [[  string help = "Minimum of the output range that will be used to remap the input color.",
+            string label = "Output Min",
+            string page = "Range.Output",
+            string widget = "number" ]],
+	float outputMinR = 0
+        [[  string label = "Output Min R",
+            string page = "Range.Output",
+            string widget = "null" ]],
+	float outputMinG = 0
+        [[  string label = "Output Min G",
+            string page = "Range.Output",
+            string widget = "null" ]],
+	float outputMinB = 0
+        [[  string label = "Output Min B",
+            string page = "Range.Output",
+            string widget = "null" ]],
+	color outputMax = color(1)
+        [[  string help = "Maximum of the output range that will be used to remap the input color.",
+            string label = "Output Max",
+            string page = "Range.Output",
+            string widget = "number" ]],
+	float outputMaxR = 0
+        [[  string label = "Output Max R",
+            string page = "Range.Output",
+            string widget = "null" ]],
+	float outputMaxG = 0
+        [[  string label = "Output Max G",
+            string page = "Range.Output",
+            string widget = "null" ]],
+	float outputMaxB = 0
+        [[  string label = "Output Max B",
+            string page = "Range.Output",
+            string widget = "null" ]],
+    int clampOutput = 0
+        [[  string help = "Define whether or not the output color should be clamped between 0 and 1.",
+            string label = "Clamp Output",
+            string page = "Range.Output",
+            string widget = "checkBox" ]],
+	float inputBias = 0.5
+        [[  string help = "TODO.",
+            string label = "Bias",
+            string page = "Remap",
+            float min = 0,
+            float max = 1  ]],
+	float inputGain = 0.5
+        [[  string help = "TODO.",
+            string label = "Gain",
+            string page = "Remap",
+            float min = 0,
+            float max = 1  ]],
+    int useRedChannel = 1
+        [[  string help = "Define whether or not the red channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the untouched value coming from the "
+                "chosen input.",
+            string label = "Red",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+    int useGreenChannel = 1
+        [[  string help = "Define whether or not the green channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the untouched value coming from the "
+                "chosen input.",
+            string label = "Green",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+    int useBlueChannel = 1
+        [[  string help = "Define whether or not the blue channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the untouched value coming from the "
+                "chosen input.",
+            string label = "Blue",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+
+	output color outColor = color(0),
+	output float outColorR = 0,
+	output float outColorG = 0,
+	output float outColorB = 0)
+{
+    color localInputColor = inputColor;
+    color localInputMin = inputMin;
+    color localInputMax = inputMax;
+    color localOutputMin = outputMin;
+    color localOutputMax = outputMax;
+    color localOutputColor = color(0);
+
+    // We check if anything is connected to the per-channel shader parameters,
+    // and if so, we prioritize them over the values coming from the color parameters,
+    // and assign them to their respective channels.
+    if (isconnected(inputColorR))
+        localInputColor[0] = inputColorR;
+    if (isconnected(inputColorG))
+        localInputColor[1] = inputColorG;
+    if (isconnected(inputColorB))
+        localInputColor[2] = inputColorB;
+    if (isconnected(inputMinR))
+        localInputMin[0] = inputMinR;
+    if (isconnected(inputMinG))
+        localInputMin[1] = inputMinG;
+    if (isconnected(inputMinB))
+        localInputMin[2] = inputMinB;
+    if (isconnected(inputMaxR))
+        localInputMax[0] = inputMaxR;
+    if (isconnected(inputMaxG))
+        localInputMax[1] = inputMaxG;
+    if (isconnected(inputMaxB))
+        localInputMax[2] = inputMaxB;
+    if (isconnected(outputMinR))
+        localOutputMin[0] = outputMinR;
+    if (isconnected(outputMinG))
+        localOutputMin[1] = outputMinG;
+    if (isconnected(outputMinB))
+        localOutputMin[2] = outputMinB;
+    if (isconnected(outputMaxR))
+        localOutputMax[0] = outputMaxR;
+    if (isconnected(outputMaxG))
+        localOutputMax[1] = outputMaxG;
+    if (isconnected(outputMaxB))
+        localOutputMax[2] = outputMaxB;
+
+    // If requested by the user, we clamp the input color between the input min and max values, before
+    // doing the actual remapping.
+    if (clampInput)
+        localInputColor = color(
+            useRedChannel ? clamp(localInputColor[0], localInputMin[0], localInputMax[0]) : localInputColor[0],
+            useGreenChannel ? clamp(localInputColor[1], localInputMin[1], localInputMax[1]) : localInputColor[1],
+            useBlueChannel ? clamp(localInputColor[2], localInputMin[2], localInputMax[2]) : localInputColor[2]);
+
+    // TODO: Need to add support for disabling computation of the remap on requested channels.
+    // TODO: Add support of the bias and gain parameters.
+    if (localInputMax != localInputMin)
+        localOutputColor = (localOutputMin
+            + ((localInputColor - localInputMin) * (localOutputMax - localOutputMin))
+            / (localInputMax - localInputMin));
+
+    // If requested by the user, we clamp the output color between 0 and 1, after doing the actual remapping.
+    if (clampOutput)
+        outColor = color(
+            useRedChannel ? clamp(localOutputColor[0], 0, 1) : localOutputColor[0],
+            useGreenChannel ? clamp(localOutputColor[1], 0, 1) : localOutputColor[1],
+            useBlueChannel ? clamp(localOutputColor[2], 0, 1) : localOutputColor[2]);
+    else
+        outColor = localOutputColor;
+
+    outColorR = outColor[0];
+    outColorG = outColor[1];
+    outColorB = outColor[2];
+}

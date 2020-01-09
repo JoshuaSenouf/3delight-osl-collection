@@ -11,6 +11,7 @@ List
 * dlAtan
 * dlBlackbody
 * dlClamp
+* dlColorTransform
 * dlCompare
 * dlComplement
 * dlCross
@@ -34,6 +35,7 @@ List
 * dlReciprocal
 * dlRemap
 * dlSign
+* dlSpaceTransform
 * dlSpectrum
 * dlSqrt
 * dlSubtract

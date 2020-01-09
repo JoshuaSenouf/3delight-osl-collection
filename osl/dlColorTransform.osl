@@ -1,0 +1,55 @@
+/*
+*/
+shader dlColorTransform(
+	color inputColor = color(0)
+        [[  string help = "Input color that will be transformed from one color space to another, and "
+                "return the result as the output color.",
+            string label = "Input Color",
+            string widget = "number" ]],
+	float inputColorR = 0
+        [[  string label = "Input Color R",
+            string widget = "null" ]],
+	float inputColorG = 0
+        [[  string label = "Input Color G",
+            string widget = "null" ]],
+	float inputColorB = 0
+        [[  string label = "Input Color B",
+            string widget = "null" ]],
+    string inputColorSpace = "rgb"
+        [[  string help = "Input color space we consider the input color is defined in.",
+            string label = "Input",
+            string page = "Color Spaces",
+            string widget = "mapper",
+            string options = ""
+                "RGB:rgb|HSV:hsv|HSL:hsl|NTSC YIQ:YIQ|CIE XYZ:XYZ|CIE xyY:xyY" ]],
+    string outputColorSpace = "rgb"
+        [[  string help = "Output color space we want to convert the input color to.",
+            string label = "Output",
+            string page = "Color Spaces",
+            string widget = "mapper",
+            string options = ""
+                "RGB:rgb|HSV:hsv|HSL:hsl|NTSC YIQ:YIQ|CIE XYZ:XYZ|CIE xyY:xyY" ]],
+
+	output color outColor = color(0),
+	output float outColorR = 0,
+	output float outColorG = 0,
+	output float outColorB = 0)
+{
+    color localInputColor = inputColor;
+
+    // We check if anything is connected to the per-channel shader parameters,
+    // and if so, we prioritize them over the values coming from the color parameters,
+    // and assign them to their respective channels.
+    if (isconnected(inputColorR))
+        localInputColor[0] = inputColorR;
+    if (isconnected(inputColorG))
+        localInputColor[1] = inputColorG;
+    if (isconnected(inputColorB))
+        localInputColor[2] = inputColorB;
+
+    outColor = transformc(inputColorSpace, outputColorSpace, localInputColor);
+
+    outColorR = outColor[0];
+    outColorG = outColor[1];
+    outColorB = outColor[2];
+}

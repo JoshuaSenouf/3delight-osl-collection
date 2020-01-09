@@ -1,0 +1,113 @@
+/*
+*/
+shader dlSpaceTransform(
+	point inputPoint = point(0)
+        [[  string help = "Input point that will be transformed from one space to another, and "
+                "return the result as the output point.",
+            string label = "Input Point",
+            string widget = "number" ]],
+	float inputPointX = 0
+        [[  string label = "Input Point X",
+            string widget = "null" ]],
+	float inputPointY = 0
+        [[  string label = "Input Point Y",
+            string widget = "null" ]],
+	float inputPointZ = 0
+        [[  string label = "Input Point Z",
+            string widget = "null" ]],
+	vector inputVector = vector(0)
+        [[  string help = "Input vector that will be transformed from one space to another, and "
+                "return the result as the output vector.",
+            string label = "Input Vector",
+            string widget = "number" ]],
+	float inputVectorX = 0
+        [[  string label = "Input Vector X",
+            string widget = "null" ]],
+	float inputVectorY = 0
+        [[  string label = "Input Vector Y",
+            string widget = "null" ]],
+	float inputVectorZ = 0
+        [[  string label = "Input Vector Z",
+            string widget = "null" ]],
+	normal inputNormal = normal(0)
+        [[  string help = "Input normal that will be transformed from one space to another, and "
+                "return the result as the output normal.",
+            string label = "Input Normal",
+            string widget = "number" ]],
+	float inputNormalX = 0
+        [[  string label = "Input Normal X",
+            string widget = "null" ]],
+	float inputNormalY = 0
+        [[  string label = "Input Normal Y",
+            string widget = "null" ]],
+	float inputNormalZ = 0
+        [[  string label = "Input Normal Z",
+            string widget = "null" ]],
+    string inputSpace = "common"
+        [[  string help = "Input space we consider the input point/vector/normal are defined in.",
+            string label = "Input",
+            string page = "Spaces",
+            string widget = "mapper",
+            string options = ""
+                "Common:common|Object:object|Shader:shader|World:world|Camera:camera" ]],
+    string outputSpace = "common"
+        [[  string help = "Output space we want to convert the input point/vector/normal to.",
+            string label = "Output",
+            string page = "Spaces",
+            string widget = "mapper",
+            string options = ""
+                "Common:common|Object:object|Shader:shader|World:world|Camera:camera" ]],
+
+	output point outPoint = point(0),
+	output float outPointX = 0,
+	output float outPointY = 0,
+	output float outPointZ = 0,
+    output vector outVector = vector(0),
+	output float outVectorX = 0,
+	output float outVectorY = 0,
+	output float outVectorZ = 0,
+    output normal outNormal = normal(0),
+	output float outNormalX = 0,
+	output float outNormalY = 0,
+	output float outNormalZ = 0)
+{
+    point localInputPoint = inputPoint;
+    vector localInputVector = inputVector;
+    normal localInputNormal = inputNormal;
+
+    // We check if anything is connected to the per-channel shader parameters,
+    // and if so, we prioritize them over the values coming from the color parameters,
+    // and assign them to their respective channels.
+    if (isconnected(inputPointX))
+        localInputPoint[0] = inputPointX;
+    if (isconnected(inputPointY))
+        localInputPoint[1] = inputPointY;
+    if (isconnected(inputPointZ))
+        localInputPoint[2] = inputPointZ;
+    if (isconnected(inputVectorX))
+        localInputVector[0] = inputVectorX;
+    if (isconnected(inputVectorY))
+        localInputVector[1] = inputVectorY;
+    if (isconnected(inputVectorZ))
+        localInputVector[2] = inputVectorZ;
+    if (isconnected(inputNormalX))
+        localInputNormal[0] = inputNormalX;
+    if (isconnected(inputNormalY))
+        localInputNormal[1] = inputNormalY;
+    if (isconnected(inputNormalZ))
+        localInputNormal[2] = inputNormalZ;
+
+    outPoint = transform(inputSpace, outputSpace, localInputPoint);
+    outVector = transform(inputSpace, outputSpace, localInputVector);
+    outNormal = transform(inputSpace, outputSpace, localInputNormal);
+
+    outPointX = outPoint[0];
+    outPointY = outPoint[1];
+    outPointZ = outPoint[2];
+    outVectorX = outVector[0];
+    outVectorY = outVector[1];
+    outVectorZ = outVector[2];
+    outNormalX = outNormal[0];
+    outNormalY = outNormal[1];
+    outNormalZ = outNormal[2];
+}

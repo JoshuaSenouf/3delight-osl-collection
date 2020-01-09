@@ -1,0 +1,78 @@
+/*
+*/
+shader dlShuffle(
+	color inputColor = color(0)
+        [[  string help = "Input color that will have its color channels shuffled around, and return the result "
+            "as the output color.",
+            string label = "Input",
+            string widget = "number" ]],
+	float inputColorR = 0
+        [[  string label = "Input R",
+            string widget = "null" ]],
+	float inputColorG = 0
+        [[  string label = "Input G",
+            string widget = "null" ]],
+	float inputColorB = 0
+        [[  string label = "Input B",
+            string widget = "null" ]],
+    int redShuffle = 0
+        [[  string help = "Shuffle the input red channel with another input channel.",
+            string label = "Red",
+            string page = "Shuffle",
+            string widget = "mapper",
+            string options = "R:0|G:1|B:2" ]],
+    int greenShuffle = 1
+        [[  string help = "Shuffle the input green channel with another input channel.",
+            string label = "Green",
+            string page = "Shuffle",
+            string widget = "mapper",
+            string options = "R:0|G:1|B:2" ]],
+    int blueShuffle = 2
+        [[  string help = "Shuffle the input blue channel with another input channel.",
+            string label = "Blue",
+            string page = "Shuffle",
+            string widget = "mapper",
+            string options = "R:0|G:1|B:2" ]],
+    int useRedChannel = 1
+        [[  string help = "Define whether or not the red channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the value 0.",
+            string label = "Red",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+    int useGreenChannel = 1
+        [[  string help = "Define whether or not the green channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the value 0.",
+            string label = "Green",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+    int useBlueChannel = 1
+        [[  string help = "Define whether or not the blue channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the value 0.",
+            string label = "Blue",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+
+	output color outColor = color(0),
+	output float outColorR = 0,
+	output float outColorG = 0,
+	output float outColorB = 0)
+{
+    color localInputColor = inputColor;
+
+    // We check if anything is connected to the per-channel shader parameters,
+    // and if so, we prioritize them over the values coming from the color parameters,
+    // and assign them to their respective channels.
+    if (isconnected(inputColorR))
+        localInputColor[0] = inputColorR;
+    if (isconnected(inputColorG))
+        localInputColor[1] = inputColorG;
+    if (isconnected(inputColorB))
+        localInputColor[2] = inputColorB;
+
+    // We are computing each channel individually depending on which the user wants to affect.
+    outColorR = useRedChannel ? localInputColor[redShuffle] : 0;
+    outColorG = useGreenChannel ? localInputColor[greenShuffle] : 0;
+    outColorB = useBlueChannel ? localInputColor[blueShuffle] : 0;
+
+    outColor = color(outColorR, outColorG, outColorB);
+}

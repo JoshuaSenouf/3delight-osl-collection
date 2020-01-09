@@ -34,6 +34,7 @@ List
 * dlPow
 * dlReciprocal
 * dlRemap
+* dlShuffle
 * dlSign
 * dlSpaceTransform
 * dlSpectrum

@@ -1,0 +1,219 @@
+/*
+    Check for each of the per-channel parameters of an input color if they are connected to an upstream node
+    in the shading network, and if so, we use that value instead of the one coming from the color parameter instead.
+*/
+color getAggregateColor(color inputColor, float inputColorR, float inputColorG, float inputColorB)
+{
+    color aggregateColor = inputColor;
+
+    if (isconnected(inputColorR))
+        aggregateColor[0] = inputColorR;
+    if (isconnected(inputColorG))
+        aggregateColor[1] = inputColorG;
+    if (isconnected(inputColorB))
+        aggregateColor[2] = inputColorB;
+
+    return aggregateColor;
+}
+
+
+float fractional(float inputFloat)
+{
+    if (inputFloat >= 0)
+        return inputFloat - floor(inputFloat);
+    else
+        return inputFloat - ceil(inputFloat);
+}
+
+
+/*
+*/
+shader dlUV(
+	float inputTranslateU = 0
+        [[  string help = "",
+            string label = "Translate U",
+            string page = "Transform",
+            string widget = "number" ]],
+	float inputTranslateV = 0
+        [[  string help = "",
+            string label = "Translate V",
+            string page = "Transform",
+            string widget = "number" ]],
+	float inputRotateCenterU = 0
+        [[  string help = "",
+            string label = "Rotate Center U",
+            string page = "Transform",
+            string widget = "number" ]],
+	float inputRotateCenterV = 0
+        [[  string help = "",
+            string label = "Rotate Center V",
+            string page = "Transform",
+            string widget = "number" ]],
+	float inputRotateAngle = 0
+        [[  string help = "",
+            string label = "Rotate Angle",
+            string page = "Transform",
+            string widget = "number",
+            float min = 0,
+            float max = 360  ]],
+	float inputScaleU = 1
+        [[  string help = "",
+            string label = "Scale U",
+            string page = "Transform",
+            string widget = "number" ]],
+	float inputScaleV = 1
+        [[  string help = "",
+            string label = "Scale V",
+            string page = "Transform",
+            string widget = "number" ]],
+	float inputCoverageU = 1
+        [[  string help = "",
+            string label = "Coverage U",
+            string page = "Geometry",
+            string widget = "number" ]],
+	float inputCoverageV = 1
+        [[  string help = "",
+            string label = "Coverage V",
+            string page = "Geometry",
+            string widget = "number" ]],
+	// float inputRepeatU = 0
+    //     [[  string help = "",
+    //         string label = "Repeat U",
+    //         string page = "Geometry",
+    //         string widget = "number" ]],
+	// float inputRepeatV = 0
+    //     [[  string help = "",
+    //         string label = "Repeat V",
+    //         string page = "Geometry",
+    //         string widget = "number" ]],
+	float inputOffsetU = 0
+        [[  string help = "",
+            string label = "Offset U",
+            string page = "Geometry",
+            string widget = "number" ]],
+	float inputOffsetV = 0
+        [[  string help = "",
+            string label = "Offset V",
+            string page = "Geometry",
+            string widget = "number" ]],
+	int inputInvertU = 0
+        [[  string help = "",
+            string label = "Invert U",
+            string page = "Geometry",
+            string widget = "checkBox" ]],
+	int inputInvertV = 0
+        [[  string help = "",
+            string label = "Invert V",
+            string page = "Geometry",
+            string widget = "checkBox" ]],
+	int inputWrapU = 1
+        [[  string help = "",
+            string label = "Wrap U",
+            string page = "Tiling",
+            string widget = "checkBox" ]],
+	int inputWrapV = 1
+        [[  string help = "",
+            string label = "Wrap V",
+            string page = "Tiling",
+            string widget = "checkBox" ]],
+    int inputMirrorU = 0
+        [[  string help = "",
+            string label = "Mirror U",
+            string page = "Tiling",
+            string widget = "checkBox" ]],
+	int inputMirrorV = 0
+        [[  string help = "",
+            string label = "Mirror V",
+            string page = "Tiling",
+            string widget = "checkBox" ]],
+	string inputAttributeUV = "st"
+        [[  string help = "",
+            string label = "Attribute UV",
+            string page = "Attributes",
+            string widget = "string" ]],
+	string inputAttributeU = "s"
+        [[  string help = "",
+            string label = "Attribute U",
+            string page = "Attributes",
+            string widget = "string" ]],
+	string inputAttributeV = "t"
+        [[  string help = "",
+            string label = "Attribute V",
+            string page = "Attributes",
+            string widget = "string" ]],
+
+	output float outUV[2] = {0.0, 0.0},
+	output float outU = 0,
+	output float outV = 0)
+{
+    float localOutputUV[2] = {0.0, 0.0};
+    float localInputCoverageU = max(0.0001, inputCoverageU);
+    float localInputCoverageV = max(0.0001, inputCoverageV);
+
+    // We first give priority to the combined UV attribute.
+    getattribute(inputAttributeUV, localOutputUV);
+
+    // Then to the separate U and V attributes in case the user requested different attributes from the default ones.
+    if (inputAttributeU != "s")
+        getattribute(inputAttributeU, outUV[0]);
+    if (inputAttributeU != "t")
+        getattribute(inputAttributeV, outUV[1]);
+
+    // Invert the UVs.
+    if (inputInvertU)
+        localOutputUV[0] = floor(localOutputUV[0]) + 1 - fractional(localOutputUV[0]);
+    if (inputInvertV)
+        localOutputUV[1] = floor(localOutputUV[1]) + 1 - fractional(localOutputUV[1]);
+
+    // Scale the UVs.
+    localOutputUV[0] /= max(0.0001, inputScaleU);
+    localOutputUV[1] /= max(0.0001, inputScaleV);
+
+    // Translate the UVs.
+    localOutputUV[0] += inputTranslateU;
+    localOutputUV[1] += inputTranslateV;
+
+    // Rotate the UVs.
+    if (inputRotateAngle != 0)
+    {
+        point rotationPoint = point(localOutputUV[0], localOutputUV[1], 0);
+        point rotationPointP0 = point(inputRotateCenterU, inputRotateCenterV, 0);
+        point rotationPointP1 = point(inputRotateCenterU, inputRotateCenterV, 1);
+
+        point rotationUV = rotate(rotationPoint, radians(inputRotateAngle), rotationPointP0, rotationPointP1);
+
+        localOutputUV[0] = rotationUV[0];
+        localOutputUV[1] = rotationUV[1];
+    }
+
+    // Set the coverage of the UVs, as well as the offset if necessary.
+    if (localInputCoverageU < 1)
+    {
+        localOutputUV[0] /= localInputCoverageU;
+
+        if (inputOffsetU != 1)
+            localOutputUV[0] -= inputOffsetU / localInputCoverageU;
+
+    }
+    if (localInputCoverageV < 1)
+    {
+        localOutputUV[1] /= localInputCoverageV;
+
+        if (inputOffsetV != 1)
+            localOutputUV[1] -= inputOffsetV / localInputCoverageV;
+    }
+
+    // Wrap the UVs.
+    if (inputWrapU)
+        localOutputUV[0] = mod(localOutputUV[0], 1 / localInputCoverageU);
+    if (inputWrapV)
+        localOutputUV[1] = mod(localOutputUV[1], 1 / localInputCoverageV);
+
+
+
+
+    outUV = localOutputUV;
+
+    outU = outUV[0];
+    outV = outUV[1];
+}

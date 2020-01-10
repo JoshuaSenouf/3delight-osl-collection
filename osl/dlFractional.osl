@@ -17,6 +17,15 @@ color getAggregateColor(color inputColor, float inputColorR, float inputColorG, 
 }
 
 
+float fractional(float inputFloat)
+{
+    if (inputFloat >= 0)
+        return inputFloat - floor(inputFloat);
+    else
+        return inputFloat - ceil(inputFloat);
+}
+
+
 /*
 */
 shader dlFractional(
@@ -67,14 +76,12 @@ shader dlFractional(
     // and assign them to their respective channels.
     color localInputColor = getAggregateColor(inputColor, inputColorR, inputColorG, inputColorB);
 
+    // We are computing each channel individually depending on which the user wants to affect.
     if (localInputColor != color(0))
         outColor = color(
-            useRedChannel ? localInputColor[0] - (
-                localInputColor[0] >= 0 ? floor(localInputColor[0]) : ceil(localInputColor[0])) : localInputColor[0],
-            useGreenChannel ? localInputColor[1] - (
-                localInputColor[1] >= 0 ? floor(localInputColor[1]) : ceil(localInputColor[1])) : localInputColor[1],
-            useBlueChannel ? localInputColor[2] - (
-                localInputColor[2] >= 0 ? floor(localInputColor[2]) : ceil(localInputColor[2])) : localInputColor[2]
+            useRedChannel ? fractional(localInputColor[0]) : localInputColor[0],
+            useGreenChannel ? fractional(localInputColor[1]) : localInputColor[1],
+            useBlueChannel ? fractional(localInputColor[2]) : localInputColor[2]
         );
 
     outColorR = outColor[0];

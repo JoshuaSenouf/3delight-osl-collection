@@ -1,4 +1,23 @@
 /*
+    Check for each of the per-channel parameters of an input color if they are connected to an upstream node
+    in the shading network, and if so, we use that value instead of the one coming from the color parameter instead.
+*/
+color getAggregateColor(color inputColor, float inputColorR, float inputColorG, float inputColorB)
+{
+    color aggregateColor = inputColor;
+
+    if (isconnected(inputColorR))
+        aggregateColor[0] = inputColorR;
+    if (isconnected(inputColorG))
+        aggregateColor[1] = inputColorG;
+    if (isconnected(inputColorB))
+        aggregateColor[2] = inputColorB;
+
+    return aggregateColor;
+}
+
+
+/*
 */
 shader dlSign(
 	color inputColor = color(0)
@@ -42,23 +61,17 @@ shader dlSign(
 	output float outColorG = 0,
 	output float outColorB = 0)
 {
-    color localInputColor = inputColor;
-
-    // We check if anything is connected to the per-channel shader parameters,
-    // and if so, we prioritize them over the values coming from the color parameter,
+    // We check with the "getAggregateColor()" function if anything is connected to the per-channel
+    // shader parameters, and if so, we prioritize them over the values coming from the color parameter,
     // and assign them to their respective channels.
-    if (isconnected(inputColorR))
-        localInputColor[0] = inputColorR;
-    if (isconnected(inputColorG))
-        localInputColor[1] = inputColorG;
-    if (isconnected(inputColorB))
-        localInputColor[2] = inputColorB;
+    color localInputColor = getAggregateColor(inputColor, inputColorR, inputColorG, inputColorB);
 
     // We are computing each channel individually depending on which the user wants to affect.
     outColor = color(
         useRedChannel ? sign(localInputColor[0]) : localInputColor[0],
         useGreenChannel ? sign(localInputColor[1]) : localInputColor[1],
-        useBlueChannel ? sign(localInputColor[2]) : localInputColor[2]);
+        useBlueChannel ? sign(localInputColor[2]) : localInputColor[2]
+    );
 
     outColorR = outColor[0];
     outColorG = outColor[1];

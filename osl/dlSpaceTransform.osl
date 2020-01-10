@@ -1,4 +1,61 @@
 /*
+    Check for each of the per-channel parameters of an input point if they are connected to an upstream node
+    in the shading network, and if so, we use that value instead of the one coming from the point parameter instead.
+*/
+point getAggregatePoint(point inputPoint, float inputPointX, float inputPointY, float inputPointZ)
+{
+    point aggregatePoint = inputPoint;
+
+    if (isconnected(inputPointX))
+        aggregatePoint[0] = inputPointX;
+    if (isconnected(inputPointY))
+        aggregatePoint[1] = inputPointY;
+    if (isconnected(inputPointZ))
+        aggregatePoint[2] = inputPointZ;
+
+    return aggregatePoint;
+}
+
+
+/*
+    Check for each of the per-channel parameters of an input vector if they are connected to an upstream node
+    in the shading network, and if so, we use that value instead of the one coming from the vector parameter instead.
+*/
+vector getAggregateVector(vector inputVector, float inputVectorX, float inputVectorY, float inputVectorZ)
+{
+    vector aggregateVector = inputVector;
+
+    if (isconnected(inputVectorX))
+        aggregateVector[0] = inputVectorX;
+    if (isconnected(inputVectorY))
+        aggregateVector[1] = inputVectorY;
+    if (isconnected(inputVectorZ))
+        aggregateVector[2] = inputVectorZ;
+
+    return aggregateVector;
+}
+
+
+/*
+    Check for each of the per-channel parameters of an input normal if they are connected to an upstream node
+    in the shading network, and if so, we use that value instead of the one coming from the normal parameter instead.
+*/
+normal getAggregateNormal(normal inputNormal, float inputNormalX, float inputNormalY, float inputNormalZ)
+{
+    normal aggregateNormal = inputNormal;
+
+    if (isconnected(inputNormalX))
+        aggregateNormal[0] = inputNormalX;
+    if (isconnected(inputNormalY))
+        aggregateNormal[1] = inputNormalY;
+    if (isconnected(inputNormalZ))
+        aggregateNormal[2] = inputNormalZ;
+
+    return aggregateNormal;
+}
+
+
+/*
 */
 shader dlSpaceTransform(
 	point inputPoint = point(0)
@@ -71,31 +128,12 @@ shader dlSpaceTransform(
 	output float outNormalY = 0,
 	output float outNormalZ = 0)
 {
-    point localInputPoint = inputPoint;
-    vector localInputVector = inputVector;
-    normal localInputNormal = inputNormal;
-
-    // We check if anything is connected to the per-channel shader parameters,
-    // and if so, we prioritize them over the values coming from the color parameters,
-    // and assign them to their respective channels.
-    if (isconnected(inputPointX))
-        localInputPoint[0] = inputPointX;
-    if (isconnected(inputPointY))
-        localInputPoint[1] = inputPointY;
-    if (isconnected(inputPointZ))
-        localInputPoint[2] = inputPointZ;
-    if (isconnected(inputVectorX))
-        localInputVector[0] = inputVectorX;
-    if (isconnected(inputVectorY))
-        localInputVector[1] = inputVectorY;
-    if (isconnected(inputVectorZ))
-        localInputVector[2] = inputVectorZ;
-    if (isconnected(inputNormalX))
-        localInputNormal[0] = inputNormalX;
-    if (isconnected(inputNormalY))
-        localInputNormal[1] = inputNormalY;
-    if (isconnected(inputNormalZ))
-        localInputNormal[2] = inputNormalZ;
+    // We check with the "getAggregateVector()", "getAggregateVector()" and "getAggregateVector()" functions
+    // if anything is connected to the per-channel shader parameters, and if so, we prioritize them over the
+    // values coming from the point, vector and parameters, and assign them to their respective channels.
+    vector localInputPoint = getAggregateVector(inputPoint, inputPointX, inputPointY, inputPointZ);
+    vector localInputVector = getAggregateVector(inputVector, inputVectorX, inputVectorY, inputVectorZ);
+    vector localInputNormal = getAggregateNormal(inputNormal, inputNormalX, inputNormalY, inputNormalZ);
 
     outPoint = transform(inputSpace, outputSpace, localInputPoint);
     outVector = transform(inputSpace, outputSpace, localInputVector);

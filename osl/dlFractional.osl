@@ -1,4 +1,23 @@
 /*
+    Check for each of the per-channel parameters of an input color if they are connected to an upstream node
+    in the shading network, and if so, we use that value instead of the one coming from the color parameter instead.
+*/
+color getAggregateColor(color inputColor, float inputColorR, float inputColorG, float inputColorB)
+{
+    color aggregateColor = inputColor;
+
+    if (isconnected(inputColorR))
+        aggregateColor[0] = inputColorR;
+    if (isconnected(inputColorG))
+        aggregateColor[1] = inputColorG;
+    if (isconnected(inputColorB))
+        aggregateColor[2] = inputColorB;
+
+    return aggregateColor;
+}
+
+
+/*
 */
 shader dlFractional(
 	color inputColor = color(0)
@@ -43,26 +62,20 @@ shader dlFractional(
 	output float outColorG = 0,
 	output float outColorB = 0)
 {
-    color localInputColor = inputColor;
-
-    // We check if anything is connected to the per-channel shader parameters,
-    // and if so, we prioritize them over the values coming from the color parameter,
+    // We check with the "getAggregateColor()" function if anything is connected to the per-channel
+    // shader parameters, and if so, we prioritize them over the values coming from the color parameter,
     // and assign them to their respective channels.
-    if (isconnected(inputColorR))
-        localInputColor[0] = inputColorR;
-    if (isconnected(inputColorG))
-        localInputColor[1] = inputColorG;
-    if (isconnected(inputColorB))
-        localInputColor[2] = inputColorB;
+    color localInputColor = getAggregateColor(inputColor, inputColorR, inputColorG, inputColorB);
 
-    if (localInputColor != color (0))
+    if (localInputColor != color(0))
         outColor = color(
             useRedChannel ? localInputColor[0] - (
                 localInputColor[0] >= 0 ? floor(localInputColor[0]) : ceil(localInputColor[0])) : localInputColor[0],
             useGreenChannel ? localInputColor[1] - (
                 localInputColor[1] >= 0 ? floor(localInputColor[1]) : ceil(localInputColor[1])) : localInputColor[1],
             useBlueChannel ? localInputColor[2] - (
-                localInputColor[2] >= 0 ? floor(localInputColor[2]) : ceil(localInputColor[2])) : localInputColor[2]);
+                localInputColor[2] >= 0 ? floor(localInputColor[2]) : ceil(localInputColor[2])) : localInputColor[2]
+        );
 
     outColorR = outColor[0];
     outColorG = outColor[1];

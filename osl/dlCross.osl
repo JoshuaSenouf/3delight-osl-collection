@@ -1,4 +1,23 @@
 /*
+    Check for each of the per-channel parameters of an input vector if they are connected to an upstream node
+    in the shading network, and if so, we use that value instead of the one coming from the vector parameter instead.
+*/
+vector getAggregateVector(vector inputVector, float inputVectorX, float inputVectorY, float inputVectorZ)
+{
+    vector aggregateVector = inputVector;
+
+    if (isconnected(inputVectorX))
+        aggregateVector[0] = inputVectorX;
+    if (isconnected(inputVectorY))
+        aggregateVector[1] = inputVectorY;
+    if (isconnected(inputVectorZ))
+        aggregateVector[2] = inputVectorZ;
+
+    return aggregateVector;
+}
+
+
+/*
 */
 shader dlCross(
 	vector inputVector1 = vector(0)
@@ -37,24 +56,11 @@ shader dlCross(
 	output float outVectorY = 0,
 	output float outVectorZ = 0)
 {
-    vector localInputVector1 = inputVector1;
-    vector localInputVector2 = inputVector2;
-
-    // We check if anything is connected to the per-channel shader parameters,
-    // and if so, we prioritize them over the values coming from the vector parameters,
+    // We check with the "getAggregateVector()" function if anything is connected to the per-channel
+    // shader parameters, and if so, we prioritize them over the values coming from the vector parameters,
     // and assign them to their respective channels.
-    if (isconnected(inputVector1X))
-        localInputVector1[0] = inputVector1X;
-    if (isconnected(inputVector1Y))
-        localInputVector1[1] = inputVector1Y;
-    if (isconnected(inputVector1Z))
-        localInputVector1[2] = inputVector1Z;
-    if (isconnected(inputVector2X))
-        localInputVector2[0] = inputVector2X;
-    if (isconnected(inputVector2Y))
-        localInputVector2[1] = inputVector2Y;
-    if (isconnected(inputVector2Z))
-        localInputVector2[2] = inputVector2Z;
+    vector localInputVector1 = getAggregateVector(inputVector1, inputVector1X, inputVector1Y, inputVector1Z);
+    vector localInputVector2 = getAggregateVector(inputVector2, inputVector2X, inputVector2Y, inputVector2Z);
 
     outVector = cross(localInputVector1, localInputVector2);
 

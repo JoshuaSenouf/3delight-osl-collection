@@ -1,4 +1,23 @@
 /*
+    Check for each of the per-channel parameters of an input color if they are connected to an upstream node
+    in the shading network, and if so, we use that value instead of the one coming from the color parameter instead.
+*/
+color getAggregateColor(color inputColor, float inputColorR, float inputColorG, float inputColorB)
+{
+    color aggregateColor = inputColor;
+
+    if (isconnected(inputColorR))
+        aggregateColor[0] = inputColorR;
+    if (isconnected(inputColorG))
+        aggregateColor[1] = inputColorG;
+    if (isconnected(inputColorB))
+        aggregateColor[2] = inputColorB;
+
+    return aggregateColor;
+}
+
+
+/*
 */
 shader dlIsFinite(
 	color inputColor = color(0)
@@ -40,17 +59,10 @@ shader dlIsFinite(
 
 	output int outBoolean = 0)
 {
-    color localInputColor = inputColor;
-
-    // We check if anything is connected to the per-channel shader parameters,
-    // and if so, we prioritize them over the values coming from the color parameter,
+    // We check with the "getAggregateColor()" function if anything is connected to the per-channel
+    // shader parameters, and if so, we prioritize them over the values coming from the color parameter,
     // and assign them to their respective channels.
-    if (isconnected(inputColorR))
-        localInputColor[0] = inputColorR;
-    if (isconnected(inputColorG))
-        localInputColor[1] = inputColorG;
-    if (isconnected(inputColorB))
-        localInputColor[2] = inputColorB;
+    color localInputColor = getAggregateColor(inputColor, inputColorR, inputColorG, inputColorB);
 
     // We are computing each channel individually depending on which the user wants to affect.
     // We fall back to "1" in case we exclude specific channel(s) in order to not disturb the logic
@@ -59,5 +71,6 @@ shader dlIsFinite(
     outBoolean = (
         (useRedChannel ? isfinite(inputColorR) : 1)
         && (useGreenChannel ? isfinite(inputColorG) : 1)
-        && (useBlueChannel ? isfinite(inputColorB) : 1));
+        && (useBlueChannel ? isfinite(inputColorB) : 1)
+    );
 }

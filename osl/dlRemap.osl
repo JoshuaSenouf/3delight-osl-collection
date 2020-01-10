@@ -1,3 +1,24 @@
+/*
+    Check for each of the per-channel parameters of an input color if they are connected to an upstream node
+    in the shading network, and if so, we use that value instead of the one coming from the color parameter instead.
+*/
+color getAggregateColor(color inputColor, float inputColorR, float inputColorG, float inputColorB)
+{
+    color aggregateColor = inputColor;
+
+    if (isconnected(inputColorR))
+        aggregateColor[0] = inputColorR;
+    if (isconnected(inputColorG))
+        aggregateColor[1] = inputColorG;
+    if (isconnected(inputColorB))
+        aggregateColor[2] = inputColorB;
+
+    return aggregateColor;
+}
+
+
+/*
+*/
 float computeBias(float inputFloat, float inputBias)
 {
     float localBias = clamp(inputBias, 0.0001, 0.9999);
@@ -8,6 +29,8 @@ float computeBias(float inputFloat, float inputBias)
 }
 
 
+/*
+*/
 float computeGain(float inputFloat, float inputGain)
 {
     float localGain = clamp(inputGain, 0.0001, 0.9999);
@@ -29,7 +52,8 @@ shader dlRemap(
 	color inputColor = color(0)
         [[  string help = "Input color that will be remapped using two ranges, one for the input and the other for "
                 "the output, as return the result as the output color."
-                "<br/><br/>Formula: <b></b>",
+                "<br/><br/>Formula: <b>mix(outputMin, outputMax, (inputColor - inputMin) / "
+                "(inputMax - inputMin) )</b>",
             string label = "Input",
             string widget = "number" ]],
 	float inputColorR = 0
@@ -135,88 +159,45 @@ shader dlRemap(
         [[  string label = "Bias B",
             string page = "Remap",
             string widget = "null" ]],
-	color inputGain = 0.5
-        [[  string help = "TODO.",
-            string label = "Gain",
-            string page = "Remap" ]],
-	float inputGainR = 0.5
-        [[  string label = "Gain R",
-            string page = "Remap",
-            string widget = "null" ]],
-	float inputGainG = 0.5
-        [[  string label = "Gain G",
-            string page = "Remap",
-            string widget = "null" ]],
-	float inputGainB = 0.5
-        [[  string label = "Gain B",
-            string page = "Remap",
-            string widget = "null" ]],
+	// color inputGain = 0.5
+    //     [[  string help = "TODO.",
+    //         string label = "Gain",
+    //         string page = "Remap" ]],
+	// float inputGainR = 0.5
+    //     [[  string label = "Gain R",
+    //         string page = "Remap",
+    //         string widget = "null" ]],
+	// float inputGainG = 0.5
+    //     [[  string label = "Gain G",
+    //         string page = "Remap",
+    //         string widget = "null" ]],
+	// float inputGainB = 0.5
+    //     [[  string label = "Gain B",
+    //         string page = "Remap",
+    //         string widget = "null" ]],
 
 	output color outColor = color(0),
 	output float outColorR = 0,
 	output float outColorG = 0,
 	output float outColorB = 0)
 {
-    color localInputColor = inputColor;
-    color localInputMin = inputMin;
-    color localInputMax = inputMax;
-    color localOutputMin = outputMin;
-    color localOutputMax = outputMax;
-    color localInputBias = inputBias;
-    color localInputGain = inputGain;
+    // We check with the "getAggregateColor()" function if anything is connected to the per-channel
+    // shader parameters, and if so, we prioritize them over the values coming from the color parameters,
+    // and assign them to their respective channels.
+    color localInputColor = getAggregateColor(inputColor, inputColorR, inputColorG, inputColorB);
+    color localInputMin = getAggregateColor(inputMin, inputMinR, inputMinG, inputMinB);
+    color localInputMax = getAggregateColor(inputMax, inputMaxR, inputMaxG, inputMaxB);
+    color localOutputMin = getAggregateColor(outputMin, outputMinR, outputMinG, outputMinB);
+    color localOutputMax = getAggregateColor(outputMax, outputMaxR, outputMaxG, outputMaxB);
+    color localInputBias = getAggregateColor(inputBias, inputBiasR, inputBiasG, inputBiasB);
+    // color localInputGain = getAggregateColor(inputGain, inputGainR, inputGainG, inputGainB);
     color localOutputColor;
     color inputRangeFactor;
-
-    // We check if anything is connected to the per-channel shader parameters,
-    // and if so, we prioritize them over the values coming from the color parameters,
-    // and assign them to their respective channels.
-    if (isconnected(inputColorR))
-        localInputColor[0] = inputColorR;
-    if (isconnected(inputColorG))
-        localInputColor[1] = inputColorG;
-    if (isconnected(inputColorB))
-        localInputColor[2] = inputColorB;
-    if (isconnected(inputMinR))
-        localInputMin[0] = inputMinR;
-    if (isconnected(inputMinG))
-        localInputMin[1] = inputMinG;
-    if (isconnected(inputMinB))
-        localInputMin[2] = inputMinB;
-    if (isconnected(inputMaxR))
-        localInputMax[0] = inputMaxR;
-    if (isconnected(inputMaxG))
-        localInputMax[1] = inputMaxG;
-    if (isconnected(inputMaxB))
-        localInputMax[2] = inputMaxB;
-    if (isconnected(outputMinR))
-        localOutputMin[0] = outputMinR;
-    if (isconnected(outputMinG))
-        localOutputMin[1] = outputMinG;
-    if (isconnected(outputMinB))
-        localOutputMin[2] = outputMinB;
-    if (isconnected(outputMaxR))
-        localOutputMax[0] = outputMaxR;
-    if (isconnected(outputMaxG))
-        localOutputMax[1] = outputMaxG;
-    if (isconnected(outputMaxB))
-        localOutputMax[2] = outputMaxB;
-    if (isconnected(inputBiasR))
-        localInputBias[0] = inputBiasR;
-    if (isconnected(inputBiasG))
-        localInputBias[1] = inputBiasG;
-    if (isconnected(inputBiasB))
-        localInputBias[2] = inputBiasB;
-    if (isconnected(inputGainR))
-        localInputGain[0] = inputGainR;
-    if (isconnected(inputGainG))
-        localInputGain[1] = inputGainG;
-    if (isconnected(inputGainB))
-        localInputGain[2] = inputGainB;
 
     // We make sure that the input minimum and maximum are different in order to avoid dividing by zero.
     if (localInputMax != localInputMin)
     {
-        localOutputColor = (localInputColor - localInputMin) / (localInputMax - localInputMin);
+        inputRangeFactor = (localInputColor - localInputMin) / (localInputMax - localInputMin);
 
         // If requested by the user, we clamp the input color between the input min and max values, before
         // doing the actual remapping.
@@ -228,7 +209,7 @@ shader dlRemap(
     // we respectively assign the channel the value 0 or 1.
     else
     {
-        localOutputColor = color(
+        inputRangeFactor = color(
             localInputColor[0] < localInputMin[0] ? 0 : 1,
             localInputColor[1] < localInputMin[1] ? 0 : 1,
             localInputColor[2] < localInputMin[2] ? 0 : 1
@@ -237,23 +218,23 @@ shader dlRemap(
 
     // If the bias value is different from 0.5, we apply a bias curve on the input range factor.
     if (localInputBias != color(0.5))
-        localOutputColor = color(
-            computeBias(localOutputColor[0], localInputBias[0]),
-            computeBias(localOutputColor[1], localInputBias[1]),
-            computeBias(localOutputColor[2], localInputBias[2])
+        inputRangeFactor = color(
+            computeBias(inputRangeFactor[0], localInputBias[0]),
+            computeBias(inputRangeFactor[1], localInputBias[1]),
+            computeBias(inputRangeFactor[2], localInputBias[2])
         );
 
     // WIP: Still buggy when with the input gain < 0.5.
     // If the gain value is different from 0.5, we apply a gain curve on the input range factor.
-    if (localInputGain != color(0.5))
-        localOutputColor = color(
-            computeGain(localOutputColor[0], localInputGain[0]),
-            computeGain(localOutputColor[1], localInputGain[1]),
-            computeGain(localOutputColor[2], localInputGain[2])
-        );
+    // if (localInputGain != color(0.5))
+    //     inputRangeFactor = color(
+    //         computeGain(inputRangeFactor[0], localInputGain[0]),
+    //         computeGain(inputRangeFactor[1], localInputGain[1]),
+    //         computeGain(inputRangeFactor[2], localInputGain[2])
+    //     );
 
     // Applying a "mix()" on the input range factor is completing the remapping process.
-    localOutputColor = mix(localOutputMin, localOutputMax, localOutputColor);
+    localOutputColor = mix(localOutputMin, localOutputMax, inputRangeFactor);
 
     // If requested by the user, we clamp the output color between 0 and 1, after doing the actual remapping.
     outColor = clampOutput ? clamp(localOutputColor, 0, 1) : localOutputColor;

@@ -1,4 +1,23 @@
 /*
+    Check for each of the per-channel parameters of an input color if they are connected to an upstream node
+    in the shading network, and if so, we use that value instead of the one coming from the color parameter instead.
+*/
+color getAggregateColor(color inputColor, float inputColorR, float inputColorG, float inputColorB)
+{
+    color aggregateColor = inputColor;
+
+    if (isconnected(inputColorR))
+        aggregateColor[0] = inputColorR;
+    if (isconnected(inputColorG))
+        aggregateColor[1] = inputColorG;
+    if (isconnected(inputColorB))
+        aggregateColor[2] = inputColorB;
+
+    return aggregateColor;
+}
+
+
+/*
 */
 shader dlMax(
 	color inputColor1 = color(0)
@@ -55,32 +74,18 @@ shader dlMax(
 	output float outColorG = 0,
 	output float outColorB = 0)
 {
-    color localInputColor1 = inputColor1;
-    color localInputColor2 = inputColor2;
-
-    // We check if anything is connected to the per-channel shader parameters,
-    // and if so, we prioritize them over the values coming from the color parameters,
+    // We check with the "getAggregateColor()" function if anything is connected to the per-channel
+    // shader parameters, and if so, we prioritize them over the values coming from the color parameters,
     // and assign them to their respective channels.
-    if (isconnected(inputColor1R))
-        localInputColor1[0] = inputColor1R;
-    if (isconnected(inputColor1G))
-        localInputColor1[1] = inputColor1G;
-    if (isconnected(inputColor1B))
-        localInputColor1[2] = inputColor1B;
-    if (isconnected(inputColor2R))
-        localInputColor2[0] = inputColor2R;
-    if (isconnected(inputColor2G))
-        localInputColor2[1] = inputColor2G;
-    if (isconnected(inputColor2B))
-        localInputColor2[2] = inputColor2B;
-
-    outColor = max(localInputColor1, localInputColor2);
+    color localInputColor1 = getAggregateColor(inputColor1, inputColor1R, inputColor1G, inputColor1B);
+    color localInputColor2 = getAggregateColor(inputColor2, inputColor2R, inputColor2G, inputColor2B);
 
     // We are computing each channel individually depending on which the user wants to affect.
     outColor = color(
         useRedChannel ? max(localInputColor1[0], localInputColor2[0]) : 0,
         useGreenChannel ? max(localInputColor1[1], localInputColor2[1]) : 0,
-        useBlueChannel ? max(localInputColor1[2], localInputColor2[2]) : 0);
+        useBlueChannel ? max(localInputColor1[2], localInputColor2[2]) : 0
+    );
 
     outColorR = outColor[0];
     outColorG = outColor[1];

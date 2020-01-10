@@ -1,4 +1,23 @@
 /*
+    Check for each of the per-channel parameters of an input color if they are connected to an upstream node
+    in the shading network, and if so, we use that value instead of the one coming from the color parameter instead.
+*/
+color getAggregateColor(color inputColor, float inputColorR, float inputColorG, float inputColorB)
+{
+    color aggregateColor = inputColor;
+
+    if (isconnected(inputColorR))
+        aggregateColor[0] = inputColorR;
+    if (isconnected(inputColorG))
+        aggregateColor[1] = inputColorG;
+    if (isconnected(inputColorB))
+        aggregateColor[2] = inputColorB;
+
+    return aggregateColor;
+}
+
+
+/*
 */
 shader dlPow(
 	color inputBase = color(0)
@@ -55,30 +74,18 @@ shader dlPow(
 	output float outColorG = 0,
 	output float outColorB = 0)
 {
-    color localInputBase = inputBase;
-    color localInputExponent = inputExponent;
-
-    // We check if anything is connected to the per-channel shader parameters,
-    // and if so, we prioritize them over the values coming from the color parameters,
+    // We check with the "getAggregateColor()" function if anything is connected to the per-channel
+    // shader parameters, and if so, we prioritize them over the values coming from the color parameters,
     // and assign them to their respective channels.
-    if (isconnected(inputBaseR))
-        localInputBase[0] = inputBaseR;
-    if (isconnected(inputBaseG))
-        localInputBase[1] = inputBaseG;
-    if (isconnected(inputBaseB))
-        localInputBase[2] = inputBaseB;
-    if (isconnected(inputExponentR))
-        localInputExponent[0] = inputExponentR;
-    if (isconnected(inputExponentG))
-        localInputExponent[1] = inputExponentG;
-    if (isconnected(inputExponentB))
-        localInputExponent[2] = inputExponentB;
+    color localInputBase = getAggregateColor(inputBase, inputBaseR, inputBaseG, inputBaseB);
+    color localInputExponent = getAggregateColor(inputExponent, inputExponentR, inputExponentG, inputExponentB);
 
     // We are computing each channel individually depending on which the user wants to affect.
     outColor = color(
         useRedChannel ? pow(localInputBase[0], localInputExponent[0]) : 0,
         useGreenChannel ? pow(localInputBase[1], localInputExponent[1]) : 0,
-        useBlueChannel ? pow(localInputBase[2], localInputExponent[2]) : 0);
+        useBlueChannel ? pow(localInputBase[2], localInputExponent[2]) : 0
+    );
 
     outColorR = outColor[0];
     outColorG = outColor[1];

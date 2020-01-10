@@ -1,4 +1,23 @@
 /*
+    Check for each of the per-channel parameters of an input color if they are connected to an upstream node
+    in the shading network, and if so, we use that value instead of the one coming from the color parameter instead.
+*/
+color getAggregateColor(color inputColor, float inputColorR, float inputColorG, float inputColorB)
+{
+    color aggregateColor = inputColor;
+
+    if (isconnected(inputColorR))
+        aggregateColor[0] = inputColorR;
+    if (isconnected(inputColorG))
+        aggregateColor[1] = inputColorG;
+    if (isconnected(inputColorB))
+        aggregateColor[2] = inputColorB;
+
+    return aggregateColor;
+}
+
+
+/*
 */
 shader dlWireframe(
 	color inputWireframeColor = color(1)
@@ -45,24 +64,21 @@ shader dlWireframe(
 	output float outColorG = 0,
 	output float outColorB = 0)
 {
-    color localInputWireframeColor = inputWireframeColor;
-    color localInputBackgroundColor = inputBackgroundColor;
-
-    // We check if anything is connected to the per-channel shader parameters,
-    // and if so, we prioritize them over the values coming from the color parameters,
+    // We check with the "getAggregateColor()" function if anything is connected to the per-channel
+    // shader parameters, and if so, we prioritize them over the values coming from the color parameters,
     // and assign them to their respective channels.
-    if (isconnected(inputWireframeColorR))
-        localInputWireframeColor[0] = inputWireframeColorR;
-    if (isconnected(inputWireframeColorG))
-        localInputWireframeColor[1] = inputWireframeColorG;
-    if (isconnected(inputWireframeColorB))
-        localInputWireframeColor[2] = inputWireframeColorB;
-    if (isconnected(inputBackgroundColorR))
-        localInputBackgroundColor[0] = inputBackgroundColorR;
-    if (isconnected(inputBackgroundColorG))
-        localInputBackgroundColor[1] = inputBackgroundColorG;
-    if (isconnected(inputBackgroundColorB))
-        localInputBackgroundColor[2] = inputBackgroundColorB;
+    color localInputWireframeColor = getAggregateColor(
+        inputWireframeColor,
+        inputWireframeColorR,
+        inputWireframeColorG,
+        inputWireframeColorB
+    );
+    color localInputBackgroundColor = getAggregateColor(
+        inputBackgroundColor,
+        inputBackgroundColorR,
+        inputBackgroundColorG,
+        inputBackgroundColorB
+    );
 
     float edgeU = (u >= 0.5) ? (1.0 - u) : u;
     float edgeV = (v >= 0.5) ? (1.0 - v) : v;
@@ -81,7 +97,8 @@ shader dlWireframe(
     outColor = mix(
         localInputBackgroundColor,
         localInputWireframeColor,
-        (isWireframe * inputOpacity));
+        (isWireframe * inputOpacity)
+    );
 
     outColorR = outColor[0];
     outColorG = outColor[1];

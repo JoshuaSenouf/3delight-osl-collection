@@ -1,4 +1,23 @@
 /*
+    Check for each of the per-channel parameters of an input color if they are connected to an upstream node
+    in the shading network, and if so, we use that value instead of the one coming from the color parameter instead.
+*/
+color getAggregateColor(color inputColor, float inputColorR, float inputColorG, float inputColorB)
+{
+    color aggregateColor = inputColor;
+
+    if (isconnected(inputColorR))
+        aggregateColor[0] = inputColorR;
+    if (isconnected(inputColorG))
+        aggregateColor[1] = inputColorG;
+    if (isconnected(inputColorB))
+        aggregateColor[2] = inputColorB;
+
+    return aggregateColor;
+}
+
+
+/*
 */
 shader dlClamp(
 	color inputColor = color(0)
@@ -73,37 +92,19 @@ shader dlClamp(
 	output float outColorG = 0,
 	output float outColorB = 0)
 {
-    color localInputColor = inputColor;
-    color localInputMin = inputMin;
-    color localInputMax = inputMax;
-
-    // We check if anything is connected to the per-channel shader parameters,
-    // and if so, we prioritize them over the values coming from the color parameters,
+    // We check with the "getAggregateColor()" function if anything is connected to the per-channel
+    // shader parameters, and if so, we prioritize them over the values coming from the color parameters,
     // and assign them to their respective channels.
-    if (isconnected(inputColorR))
-        localInputColor[0] = inputColorR;
-    if (isconnected(inputColorG))
-        localInputColor[1] = inputColorG;
-    if (isconnected(inputColorB))
-        localInputColor[2] = inputColorB;
-    if (isconnected(inputMinR))
-        localInputMin[0] = inputMinR;
-    if (isconnected(inputMinG))
-        localInputMin[1] = inputMinG;
-    if (isconnected(inputMinB))
-        localInputMin[2] = inputMinB;
-    if (isconnected(inputMaxR))
-        localInputMax[0] = inputMaxR;
-    if (isconnected(inputMaxG))
-        localInputMax[1] = inputMaxG;
-    if (isconnected(inputMaxB))
-        localInputMax[2] = inputMaxB;
+    color localInputColor = getAggregateColor(inputColor, inputColorR, inputColorG, inputColorB);
+    color localInputMin = getAggregateColor(inputMin, inputMinR, inputMinG, inputMinB);
+    color localInputMax = getAggregateColor(inputMax, inputMaxR, inputMaxG, inputMaxB);
 
     // We are computing each channel individually depending on which the user wants to affect.
     outColor = color(
         useRedChannel ? clamp(localInputColor[0], localInputMin[0], localInputMax[0]) : localInputColor[0],
         useGreenChannel ? clamp(localInputColor[1], localInputMin[1], localInputMax[1]) : localInputColor[1],
-        useBlueChannel ? clamp(localInputColor[2], localInputMin[2], localInputMax[2]) : localInputColor[2]);
+        useBlueChannel ? clamp(localInputColor[2], localInputMin[2], localInputMax[2]) : localInputColor[2]
+    );
 
     outColorR = outColor[0];
     outColorG = outColor[1];

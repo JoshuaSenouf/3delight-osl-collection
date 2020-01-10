@@ -1,4 +1,23 @@
 /*
+    Check for each of the per-channel parameters of an input vector if they are connected to an upstream node
+    in the shading network, and if so, we use that value instead of the one coming from the vector parameter instead.
+*/
+vector getAggregateVector(vector inputVector, float inputVectorX, float inputVectorY, float inputVectorZ)
+{
+    vector aggregateVector = inputVector;
+
+    if (isconnected(inputVectorX))
+        aggregateVector[0] = inputVectorX;
+    if (isconnected(inputVectorY))
+        aggregateVector[1] = inputVectorY;
+    if (isconnected(inputVectorZ))
+        aggregateVector[2] = inputVectorZ;
+
+    return aggregateVector;
+}
+
+
+/*
 */
 shader dlLength(
 	vector inputVector = vector(0)
@@ -9,14 +28,14 @@ shader dlLength(
                 "<br/>* Manhattan <b>fabs(input.r) + fabs(input.g) + fabs(input.b)</b>",
             string label = "Input",
             string widget = "number" ]],
-	float inputVectorR = 0
-        [[  string label = "Input R",
+	float inputVectorX = 0
+        [[  string label = "Input X",
             string widget = "null" ]],
-	float inputVectorG = 0
-        [[  string label = "Input G",
+	float inputVectorY = 0
+        [[  string label = "Input Y",
             string widget = "null" ]],
-	float inputVectorB = 0
-        [[  string label = "Input B",
+	float inputVectorZ = 0
+        [[  string label = "Input Z",
             string widget = "null" ]],
     int method = 0
         [[  string help = "The method used to compute the length from the provided input vector."
@@ -25,22 +44,16 @@ shader dlLength(
                 "<br/>* Quadrance <b>pow(input.r, 2) + pow(input.g, 2) + pow(input.b, 2)</b>"
                 "<br/>* Manhattan <b>fabs(input.r) + fabs(input.g) + fabs(input.b)</b>",
             string label = "Method",
+            string page = "Geometry",
             string widget = "mapper",
             string options = "Euclidian:0|Quadrance:1|Manhattan:2" ]],
 
 	output float outFloat = 0)
 {
-    vector localInputVector = inputVector;
-
-    // We check if anything is connected to the per-channel shader parameters,
-    // and if so, we prioritize them over the values coming from the vector parameter,
+    // We check with the "getAggregateVector()" function if anything is connected to the per-channel
+    // shader parameters, and if so, we prioritize them over the values coming from the vector parameter,
     // and assign them to their respective channels.
-    if (isconnected(inputVectorR))
-        localInputVector[0] = inputVectorR;
-    if (isconnected(inputVectorG))
-        localInputVector[1] = inputVectorG;
-    if (isconnected(inputVectorB))
-        localInputVector[2] = inputVectorB;
+    vector localInputVector = getAggregateVector(inputVector, inputVectorX, inputVectorY, inputVectorZ);
 
     // If we are using the "Euclidian" method...
     if (method == 0)

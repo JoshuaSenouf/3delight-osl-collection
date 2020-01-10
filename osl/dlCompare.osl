@@ -1,4 +1,23 @@
 /*
+    Check for each of the per-channel parameters of an input color if they are connected to an upstream node
+    in the shading network, and if so, we use that value instead of the one coming from the color parameter instead.
+*/
+color getAggregateColor(color inputColor, float inputColorR, float inputColorG, float inputColorB)
+{
+    color aggregateColor = inputColor;
+
+    if (isconnected(inputColorR))
+        aggregateColor[0] = inputColorR;
+    if (isconnected(inputColorG))
+        aggregateColor[1] = inputColorG;
+    if (isconnected(inputColorB))
+        aggregateColor[2] = inputColorB;
+
+    return aggregateColor;
+}
+
+
+/*
 */
 shader dlCompare(
 	color inputColor1 = color(0)
@@ -59,6 +78,7 @@ shader dlCompare(
                 "<br/>* Less than <b>input1 < input2</b>"
                 "<br/>* Less Than or Equal <b>input1 <= input2</b>",
             string label = "Method",
+            string page = "Comparison",
             string widget = "mapper",
             string options = "Equal:0|Not Equal:1|Greater Than:2|Greater Than or Equal:3|Less Than:4"
                 "|Less Than or Equal:5" ]],
@@ -89,24 +109,11 @@ shader dlCompare(
 
 	output int outBoolean = 0)
 {
-    color localInputColor1 = inputColor1;
-    color localInputColor2 = inputColor2;
-
-    // We check if anything is connected to the per-channel shader parameters,
-    // and if so, we prioritize them over the values coming from the color parameter(s),
+    // We check with the "getAggregateColor()" function if anything is connected to the per-channel
+    // shader parameters, and if so, we prioritize them over the values coming from the color parameters,
     // and assign them to their respective channels.
-    if (isconnected(inputColor1R))
-        localInputColor1[0] = inputColor1R;
-    if (isconnected(inputColor1G))
-        localInputColor1[1] = inputColor1G;
-    if (isconnected(inputColor1B))
-        localInputColor1[2] = inputColor1B;
-    if (isconnected(inputColor2R))
-        localInputColor2[0] = inputColor2R;
-    if (isconnected(inputColor2G))
-        localInputColor2[1] = inputColor2G;
-    if (isconnected(inputColor2B))
-        localInputColor2[2] = inputColor2B;
+    color localInputColor1 = getAggregateColor(inputColor1, inputColor1R, inputColor1G, inputColor1B);
+    color localInputColor2 = getAggregateColor(inputColor2, inputColor2R, inputColor2G, inputColor2B);
 
     // We fall back to "1" in case we exclude specific channel(s) in order to not disturb the logic
     // behind the algorithm. It means that excluding all channels would yield "1" as the output boolean,
@@ -116,7 +123,8 @@ shader dlCompare(
         outBoolean = (
             (useRedChannel ? localInputColor1[0] == localInputColor2[0] : 1)
             && (useGreenChannel ? localInputColor1[1] == localInputColor2[1] : 1)
-            && (useBlueChannel ? localInputColor1[2] == localInputColor2[2] : 1));
+            && (useBlueChannel ? localInputColor1[2] == localInputColor2[2] : 1)
+        );
     // We fall back to "1" in case we exclude specific channel(s) in order to not disturb the logic
     // behind the algorithm. It means that excluding all channels would yield "1" as the output boolean,
     // and while that is technically not very intuitive, excluding *all* channels is not either in the first place...
@@ -125,7 +133,8 @@ shader dlCompare(
         outBoolean = (
             (useRedChannel ? localInputColor1[0] != localInputColor2[0] : 1)
             && (useGreenChannel ? localInputColor1[1] != localInputColor2[1] : 1)
-            && (useBlueChannel ? localInputColor1[2] != localInputColor2[2] : 1));
+            && (useBlueChannel ? localInputColor1[2] != localInputColor2[2] : 1)
+        );
     // If we are using the "Greater Than" method...
     else if (method == 2)
         outBoolean = (length(localInputColor1) > length(localInputColor2));

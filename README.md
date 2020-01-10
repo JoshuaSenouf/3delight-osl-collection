@@ -32,6 +32,7 @@ List
 * dlNegate
 * dlNormalize
 * dlPow
+* dlRaySwitch
 * dlReciprocal
 * dlRemap
 * dlShuffle

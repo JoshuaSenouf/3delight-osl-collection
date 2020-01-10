@@ -128,7 +128,7 @@ shader dlSpaceTransform(
 	output float outNormalY = 0,
 	output float outNormalZ = 0)
 {
-    // We check with the "getAggregateVector()", "getAggregateVector()" and "getAggregateVector()" functions
+    // We check with the "getAggregatePoint()", "getAggregateVector()" and "getAggregateNormal()" functions
     // if anything is connected to the per-channel shader parameters, and if so, we prioritize them over the
     // values coming from the point, vector and parameters, and assign them to their respective channels.
     vector localInputPoint = getAggregateVector(inputPoint, inputPointX, inputPointY, inputPointZ);

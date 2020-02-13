@@ -116,16 +116,16 @@ shader dlUV(
             string label = "Wrap V",
             string page = "Tiling",
             string widget = "checkBox" ]],
-    int inputMirrorU = 0
-        [[  string help = "",
-            string label = "Mirror U",
-            string page = "Tiling",
-            string widget = "checkBox" ]],
-	int inputMirrorV = 0
-        [[  string help = "",
-            string label = "Mirror V",
-            string page = "Tiling",
-            string widget = "checkBox" ]],
+    // int inputMirrorU = 0
+    //     [[  string help = "",
+    //         string label = "Mirror U",
+    //         string page = "Tiling",
+    //         string widget = "checkBox" ]],
+	// int inputMirrorV = 0
+    //     [[  string help = "",
+    //         string label = "Mirror V",
+    //         string page = "Tiling",
+    //         string widget = "checkBox" ]],
 	string inputAttributeUV = "st"
         [[  string help = "",
             string label = "Attribute UV",
@@ -208,9 +208,6 @@ shader dlUV(
         localOutputUV[0] = mod(localOutputUV[0], 1 / localInputCoverageU);
     if (inputWrapV)
         localOutputUV[1] = mod(localOutputUV[1], 1 / localInputCoverageV);
-
-
-
 
     outUV = localOutputUV;
 

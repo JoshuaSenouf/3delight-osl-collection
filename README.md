@@ -35,10 +35,12 @@ List
 * dlRaySwitch
 * dlReciprocal
 * dlRemap
+* dlShaderGlobals
 * dlShuffle
 * dlSign
 * dlSpaceTransform
 * dlSpectrum
 * dlSqrt
 * dlSubtract
+* dlUV
 * dlWireframe

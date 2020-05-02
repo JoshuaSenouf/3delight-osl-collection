@@ -1,0 +1,48 @@
+/*
+*/
+surface dlConstant
+(
+	color inputConstantColor = color(1)
+        [[  string help = "Constant color that will be used to color the object as the output color.",
+            string label = "Constant Color",
+            string widget = "number" ]],
+	float inputObjectOpacity = 1
+        [[  string help = "Opacity of the object.",
+            string label = "Object Opacity",
+            string widget = "number",
+            float min = 0,
+            float max = 1 ]],
+	float inputShadowOpacity = 1
+        [[  string help = "Opacity of the shadow of the object.",
+            string label = "Shadow Opacity",
+            string widget = "number",
+            float min = 0,
+            float max = 1 ]],
+	int inputNoIndirect = 1
+        [[  string help = "Determine if the object is going to influence indirect lighting, i.e. further than camera/shadow rays.",
+            string label = "No Indirect",
+            string widget = "checkBox" ]],
+
+    output closure color outColor = 0
+)
+{
+    closure color constantColor = emission() * inputConstantColor;
+    closure color objectTransparency = transparent() * (1.0 - inputObjectOpacity);
+    closure color shadowTransparency = transparent() * (1.0 - inputShadowOpacity);
+
+    if (raytype("shadow"))
+    {
+        outColor = shadowTransparency;
+    }
+    else if (inputNoIndirect)
+    {
+        if (raytype("camera"))
+        {
+            outColor = constantColor + objectTransparency;
+        }
+    }
+    else
+    {
+        outColor = constantColor + objectTransparency;
+    }
+}

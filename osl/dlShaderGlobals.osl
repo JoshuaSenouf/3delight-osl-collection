@@ -2,7 +2,7 @@
 */
 shader dlShaderGlobals(
     string inputVariable = "P"
-        [[  string help = "Global OSL variable that will be used as the output."
+        [[  string help = "Shader OSL attribute that will be used as the output."
                 "<br/><br/>Types: "
                 "<br/>* Float: <b>u</b>, <b>v</b>, <b>time</b>, <b>dtime</b>"
                 "<br/>* Color(/Closure): <b>Ci</b>"

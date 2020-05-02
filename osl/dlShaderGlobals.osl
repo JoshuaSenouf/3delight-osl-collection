@@ -15,7 +15,7 @@ shader dlShaderGlobals(
                 "P|I|N|Ng|dPdu|dPdv|Ps|u|v|time|dtime|dPdtime|Ci" ]],
 
 	output float outFloat = 0,
-    output closure color outColor = color(0),
+    output closure color outColor = 0,
 	output point outPoint = point(0),
 	output float outPointX = 0,
 	output float outPointY = 0,

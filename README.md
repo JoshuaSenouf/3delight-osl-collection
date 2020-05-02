@@ -14,6 +14,7 @@ List
 * dlColorTransform
 * dlCompare
 * dlComplement
+* dlConstant
 * dlCross
 * dlDivide
 * dlDot
@@ -38,6 +39,7 @@ List
 * dlShaderGlobals
 * dlShuffle
 * dlSign
+* dlShaderGlobals
 * dlSpaceTransform
 * dlSpectrum
 * dlSqrt

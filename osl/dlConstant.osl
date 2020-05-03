@@ -82,15 +82,20 @@ surface dlConstant
     {
         outColor = shadowTransparencyClosure;
     }
-    else if (noIndirect)
+    else
     {
-        if (raytype("camera"))
+        if (noIndirect)
+        {
+            if (raytype("camera"))
+            {
+                outColor = constantColorClosure + objectTransparencyClosure;
+            }
+        }
+        else
         {
             outColor = constantColorClosure + objectTransparencyClosure;
         }
     }
-    else
-    {
-        outColor = constantColorClosure + objectTransparencyClosure;
-    }
+
+    Ci = outColor;
 }

@@ -7,18 +7,18 @@
 */
 surface dlLobeDiffuse
 (
-	color i_color_rgb = color(0.85)
+    color i_color_rgb = color(0.85)
         [[  string help = "Color of the diffuse that will be used by the Oren-Nayar BRDF to "
                 "shade the object.",
             string label = "Color",
             string widget = "number" ]],
-	float i_color_r = 0.0
+    float i_color_r = 0.0
         [[  string label = "Color R",
             string widget = "null" ]],
-	float i_color_g = 0.0
+    float i_color_g = 0.0
         [[  string label = "Color G",
             string widget = "null" ]],
-	float i_color_b = 0.0
+    float i_color_b = 0.0
         [[  string label = "Color B",
             string widget = "null" ]],
     float i_roughness = 0.3

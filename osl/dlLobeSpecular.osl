@@ -7,18 +7,18 @@
 */
 surface dlLobeSpecular
 (
-	color i_color_rgb = color(0.85)
+    color i_color_rgb = color(0.85)
         [[  string help = "Color of the specular that will be used by the microfacet "
                 "BSDF to shade the object.",
             string label = "Color",
             string widget = "number" ]],
-	float i_color_r = 0.0
+    float i_color_r = 0.0
         [[  string label = "Color R",
             string widget = "null" ]],
-	float i_color_g = 0.0
+    float i_color_g = 0.0
         [[  string label = "Color G",
             string widget = "null" ]],
-	float i_color_b = 0.0
+    float i_color_b = 0.0
         [[  string label = "Color B",
             string widget = "null" ]],
     int i_distribution = 0
@@ -47,7 +47,7 @@ surface dlLobeSpecular
             string widget = "number",
             float min = 0.0,
             float max = 5.0 ]],
-	int i_thin = 0
+    int i_thin = 0
         [[  string help = "Determine if the object should be treated as a very thin piece of geometry, "
                 "resulting in an IOR of 1.0 being used if the microfacet BSDF is refractive.",
             string label = "Thin",

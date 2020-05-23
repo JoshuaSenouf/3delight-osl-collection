@@ -6,9 +6,14 @@ Collection of OSL shaders for the 3Delight renderer.
 Materials
 ===
 
+* **TODO:** dlLobeCoat
 * dlLobeDiffuse
+    * **TODO:** Subsurface
+* **TODO:** dlLobeEmission
 * dlLobeLayering
 * dlLobeSpecular
+    * **TODO:** Metalness
+    * **TODO:** Anisotropy
 * dlLobeTerminal
 
 Patterns

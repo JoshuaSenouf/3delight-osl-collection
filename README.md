@@ -3,7 +3,15 @@
 
 Collection of OSL shaders for the 3Delight renderer.
 
-List
+Materials
+===
+
+* dlLobeDiffuse
+* dlLobeLayering
+* dlLobeSpecular
+* dlLobeTerminal
+
+Patterns
 ===
 
 * dlAbs

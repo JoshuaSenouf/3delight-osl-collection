@@ -22,7 +22,7 @@ surface dlLobeDiffuse
         [[  string label = "Color B",
             string widget = "null" ]],
     float i_roughness = 0.3
-        [[  string help = "Roughness of the Oren-Nayar BRDF. When set to 0, this will result to "
+        [[  string help = "Roughness of the Oren-Nayar BRDF. When set to 0, this will provide "
                 "a visual result equal to a Lambertian BRDF.",
             string label = "Roughness",
             string page = "Microfacet",

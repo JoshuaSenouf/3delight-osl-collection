@@ -52,10 +52,8 @@ Patterns
 * dlShaderGlobals
 * dlShuffle
 * dlSign
-* dlShaderGlobals
 * dlSpaceTransform
 * dlSpectrum
 * dlSqrt
 * dlSubtract
-* dlUV
 * dlWireframe

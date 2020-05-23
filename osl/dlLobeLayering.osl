@@ -1,0 +1,24 @@
+/*
+*/
+surface dlLobeLayering
+(
+    float i_weight = 0.5
+        [[  string help = "Define how much the top lobe will layer itself over the bottom lobe.",
+            string label = "Weight",
+            string widget = "number",
+            float min = 0.0,
+            float max = 1.0 ]],
+    closure color i_top_lobe = 0
+        [[  string label = "Top Lobe",
+            string widget = "null" ]],
+    closure color i_bottom_lobe = 0
+        [[  string label = "Bottom Lobe",
+            string widget = "null" ]],
+
+    output closure color outColor = 0
+)
+{
+    float weight = clamp(i_weight, 0.0, 1.0);
+
+    outColor += (i_top_lobe * weight) + (i_bottom_lobe * (1 - weight));
+}

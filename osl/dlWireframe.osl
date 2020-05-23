@@ -85,8 +85,8 @@ shader dlWireframe(
     float derivU = Dx(u);
     float derivV = Dy(v);
 
-    int stepEdgeU = step(edgeU, derivU * inputWidth);
-    int stepEdgeV = step(edgeV, derivV * inputWidth);
+    int stepEdgeU = int(step(edgeU, derivU * inputWidth));
+    int stepEdgeV = int(step(edgeV, derivV * inputWidth));
 
     // Will act as a boolean that will determine whether or not we should draw
     // the wireframe on that shading point, as per the settings the user chose.

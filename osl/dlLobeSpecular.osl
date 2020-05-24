@@ -52,10 +52,7 @@ surface dlLobeSpecular
                 "resulting in an IOR of 1.0 being used if the microfacet BSDF is refractive.",
             string label = "Thin",
             string page = "Geometry",
-            string widget = "checkBox",
-            string lock_left = "i_mode",
-            string lock_op = "equalTo",
-            int lock_right = 0 ]],
+            string widget = "checkBox" ]],
    normal i_shading_normal = N
         [[  string label = "Normal",
             string widget = "null" ]],

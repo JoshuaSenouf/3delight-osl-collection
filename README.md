@@ -8,10 +8,27 @@ Materials
 
 * **TODO:** dlLobeCoat
 * dlLobeDiffuse
+    * Oren-Nayar
     * **TODO:** Subsurface
-* **TODO:** dlLobeEmission
+* dlLobeEmission
+    * Controls:
+        * Intensity
+        * Exposure
+        * Normalization
+    * Contributions:
+        * Diffuse
+        * Specular
+        * Hair
+        * Volume
 * dlLobeLayering
+    * Modes:
+        * Physical
+        * Artistic
 * dlLobeSpecular
+    * Distributions:
+        * GGX
+        * Beckmann
+        * **TODO:** GTR
     * **TODO:** Metalness
     * **TODO:** Anisotropy
 * dlLobeTerminal

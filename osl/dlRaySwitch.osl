@@ -21,7 +21,7 @@ color getAggregateColor(color inputColor, float inputColorR, float inputColorG, 
 */
 shader dlRaySwitch(
 	color inputColor = color(0)
-        [[  string help = "Input color that will be used as the output color for any ray types that are 3"
+        [[  string help = "Input color that will be used as the output color for any ray types that are "
             "not overriden.",
             string label = "Input Color",
             string widget = "number" ]],

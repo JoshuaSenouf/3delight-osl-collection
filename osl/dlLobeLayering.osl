@@ -4,9 +4,9 @@ surface dlLobeLayering
 (
     int i_mode = 0
         [[  string help = "Define if the layering should be done using a physically plausible or artistic approach."
-                "\n\nThe 'Physical' mode uses a single weight parameter that will couple both lobes together, "
+                "<br/><br/>The 'Physical' mode uses a single weight parameter that will couple both lobes together, "
                 "ensuring that they won't output more energy then they should."
-                "\n\nThe 'Artistic' mode uses two non-coupled, purely additive weights parameters. This of course "
+                "<br/><br/>The 'Artistic' mode uses two non-coupled, purely additive weight parameters. This of course "
                 "implies that it is *very* easy to break energy conservation using this mode, and as such it "
                 "should be used with caution.",
             string label = "Mode",

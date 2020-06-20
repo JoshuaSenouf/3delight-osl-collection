@@ -1,0 +1,60 @@
+#include "../include/dlJSUtils.h"
+
+
+/*
+*/
+shader dlJSExp
+(
+	color i_exponent_rgb = color(0.0)
+        [[  string help = "Exponent that will be used to produce the exponential of that exponent, and return "
+                "it as the output color."
+                "<br/><br/>Formula: <b>exp(exponent)</b>",
+            string label = "Exponent RGB",
+            string widget = "number" ]],
+	float i_exponent_r = 0.0
+        [[  string label = "Exponent R",
+            string widget = "null" ]],
+	float i_exponent_g = 0.0
+        [[  string label = "Exponent G",
+            string widget = "null" ]],
+	float i_exponent_b = 0.0
+        [[  string label = "Exponent B",
+            string widget = "null" ]],
+    int i_red_channel = 1
+        [[  string help = "Define whether or not the red channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the value 0.",
+            string label = "Red",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+    int i_green_channel = 1
+        [[  string help = "Define whether or not the green channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the value 0.",
+            string label = "Green",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+    int i_blue_channel = 1
+        [[  string help = "Define whether or not the blue channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the value 0.",
+            string label = "Blue",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+
+	output color outColor = color(0.0),
+	output float outColorR = 0.0,
+	output float outColorG = 0.0,
+	output float outColorB = 0.0
+)
+{
+    color exponent_rgb = getComposedColor(i_exponent_rgb, i_exponent_r, i_exponent_g, i_exponent_b);
+
+    // We are computing each channel individually depending on which the user wants to affect.
+    outColor = color(
+        i_red_channel ? exp(exponent_rgb[0]) : 0.0,
+        i_green_channel ? exp(exponent_rgb[1]) : 0.0,
+        i_blue_channel ? exp(exponent_rgb[2]) : 0.0
+    );
+
+    outColorR = outColor[0];
+    outColorG = outColor[1];
+    outColorB = outColor[2];
+}

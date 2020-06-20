@@ -1,0 +1,96 @@
+#include "../include/dlJSUtils.h"
+
+
+/*
+*/
+shader dlJSSpaceTransform
+(
+	point i_point_xyz = point(0.0)
+        [[  string help = "Point that will be transformed from one space to another, and "
+                "return the result as the output point.",
+            string label = "Point XYZ",
+            string widget = "number" ]],
+	float i_point_x = 0.0
+        [[  string label = "Point X",
+            string widget = "null" ]],
+	float i_point_y = 0.0
+        [[  string label = "Point Y",
+            string widget = "null" ]],
+	float i_point_z = 0.0
+        [[  string label = "Point Z",
+            string widget = "null" ]],
+	vector i_vector_xyz = vector(0.0)
+        [[  string help = "Vector that will be transformed from one space to another, and "
+                "return the result as the output vector.",
+            string label = "Vector XYZ",
+            string widget = "number" ]],
+	float i_vector_x = 0.0
+        [[  string label = "Vector X",
+            string widget = "null" ]],
+	float i_vector_y = 0.0
+        [[  string label = "Vector Y",
+            string widget = "null" ]],
+	float i_vector_z = 0.0
+        [[  string label = "Vector Z",
+            string widget = "null" ]],
+	normal i_normal_xyz = normal(0.0)
+        [[  string help = "Normal that will be transformed from one space to another, and "
+                "return the result as the output normal.",
+            string label = "Normal XYZ",
+            string widget = "number" ]],
+	float i_normal_x = 0.0
+        [[  string label = "Normal X",
+            string widget = "null" ]],
+	float i_normal_y = 0.0
+        [[  string label = "Normal Y",
+            string widget = "null" ]],
+	float i_normal_z = 0.0
+        [[  string label = "Normal Z",
+            string widget = "null" ]],
+    string i_color_space = "common"
+        [[  string help = "Space we consider the input point/vector/normal to be defined in.",
+            string label = "Input Colorspace",
+            string page = "Spaces",
+            string widget = "mapper",
+            string options = ""
+                "Common:common|Object:object|Shader:shader|World:world|Camera:camera" ]],
+    string o_color_space = "common"
+        [[  string help = "Space we want to convert the input point/vector/normal to.",
+            string label = "Output Colorspace",
+            string page = "Spaces",
+            string widget = "mapper",
+            string options = ""
+                "Common:common|Object:object|Shader:shader|World:world|Camera:camera" ]],
+
+	output point outPoint = point(0.0),
+	output float outPointX = 0.0,
+	output float outPointY = 0.0,
+	output float outPointZ = 0.0,
+    output vector outVector = vector(0.0),
+	output float outVectorX = 0.0,
+	output float outVectorY = 0.0,
+	output float outVectorZ = 0.0,
+    output normal outNormal = normal(0.0),
+	output float outNormalX = 0.0,
+	output float outNormalY = 0.0,
+	output float outNormalZ = 0.0
+)
+{
+    point point_xyz = getComposedPoint(i_point_xyz, i_point_x, i_point_y, i_point_z);
+    vector vector_xyz = getComposedVector(i_vector_xyz, i_vector_x, i_vector_y, i_vector_z);
+    normal normal_xyz = getComposedNormal(i_normal_xyz, i_normal_x, i_normal_y, i_normal_z);
+
+    outPoint = transform(i_color_space, o_color_space, point_xyz);
+    outVector = transform(i_color_space, o_color_space, vector_xyz);
+    outNormal = transform(i_color_space, o_color_space, normal_xyz);
+
+    outPointX = outPoint[0];
+    outPointY = outPoint[1];
+    outPointZ = outPoint[2];
+    outVectorX = outVector[0];
+    outVectorY = outVector[1];
+    outVectorZ = outVector[2];
+    outNormalX = outNormal[0];
+    outNormalY = outNormal[1];
+    outNormalZ = outNormal[2];
+}

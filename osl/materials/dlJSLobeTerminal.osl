@@ -1,0 +1,15 @@
+/*
+*/
+surface dlJSLobeTerminal
+(
+    closure color i_terminal_lobe = 0
+        [[  string label = "Terminal Closure",
+            string widget = "null" ]],
+
+    output closure color outColor = 0
+)
+{
+    outColor = i_terminal_lobe;
+
+    Ci = outColor;
+}

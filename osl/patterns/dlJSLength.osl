@@ -1,0 +1,52 @@
+#include "../include/dlJSUtils.h"
+
+
+/*
+*/
+shader dlJSLength
+(
+	vector i_vector_xyz = vector(0.0)
+        [[  string help = "Vector that will be used to produce a length, and return it as the output vector."
+                "<br/><br/>Formulas: "
+                "<br/>* Euclidian <b>sqrt(pow(vector.r, 2) + pow(vector.g, 2) + pow(vector.b, 2))</b>"
+                "<br/>* Quadrance <b>pow(vector.r, 2) + pow(vector.g, 2) + pow(vector.b, 2)</b>"
+                "<br/>* Manhattan <b>fabs(vector.r) + fabs(vector.g) + fabs(vector.b)</b>",
+            string label = "Vector XYZ",
+            string widget = "number" ]],
+	float i_vector_x = 0.0
+        [[  string label = "Vector X",
+            string widget = "null" ]],
+	float i_vector_y = 0.0
+        [[  string label = "Vector Y",
+            string widget = "null" ]],
+	float i_vector_z = 0.0
+        [[  string label = "Vector Z",
+            string widget = "null" ]],
+    int i_method = 0
+        [[  string help = "The method used to compute the length from the provided vector."
+                "<br/><br/>Formulas: "
+                "<br/>* Euclidian <b>sqrt(pow(vector.r, 2) + pow(vector.g, 2) + pow(vector.b, 2))</b>"
+                "<br/>* Quadrance <b>pow(vector.r, 2) + pow(vector.g, 2) + pow(vector.b, 2)</b>"
+                "<br/>* Manhattan <b>fabs(vector.r) + fabs(vector.g) + fabs(vector.b)</b>",
+            string label = "Method",
+            string page = "Geometry",
+            string widget = "mapper",
+            string options = "Euclidian:0|Quadrance:1|Manhattan:2" ]],
+
+	output float outFloat = 0.0
+)
+{
+    vector vector_xyz = getComposedVector(i_vector_xyz, i_vector_x, i_vector_y, i_vector_z);
+
+    // If we are using the "Euclidian" method...
+    if (i_method == 0)
+        // We assume here that "length()" is equivalent to
+        // "sqrt(pow(vector_xyz[0], 2) + pow(vector_xyz[1], 2) + pow(vector_xyz[2], 2))"
+        outFloat = length(vector_xyz);
+    // If we are using the "Quadrance" method...
+    else if (i_method == 1)
+        outFloat = pow(vector_xyz[0], 2) + pow(vector_xyz[1], 2) + pow(vector_xyz[2], 2);
+    // If we are using the "Manhattan" method...
+    else
+        outFloat = fabs(vector_xyz[0]) + fabs(vector_xyz[1]) + fabs(vector_xyz[2]);
+}

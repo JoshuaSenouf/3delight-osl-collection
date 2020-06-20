@@ -6,11 +6,11 @@ Collection of OSL shaders for the 3Delight renderer.
 Materials
 ===
 
-* **TODO:** dlLobeCoat
-* dlLobeDiffuse
+* **TODO:** dlJSLobeCoat
+* dlJSLobeDiffuse
     * Oren-Nayar
     * **TODO:** Subsurface
-* dlLobeEmission
+* dlJSLobeEmission
     * Controls:
         * Intensity
         * Exposure
@@ -20,57 +20,57 @@ Materials
         * Specular
         * Hair
         * Volume
-* dlLobeLayering
+* dlJSLobeLayering
     * Modes:
         * Physical
         * Artistic
-* dlLobeSpecular
+* dlJSLobeSpecular
     * Distributions:
         * GGX
         * Beckmann
         * **TODO:** GTR
     * **TODO:** Metalness
     * **TODO:** Anisotropy
-* dlLobeTerminal
+* dlJSLobeTerminal
 
 Patterns
 ===
 
-* dlAbs
-* dlAdd
-* dlAtan
-* dlBlackbody
-* dlClamp
-* dlColorTransform
-* dlCompare
-* dlComplement
-* dlConstant
-* dlCross
-* dlDivide
-* dlDot
-* dlExp
-* dlFractional
-* dlIsFinite
-* dlIsInfinite
-* dlIsNan
-* dlLength
-* dlLog
-* dlMax
-* dlMin
-* dlMix
-* dlModulo
-* dlMultiply
-* dlNegate
-* dlNormalize
-* dlPow
-* dlRaySwitch
-* dlReciprocal
-* dlRemap
-* dlShaderGlobals
-* dlShuffle
-* dlSign
-* dlSpaceTransform
-* dlSpectrum
-* dlSqrt
-* dlSubtract
-* dlWireframe
+* dlJSAbs
+* dlJSAdd
+* dlJSAtan
+* dlJSBlackbody
+* dlJSClamp
+* dlJSColorTransform
+* dlJSCompare
+* dlJSComplement
+* dlJSConstant
+* dlJSCross
+* dlJSDivide
+* dlJSDot
+* dlJSExp
+* dlJSFractional
+* dlJSIsFinite
+* dlJSIsInfinite
+* dlJSIsNan
+* dlJSLength
+* dlJSLog
+* dlJSMax
+* dlJSMin
+* dlJSMix
+* dlJSModulo
+* dlJSMultiply
+* dlJSNegate
+* dlJSNormalize
+* dlJSPow
+* dlJSRaySwitch
+* dlJSReciprocal
+* dlJSRemap
+* dlJSShaderGlobals
+* dlJSShuffle
+* dlJSSign
+* dlJSSpaceTransform
+* dlJSSpectrum
+* dlJSSqrt
+* dlJSSubtract
+* dlJSWireframe

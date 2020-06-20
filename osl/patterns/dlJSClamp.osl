@@ -1,0 +1,95 @@
+#include "../include/dlJSUtils.h"
+
+
+/*
+*/
+shader dlJSClamp
+(
+	color i_color_rgb = color(0.0)
+        [[  string help = "Color that will be clamped between the minimum and maximum, and "
+                "return the result as the output color."
+                "<br/><br/>Formula: <b>clamp(color, min, max)</b>",
+            string label = "Color RGB",
+            string widget = "number" ]],
+	float i_color_r = 0.0
+        [[  string label = "Color R",
+            string widget = "null" ]],
+	float i_color_g = 0.0
+        [[  string label = "Color G",
+            string widget = "null" ]],
+	float i_color_b = 0.0
+        [[  string label = "Color B",
+            string widget = "null" ]],
+	color i_min_rgb = color(0.0)
+        [[  string help = "Minimum color that will be used to clamp the color, and "
+                "return the result as the output color."
+                "<br/><br/>Formula: <b>clamp(color, min, max)</b>",
+            string label = "Min",
+            string widget = "number" ]],
+	float i_min_r = 0.0
+        [[  string label = "Min R",
+            string widget = "null" ]],
+	float i_min_g = 0.0
+        [[  string label = "Min G",
+            string widget = "null" ]],
+	float i_min_b = 0.0
+        [[  string label = "Min B",
+            string widget = "null" ]],
+	color i_max_rgb = color(1.0)
+        [[  string help = "Maximum color that will be used to clamp the color, and "
+                "return the result as the output color."
+                "<br/><br/>Formula: <b>clamp(color, min, max)</b>",
+            string label = "Max",
+            string widget = "number" ]],
+	float i_max_r = 0.0
+        [[  string label = "Max R",
+            string widget = "null" ]],
+	float i_max_g = 0.0
+        [[  string label = "Max G",
+            string widget = "null" ]],
+	float i_max_b = 0.0
+        [[  string label = "Max B",
+            string widget = "null" ]],
+    int i_red_channel = 1
+        [[  string help = "Define whether or not the red channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the untouched value coming from the "
+                "chosen input.",
+            string label = "Red",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+    int i_green_channel = 1
+        [[  string help = "Define whether or not the green channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the untouched value coming from the "
+                "chosen input.",
+            string label = "Green",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+    int i_blue_channel = 1
+        [[  string help = "Define whether or not the blue channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the untouched value coming from the "
+                "chosen input.",
+            string label = "Blue",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+
+	output color outColor = color(0.0),
+	output float outColorR = 0.0,
+	output float outColorG = 0.0,
+	output float outColorB = 0.0
+)
+{
+    color color_rgb = getComposedColor(i_color_rgb, i_color_r, i_color_g, i_color_b);
+    color min_rgb = getComposedColor(i_min_rgb, i_min_r, i_min_g, i_min_b);
+    color max_rgb = getComposedColor(i_max_rgb, i_max_r, i_max_g, i_max_b);
+
+    // We are computing each channel individually depending on which the user wants to affect.
+    outColor = color(
+        i_red_channel ? clamp(color_rgb[0], min_rgb[0], max_rgb[0]) : color_rgb[0],
+        i_green_channel ? clamp(color_rgb[1], min_rgb[1], max_rgb[1]) : color_rgb[1],
+        i_blue_channel ? clamp(color_rgb[2], min_rgb[2], max_rgb[2]) : color_rgb[2]
+    );
+
+    outColorR = outColor[0];
+    outColorG = outColor[1];
+    outColorB = outColor[2];
+}

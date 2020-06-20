@@ -1,0 +1,62 @@
+#include "../include/dlJSUtils.h"
+
+
+/*
+*/
+shader dlJSNegate
+(
+	color i_color_rgb = color(0.0)
+        [[  string help = "Color that will be used to return its negative as the output color."
+                "<br/><br/>Formula: <b>-color</b>",
+            string label = "Color RGB",
+            string widget = "number" ]],
+	float i_color_r = 0.0
+        [[  string label = "Color R",
+            string widget = "null" ]],
+	float i_color_g = 0.0
+        [[  string label = "Color G",
+            string widget = "null" ]],
+	float i_color_b = 0.0
+        [[  string label = "Color B",
+            string widget = "null" ]],
+    int i_red_channel = 1
+        [[  string help = "Define whether or not the red channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the untouched value coming from the "
+                "chosen input.",
+            string label = "Red",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+    int i_green_channel = 1
+        [[  string help = "Define whether or not the green channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the untouched value coming from the "
+                "chosen input.",
+            string label = "Green",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+    int i_blue_channel = 1
+        [[  string help = "Define whether or not the blue channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the untouched value coming from the "
+                "chosen input.",
+            string label = "Blue",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+
+	output color outColor = color(0.0),
+	output float outColorR = 0.0,
+	output float outColorG = 0.0,
+	output float outColorB = 0.0
+)
+{
+    color color_rgb = getComposedColor(i_color_rgb, i_color_r, i_color_g, i_color_b);
+
+    // We are computing each channel individually depending on which the user wants to affect.
+    outColor = color(
+        i_red_channel ? (-color_rgb[0]) : color_rgb[0],
+        i_green_channel ? (-color_rgb[1]) : color_rgb[1],
+        i_blue_channel ? (-color_rgb[2]) : color_rgb[2]
+    );
+
+    outColorR = outColor[0];
+    outColorG = outColor[1];
+    outColorB = outColor[2];
+}

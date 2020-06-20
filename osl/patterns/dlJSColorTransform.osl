@@ -1,0 +1,50 @@
+#include "../include/dlJSUtils.h"
+
+
+/*
+*/
+shader dlJSColorTransform
+(
+	color i_color_rgb = color(0.0)
+        [[  string help = "Color that will be transformed from one color space to another, and "
+                "return the result as the output color.",
+            string label = "Color RGB",
+            string widget = "number" ]],
+	float i_color_r = 0.0
+        [[  string label = "Color R",
+            string widget = "null" ]],
+	float i_color_g = 0.0
+        [[  string label = "Color G",
+            string widget = "null" ]],
+	float i_color_b = 0.0
+        [[  string label = "Color B",
+            string widget = "null" ]],
+    string i_color_space = "rgb"
+        [[  string help = "Color space we consider the input color is defined in.",
+            string label = "Color RGB",
+            string page = "Color Spaces",
+            string widget = "mapper",
+            string options = ""
+                "RGB:rgb|HSV:hsv|HSL:hsl|NTSC YIQ:YIQ|CIE XYZ:XYZ|CIE xyY:xyY" ]],
+    string o_color_space = "rgb"
+        [[  string help = "Color space we want to convert the input color to.",
+            string label = "Output",
+            string page = "Color Spaces",
+            string widget = "mapper",
+            string options = ""
+                "RGB:rgb|HSV:hsv|HSL:hsl|NTSC YIQ:YIQ|CIE XYZ:XYZ|CIE xyY:xyY" ]],
+
+	output color outColor = color(0.0),
+	output float outColorR = 0.0,
+	output float outColorG = 0.0,
+	output float outColorB = 0.0
+)
+{
+    color color_rgb = getComposedColor(i_color_rgb, i_color_r, i_color_g, i_color_b);
+
+    outColor = transformc(i_color_space, o_color_space, color_rgb);
+
+    outColorR = outColor[0];
+    outColorG = outColor[1];
+    outColorB = outColor[2];
+}

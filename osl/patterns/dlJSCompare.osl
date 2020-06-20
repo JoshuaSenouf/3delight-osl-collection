@@ -1,0 +1,133 @@
+#include "../include/dlJSUtils.h"
+
+
+/*
+*/
+shader dlJSCompare
+(
+	color i_color1_rgb = color(0.0)
+        [[  string help = "First color that will be compared against the second one, returning the result "
+                "as the output boolean."
+                "<br/>In the case of the 'Greater/Less (or Equal)' methods of comparison, we"
+                "are comparing the length of the colors/vectors, and not each of their channels individually."
+                "<br/><br/>Formulas: "
+                "<br/>* Equal <b>color1 == color2</b>"
+                "<br/>* Not Equal <b>color1 != color2</b>"
+                "<br/>* Greater Than <b>color1 > color2</b>"
+                "<br/>* Greater Than or Equal <b>color1 >= color2</b>"
+                "<br/>* Less than <b>color1 < color2</b>"
+                "<br/>* Less Than or Equal <b>color1 <= color2</b>",
+            string label = "Color 1 RGB",
+            string widget = "number" ]],
+	float i_color1_r = 0.0
+        [[  string label = "Color 1 R",
+            string widget = "null" ]],
+	float i_color1_g = 0.0
+        [[  string label = "Color 1 G",
+            string widget = "null" ]],
+	float i_color1_b = 0.0
+        [[  string label = "Color 1 B",
+            string widget = "null" ]],
+	color i_color2_rgb = color(0.0)
+        [[  string help = "Second color that will be compared against the first one, returning the result "
+                "as the output boolean."
+                "<br/>In the case of the 'Greater/Less (or Equal)' methods of comparison, we"
+                "are comparing the length of the colors/vectors, and not each of their channels individually."
+                "<br/><br/>Formulas: "
+                "<br/>* Equal <b>color1 == color2</b>"
+                "<br/>* Not Equal <b>color1 != color2</b>"
+                "<br/>* Greater Than <b>color1 > color2</b>"
+                "<br/>* Greater Than or Equal <b>color1 >= color2</b>"
+                "<br/>* Less than <b>color1 < color2</b>"
+                "<br/>* Less Than or Equal <b>color1 <= color2</b>",
+            string label = "Color 2 RGB",
+            string widget = "number" ]],
+	float i_color2_r = 0.0
+        [[  string label = "Color 2 R",
+            string widget = "null" ]],
+	float i_color2_g = 0.0
+        [[  string label = "Color 2 G",
+            string widget = "null" ]],
+	float i_color2_b = 0.0
+        [[  string label = "Color 2 B",
+            string widget = "null" ]],
+    int i_method = 0
+        [[  string help = "The method of comparison that will be used."
+                "<br/>In the case of the 'Greater/Less (or Equal)' methods of comparison, we"
+                "are comparing the length of the colors/vectors, and not each of their channels individually."
+                "<br/><br/>Formulas: "
+                "<br/>* Equal <b>color1 == color2</b>"
+                "<br/>* Not Equal <b>color1 != color2</b>"
+                "<br/>* Greater Than <b>color1 > color2</b>"
+                "<br/>* Greater Than or Equal <b>color1 >= color2</b>"
+                "<br/>* Less than <b>color1 < color2</b>"
+                "<br/>* Less Than or Equal <b>color1 <= color2</b>",
+            string label = "Method",
+            string page = "Comparison",
+            string widget = "mapper",
+            string options = "Equal:0|Not Equal:1|Greater Than:2|Greater Than or Equal:3|Less Than:4"
+                "|Less Than or Equal:5" ]],
+    int i_red_channel = 1
+        [[  string help = "Define whether or not the red channel should be affected."
+                "<br/><br/>This will only affect the '(Not) Equal' methods of comparison, as the other methods need "
+                "all three channels in order to compute the length of the input colors/vectors."
+                "<br/><br/>If turned off, the channel will instead output the value 1.",
+            string label = "Red",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+    int i_green_channel = 1
+        [[  string help = "Define whether or not the green channel should be affected."
+                "<br/><br/>This will only affect the '(Not) Equal' methods of comparison, as the other methods need "
+                "all three channels in order to compute the length of the input colors/vectors."
+                "<br/><br/>If turned off, the channel will instead output the value 1.",
+            string label = "Green",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+    int i_blue_channel = 1
+        [[  string help = "Define whether or not the blue channel should be affected."
+                "<br/><br/>This will only affect the '(Not) Equal' methods of comparison, as the other methods need "
+                "all three channels in order to compute the length of the input colors/vectors."
+                "<br/><br/>If turned off, the channel will instead output the value 1.",
+            string label = "Blue",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+
+	output int outBoolean = 0
+)
+{
+    color color1_rgb = getComposedColor(i_color1_rgb, i_color1_r, i_color1_g, i_color1_b);
+    color color2_rgb = getComposedColor(i_color2_rgb, i_color2_r, i_color2_g, i_color2_b);
+
+    // We fall back to "1" in case we exclude specific channel(s) in order to not disturb the logic
+    // behind the algorithm. It means that excluding all channels would yield "1" as the output boolean,
+    // and while that is technically not very intuitive, excluding *all* channels is not either in the first place...
+    // If we are using the "Equal" method...
+    if (i_method == 0)
+        outBoolean = (
+            (i_red_channel ? color1_rgb[0] == color2_rgb[0] : 1)
+            && (i_green_channel ? color1_rgb[1] == color2_rgb[1] : 1)
+            && (i_blue_channel ? color1_rgb[2] == color2_rgb[2] : 1)
+        );
+    // We fall back to "1" in case we exclude specific channel(s) in order to not disturb the logic
+    // behind the algorithm. It means that excluding all channels would yield "1" as the output boolean,
+    // and while that is technically not very intuitive, excluding *all* channels is not either in the first place...
+    // If we are using the "Not Equal" method...
+    else if (i_method == 1)
+        outBoolean = (
+            (i_red_channel ? color1_rgb[0] != color2_rgb[0] : 1)
+            && (i_green_channel ? color1_rgb[1] != color2_rgb[1] : 1)
+            && (i_blue_channel ? color1_rgb[2] != color2_rgb[2] : 1)
+        );
+    // If we are using the "Greater Than" method...
+    else if (i_method == 2)
+        outBoolean = (length(color1_rgb) > length(color2_rgb));
+    // If we are using the "Greater Than Or Equal" method...
+    else if (i_method == 3)
+        outBoolean = (length(color1_rgb) >= length(color2_rgb));
+    // If we are using the "Less Than" method...
+    else if (i_method == 4)
+        outBoolean = (length(color1_rgb) < length(color2_rgb));
+    // If we are using the "Less Than Or Equal" method...
+    else
+        outBoolean = (length(color1_rgb) <= length(color2_rgb));
+}

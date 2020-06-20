@@ -47,14 +47,14 @@ shader dlJSSpaceTransform
 	float i_normal_z = 0.0
         [[  string label = "Normal Z",
             string widget = "null" ]],
-    string i_input_color_space = "common"
+    string i_input_space = "common"
         [[  string help = "Space we consider the input point/vector/normal to be defined in.",
             string label = "Input Colorspace",
             string page = "Spaces",
             string widget = "mapper",
             string options = ""
                 "Common:common|Object:object|Shader:shader|World:world|Camera:camera" ]],
-    string i_output_color_space = "common"
+    string i_output_space = "common"
         [[  string help = "Space we want to convert the input point/vector/normal to.",
             string label = "Output Colorspace",
             string page = "Spaces",
@@ -80,9 +80,9 @@ shader dlJSSpaceTransform
     vector vector_xyz = getComposedVector(i_vector_xyz, i_vector_x, i_vector_y, i_vector_z);
     normal normal_xyz = getComposedNormal(i_normal_xyz, i_normal_x, i_normal_y, i_normal_z);
 
-    outPoint = transform(i_input_color_space, i_output_color_space, point_xyz);
-    outVector = transform(i_input_color_space, i_output_color_space, vector_xyz);
-    outNormal = transform(i_input_color_space, i_output_color_space, normal_xyz);
+    outPoint = transform(i_input_space, i_output_space, point_xyz);
+    outVector = transform(i_input_space, i_output_space, vector_xyz);
+    outNormal = transform(i_input_space, i_output_space, normal_xyz);
 
     outPointX = outPoint[0];
     outPointY = outPoint[1];

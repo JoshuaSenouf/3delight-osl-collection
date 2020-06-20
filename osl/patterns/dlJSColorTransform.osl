@@ -19,14 +19,14 @@ shader dlJSColorTransform
 	float i_color_b = 0.0
         [[  string label = "Color B",
             string widget = "null" ]],
-    string i_color_space = "rgb"
+    string i_input_color_space = "rgb"
         [[  string help = "Color space we consider the input color is defined in.",
             string label = "Color RGB",
             string page = "Color Spaces",
             string widget = "mapper",
             string options = ""
                 "RGB:rgb|HSV:hsv|HSL:hsl|NTSC YIQ:YIQ|CIE XYZ:XYZ|CIE xyY:xyY" ]],
-    string o_color_space = "rgb"
+    string i_output_color_space = "rgb"
         [[  string help = "Color space we want to convert the input color to.",
             string label = "Output",
             string page = "Color Spaces",
@@ -42,7 +42,7 @@ shader dlJSColorTransform
 {
     color color_rgb = getComposedColor(i_color_rgb, i_color_r, i_color_g, i_color_b);
 
-    outColor = transformc(i_color_space, o_color_space, color_rgb);
+    outColor = transformc(i_input_color_space, i_output_color_space, color_rgb);
 
     outColorR = outColor[0];
     outColorG = outColor[1];

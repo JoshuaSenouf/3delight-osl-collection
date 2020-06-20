@@ -21,80 +21,80 @@ shader dlJSRemap
 	float i_color_b = 0.0
         [[  string label = "Color B",
             string widget = "null" ]],
-	color i_min_rgb = color(0.0)
+	color i_input_min_rgb = color(0.0)
         [[  string help = "Minimum of the input range that will be used to remap the input color.",
             string label = "Min",
             string page = "Range.Input",
             string widget = "number" ]],
-	float i_min_r = 0.0
+	float i_input_min_r = 0.0
         [[  string label = "Min R",
             string page = "Range.Input",
             string widget = "null" ]],
-	float i_min_g = 0.0
+	float i_input_min_g = 0.0
         [[  string label = "Min G",
             string page = "Range.Input",
             string widget = "null" ]],
-	float i_min_b = 0.0
+	float i_input_min_b = 0.0
         [[  string label = "Min B",
             string page = "Range.Input",
             string widget = "null" ]],
-	color i_max_rgb = color(1.0)
+	color i_input_max_rgb = color(1.0)
         [[  string help = "Maximum of the input range that will be used to remap the input color.",
             string label = "Max",
             string page = "Range.Input",
             string widget = "number" ]],
-	float i_max_r = 1.0
+	float i_input_max_r = 1.0
         [[  string label = "Max R",
             string page = "Range.Input",
             string widget = "null" ]],
-	float i_max_g = 1.0
+	float i_input_max_g = 1.0
         [[  string label = "Max G",
             string page = "Range.Input",
             string widget = "null" ]],
-	float i_max_b = 1.0
+	float i_input_max_b = 1.0
         [[  string label = "Max B",
             string page = "Range.Input",
             string widget = "null" ]],
-    int i_clamp = 1
+    int i_input_clamp = 1
         [[  string help = "Define whether or not the input color should be clamped between the input min and max.",
             string label = "Clamp",
             string page = "Range.Input",
             string widget = "checkBox" ]],
-    color o_min_rgb = color(0.0)
+    color i_output_min_rgb = color(0.0)
         [[  string help = "Minimum of the output range that will be used to remap the input color.",
             string label = "Min",
             string page = "Range.Output",
             string widget = "number" ]],
-	float o_min_r = 0.0
+	float i_output_min_r = 0.0
         [[  string label = "Min R",
             string page = "Range.Output",
             string widget = "null" ]],
-	float o_min_g = 0.0
+	float i_output_min_g = 0.0
         [[  string label = "Min G",
             string page = "Range.Output",
             string widget = "null" ]],
-	float o_min_b = 0.0
+	float i_output_min_b = 0.0
         [[  string label = "Min B",
             string page = "Range.Output",
             string widget = "null" ]],
-	color o_max_rgb = color(1.0)
+	color i_output_max_rgb = color(1.0)
         [[  string help = "Maximum of the output range that will be used to remap the input color.",
             string label = "Max",
             string page = "Range.Output",
             string widget = "number" ]],
-	float o_max_r = 1.0
+	float i_output_max_r = 1.0
         [[  string label = "Max R",
             string page = "Range.Output",
             string widget = "null" ]],
-	float o_max_g = 1.0
+	float i_output_max_g = 1.0
         [[  string label = "Max G",
             string page = "Range.Output",
             string widget = "null" ]],
-	float o_max_b = 1.0
+	float i_output_max_b = 1.0
         [[  string label = "Max B",
             string page = "Range.Output",
             string widget = "null" ]],
-    int o_clamp = 1
+    int i_output_clamp = 1
         [[  string help = "Define whether or not the output color should be clamped between 0 and 1.",
             string label = "Clamp",
             string page = "Range.Output",
@@ -139,10 +139,10 @@ shader dlJSRemap
 )
 {
     color input_color_rgb = getComposedColor(i_color_rgb, i_color_r, i_color_g, i_color_b);
-    color input_min_rgb = getComposedColor(i_min_rgb, i_min_r, i_min_g, i_min_b);
-    color input_max_rgb = getComposedColor(i_max_rgb, i_max_r, i_max_g, i_max_b);
-    color output_min_rgb = getComposedColor(o_min_rgb, o_min_r, o_min_g, o_min_b);
-    color output_max_rgb = getComposedColor(o_max_rgb, o_max_r, o_max_g, o_max_b);
+    color input_min_rgb = getComposedColor(i_input_min_rgb, i_input_min_r, i_input_min_g, i_input_min_b);
+    color input_max_rgb = getComposedColor(i_input_max_rgb, i_input_max_r, i_input_max_g, i_input_max_b);
+    color output_min_rgb = getComposedColor(i_output_min_rgb, i_output_min_r, i_output_min_g, i_output_min_b);
+    color output_max_rgb = getComposedColor(i_output_max_rgb, i_output_max_r, i_output_max_g, i_output_max_b);
     color bias_rgb = getComposedColor(i_bias_rgb, i_bias_r, i_bias_g, i_bias_b);
     // color gain_rgb = getComposedColor(i_gain_rgb, i_gain_r, i_gain_g, i_gain_b);
     color output_color_rgb;
@@ -155,7 +155,7 @@ shader dlJSRemap
 
         // If requested by the user, we clamp the input color between the input min and max values, before
         // doing the actual remapping.
-        if (i_clamp)
+        if (i_input_clamp)
             input_color_rgb = clamp(input_color_rgb, input_min_rgb, input_max_rgb);
     }
     // If the input minimum and maximum are identical, we look at each channel of the input color, comparing it to
@@ -191,7 +191,7 @@ shader dlJSRemap
     output_color_rgb = mix(output_min_rgb, output_max_rgb, range_factor_rgb);
 
     // If requested by the user, we clamp the output color between 0 and 1, after doing the actual remapping.
-    outColor = o_clamp ? clamp(output_color_rgb, 0, 1) : output_color_rgb;
+    outColor = i_output_clamp ? clamp(output_color_rgb, 0, 1) : output_color_rgb;
 
     outColorR = outColor[0];
     outColorG = outColor[1];

@@ -1,0 +1,82 @@
+#include "../include/jsUtils.h"
+
+
+/*
+*/
+surface jsConstant
+(
+	color i_color_rgb = color(0.18)
+        [[  string help = "Constant color that will be used to shade the object as the output color.",
+            string label = "Color RGB",
+            string widget = "number" ]],
+	float i_color_r = 0.0
+        [[  string label = "Color R",
+            string widget = "null" ]],
+	float i_color_g = 0.0
+        [[  string label = "Color G",
+            string widget = "null" ]],
+	float i_color_b = 0.0
+        [[  string label = "Color B",
+            string widget = "null" ]],
+	float i_object_opacity = 1.0
+        [[  string help = "Opacity of the object.",
+            string label = "Object",
+            string page = "Opacity",
+            string widget = "number",
+            float min = 0.0,
+            float max = 1.0 ]],
+	float i_shadow_opacity = 1.0
+        [[  string help = "Opacity of the shadow of the object.",
+            string label = "Shadow",
+            string page = "Opacity",
+            string widget = "number",
+            float min = 0.0,
+            float max = 1.0 ]],
+	int i_no_indirect = 1
+        [[  string help = "Determine if the object is going to influence indirect lighting, i.e. further than camera/shadow rays.",
+            string label = "No Indirect",
+            string page = "Shading",
+            string widget = "checkBox" ]],
+    int i_channels = 0
+        [[  string help = "Define which channel should be isolated and output alone, if any.",
+            string label = "Output",
+            string page = "Channels",
+            string widget = "mapper",
+            string options = ""
+                "RGB:0|R:1|G:2|B:3" ]],
+
+    output closure color outColor = 0
+)
+{
+    color color_rgb = getComposedColor(i_color_rgb, i_color_r, i_color_g, i_color_b);
+
+    if (i_channels != 0)
+    {
+        color_rgb = color(color_rgb[i_channels - 1]);
+    }
+
+    closure color emission_closure = emission() * color_rgb;
+    closure color object_transparency_closure = transparent() * (1.0 - i_object_opacity);
+    closure color shadow_transparency_closure = transparent() * (1.0 - i_shadow_opacity);
+
+    if (raytype("shadow"))
+    {
+        outColor = shadow_transparency_closure;
+    }
+    else
+    {
+        if (i_no_indirect)
+        {
+            if (raytype("camera"))
+            {
+                outColor = emission_closure + object_transparency_closure;
+            }
+        }
+        else
+        {
+            outColor = emission_closure + object_transparency_closure;
+        }
+    }
+
+    Ci = outColor;
+}

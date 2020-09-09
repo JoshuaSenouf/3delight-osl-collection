@@ -6,11 +6,11 @@ Collection of OSL shaders for the 3Delight renderer.
 Materials
 ===
 
-* **TODO:** dlJSLobeCoat
-* dlJSLobeDiffuse
+* **TODO:** jsLobeCoat
+* jsLobeDiffuse
     * Oren-Nayar
     * **TODO:** Subsurface
-* dlJSLobeEmission
+* jsLobeEmission
     * Controls:
         * Intensity
         * Exposure
@@ -20,57 +20,57 @@ Materials
         * Specular
         * Hair
         * Volume
-* dlJSLobeLayering
+* jsLobeLayering
     * Modes:
         * Physical
         * Artistic
-* dlJSLobeSpecular
+* jsLobeSpecular
     * Distributions:
         * GGX
         * Beckmann
         * **TODO:** GTR
     * **TODO:** Metalness
     * **TODO:** Anisotropy
-* dlJSLobeTerminal
+* jsLobeTerminal
 
 Patterns
 ===
 
-* dlJSAbs
-* dlJSAdd
-* dlJSAtan
-* dlJSBlackbody
-* dlJSClamp
-* dlJSColorTransform
-* dlJSCompare
-* dlJSComplement
-* dlJSConstant
-* dlJSCross
-* dlJSDivide
-* dlJSDot
-* dlJSExp
-* dlJSFractional
-* dlJSIsFinite
-* dlJSIsInfinite
-* dlJSIsNan
-* dlJSLength
-* dlJSLog
-* dlJSMax
-* dlJSMin
-* dlJSMix
-* dlJSModulo
-* dlJSMultiply
-* dlJSNegate
-* dlJSNormalize
-* dlJSPow
-* dlJSRaySwitch
-* dlJSReciprocal
-* dlJSRemap
-* dlJSShaderGlobals
-* dlJSShuffle
-* dlJSSign
-* dlJSSpaceTransform
-* dlJSSpectrum
-* dlJSSqrt
-* dlJSSubtract
-* dlJSWireframe
+* jsAbs
+* jsAdd
+* jsAtan
+* jsBlackbody
+* jsClamp
+* jsColorTransform
+* jsCompare
+* jsComplement
+* jsConstant
+* jsCross
+* jsDivide
+* jsDot
+* jsExp
+* jsFractional
+* jsIsFinite
+* jsIsInfinite
+* jsIsNan
+* jsLength
+* jsLog
+* jsMax
+* jsMin
+* jsMix
+* jsModulo
+* jsMultiply
+* jsNegate
+* jsNormalize
+* jsPow
+* jsRaySwitch
+* jsReciprocal
+* jsRemap
+* jsShaderGlobals
+* jsShuffle
+* jsSign
+* jsSpaceTransform
+* jsSpectrum
+* jsSqrt
+* jsSubtract
+* jsWireframe

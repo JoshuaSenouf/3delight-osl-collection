@@ -1,0 +1,73 @@
+#include "../include/jsUtils.h"
+
+
+/*
+*/
+shader jsShuffle
+(
+	color i_color_rgb = color(0.0)
+        [[  string help = "Color that will have its color channels shuffled around, and return the result "
+            "as the output color.",
+            string label = "Color RGB",
+            string widget = "number" ]],
+	float i_color_r = 0.0
+        [[  string label = "Color R",
+            string widget = "null" ]],
+	float i_color_g = 0.0
+        [[  string label = "Color G",
+            string widget = "null" ]],
+	float i_color_b = 0.0
+        [[  string label = "Color B",
+            string widget = "null" ]],
+    int i_red_shuffle = 0
+        [[  string help = "Shuffle the input red channel with another input channel.",
+            string label = "Red",
+            string page = "Shuffle",
+            string widget = "mapper",
+            string options = "R:0|G:1|B:2" ]],
+    int i_green_shuffle = 1
+        [[  string help = "Shuffle the input green channel with another input channel.",
+            string label = "Green",
+            string page = "Shuffle",
+            string widget = "mapper",
+            string options = "R:0|G:1|B:2" ]],
+    int i_blue_shuffle = 2
+        [[  string help = "Shuffle the input blue channel with another input channel.",
+            string label = "Blue",
+            string page = "Shuffle",
+            string widget = "mapper",
+            string options = "R:0|G:1|B:2" ]],
+    int i_red_channel = 1
+        [[  string help = "Define whether or not the red channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the value 0.",
+            string label = "Red",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+    int i_green_channel = 1
+        [[  string help = "Define whether or not the green channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the value 0.",
+            string label = "Green",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+    int i_blue_channel = 1
+        [[  string help = "Define whether or not the blue channel should be affected."
+                "<br/><br/>If turned off, the channel will instead output the value 0.",
+            string label = "Blue",
+            string page = "Channels",
+            string widget = "checkBox" ]],
+
+	output color outColor = color(0.0),
+	output float outColorR = 0.0,
+	output float outColorG = 0.0,
+	output float outColorB = 0.0
+)
+{
+    color color_rgb = getComposedColor(i_color_rgb, i_color_r, i_color_g, i_color_b);
+
+    // We are computing each channel individually depending on which the user wants to affect.
+    outColorR = i_red_channel ? color_rgb[i_red_shuffle] : 0.0;
+    outColorG = i_green_channel ? color_rgb[i_green_shuffle] : 0.0;
+    outColorB = i_blue_channel ? color_rgb[i_blue_shuffle] : 0.0;
+
+    outColor = color(outColorR, outColorG, outColorB);
+}

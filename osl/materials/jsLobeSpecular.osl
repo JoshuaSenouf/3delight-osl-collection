@@ -1,0 +1,78 @@
+#include "3delightosl.h"
+
+#include "../include/jsUtils.h"
+
+
+/*
+*/
+surface jsLobeSpecular
+(
+    color i_color_rgb = color(0.85)
+        [[  string help = "Color of the specular that will be used by the microfacet "
+                "BSDF to shade the object.",
+            string label = "Color RGB",
+            string widget = "number" ]],
+    float i_color_r = 0.0
+        [[  string label = "Color R",
+            string widget = "null" ]],
+    float i_color_g = 0.0
+        [[  string label = "Color G",
+            string widget = "null" ]],
+    float i_color_b = 0.0
+        [[  string label = "Color B",
+            string widget = "null" ]],
+    int i_distribution = 0
+        [[  string help = "Distribution used by the microfacet BSDF.",
+            string label = "Distribution",
+            string page = "Microfacet",
+            string widget = "mapper",
+            string options = "GGX:0|Beckmann:1" ]],
+    int i_mode = 0
+        [[  string help = "Define if the microfacet BSDF will be reflective or refractive.",
+            string label = "Mode",
+            string page = "Microfacet",
+            string widget = "mapper",
+            string options = "Reflection:0|Refraction:1" ]],
+    float i_roughness = 0.3
+        [[  string help = "Roughness of the microfacet BSDF.",
+            string label = "Roughness",
+            string page = "Microfacet",
+            string widget = "number",
+            float min = 0.0,
+            float max = 1.0 ]],
+    float i_ior = 1.5
+        [[  string help = "IOR of the microfacet BSDF.",
+            string label = "IOR",
+            string page = "Microfacet",
+            string widget = "number",
+            float min = 0.0,
+            float max = 5.0 ]],
+    int i_thin = 0
+        [[  string help = "Determine if the object should be treated as a very thin piece of geometry, "
+                "resulting in an IOR of 1.0 being used if the microfacet BSDF is refractive.",
+            string label = "Thin",
+            string page = "Geometry",
+            string widget = "checkBox" ]],
+   normal i_shading_normal = N
+        [[  string label = "Normal",
+            string widget = "null" ]],
+
+    output closure color outColor = 0
+)
+{
+    color color_rgb = getComposedColor(i_color_rgb, i_color_r, i_color_g, i_color_b);
+    string distribution = i_distribution ? "beckmann" : "ggx";
+    string mode = i_mode ? "refraction" : "reflection";
+    float roughness = i_roughness * i_roughness;
+    float ior = (i_thin && i_mode)? 1.0 : max(0.0001, i_ior);
+    normal shading_normal = normalize(i_shading_normal);
+    float fresnel_reflectance = getFresnel(shading_normal, ior, i_mode);
+
+    closure color specular_aov = outputvariable(
+        mode,
+        microfacet(distribution, shading_normal, roughness, ior, i_mode) * color_rgb * fresnel_reflectance
+    );
+
+    // TODO: Support for the anisotropic variant of the microfacet closure.
+    outColor = specular_aov;
+}

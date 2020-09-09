@@ -1,0 +1,315 @@
+#include "../include/jsUtils.h"
+
+
+/*
+*/
+shader jsRaySwitch
+(
+	color i_color_rgb = color(0.0)
+        [[  string help = "Color that will be used as the output color for any ray types that are "
+            "not overriden.",
+            string label = "Color RGB",
+            string widget = "number" ]],
+	float i_color_r = 0.0
+        [[  string label = "Color R",
+            string widget = "null" ]],
+	float i_color_g = 0.0
+        [[  string label = "Color G",
+            string widget = "null" ]],
+	float i_color_b = 0.0
+        [[  string label = "Color B",
+            string widget = "null" ]],
+    int i_override_camera_color = 0
+        [[  string help = "Define whether or not the color used by a 'camera' ray should be overriden.",
+            string label = "Override",
+            string page = "Camera",
+            string widget = "checkBox" ]],
+	color i_camera_color_rgb = color(0.0)
+        [[  string help = "Color to be used by a 'camera' ray if it is meant to be overriden.",
+            string label = "Color RGB",
+            string page = "Camera",
+            string widget = "number" ]],
+	float i_camera_color_r = 0.0
+        [[  string label = "Color R",
+            string page = "Camera",
+            string widget = "null" ]],
+	float i_camera_color_g = 0.0
+        [[  string label = "Color G",
+            string page = "Camera",
+            string widget = "null" ]],
+	float i_camera_color_b = 0.0
+        [[  string label = "Color B",
+            string page = "Camera",
+            string widget = "null" ]],
+    int i_override_shadow_color = 0
+        [[  string help = "Define whether or not the color used by a 'shadow' ray should be overriden.",
+            string label = "Override",
+            string page = "Shadow",
+            string widget = "checkBox" ]],
+	color i_shadow_color_rgb = color(0.0)
+        [[  string help = "Color to be used by a 'shadow' ray if it is meant to be overriden.",
+            string label = "Color RGB",
+            string page = "Shadow",
+            string widget = "number" ]],
+	float i_shadow_color_r = 0.0
+        [[  string label = "Color R",
+            string page = "Shadow",
+            string widget = "null" ]],
+	float i_shadow_color_g = 0.0
+        [[  string label = "Color G",
+            string page = "Shadow",
+            string widget = "null" ]],
+	float i_shadow_color_b = 0.0
+        [[  string label = "Color B",
+            string page = "Shadow",
+            string widget = "null" ]],
+    int i_override_diffuse_color = 0
+        [[  string help = "Define whether or not the color used by a 'diffuse' ray should be overriden.",
+            string label = "Override",
+            string page = "Diffuse",
+            string widget = "checkBox" ]],
+	color i_diffuse_color_rgb = color(0.0)
+        [[  string help = "Color to be used by a 'diffuse' ray if it is meant to be overriden.",
+            string label = "Color RGB",
+            string page = "Diffuse",
+            string widget = "number" ]],
+	float i_diffuse_color_r = 0.0
+        [[  string label = "Color R",
+            string page = "Diffuse",
+            string widget = "null" ]],
+	float i_diffuse_color_g = 0.0
+        [[  string label = "Color G",
+            string page = "Diffuse",
+            string widget = "null" ]],
+	float i_diffuse_color_b = 0.0
+        [[  string label = "Color B",
+            string page = "Diffuse",
+            string widget = "null" ]],
+    int i_override_glossy_color = 0
+        [[  string help = "Define whether or not the color used by a 'glossy' ray should be overriden.",
+            string label = "Override",
+            string page = "Glossy",
+            string widget = "checkBox" ]],
+	color i_glossy_color_rgb = color(0.0)
+        [[  string help = "Color to be used by a 'glossy' ray if it is meant to be overriden.",
+            string label = "Color RGB",
+            string page = "Glossy",
+            string widget = "number" ]],
+	float i_glossy_color_r = 0.0
+        [[  string label = "Color R",
+            string page = "Glossy",
+            string widget = "null" ]],
+	float i_glossy_color_g = 0.0
+        [[  string label = "Color G",
+            string page = "Glossy",
+            string widget = "null" ]],
+	float i_glossy_color_b = 0.0
+        [[  string label = "Color B",
+            string page = "Glossy",
+            string widget = "null" ]],
+    int i_override_reflection_color = 0
+        [[  string help = "Define whether or not the color used by a 'reflection' ray should be overriden.",
+            string label = "Override",
+            string page = "Reflection",
+            string widget = "checkBox" ]],
+	color i_reflection_color_rgb = color(0.0)
+        [[  string help = "Color to be used by a 'reflection' ray if it is meant to be overriden.",
+            string label = "Color RGB",
+            string page = "Reflection",
+            string widget = "number" ]],
+	float i_reflection_color_r = 0.0
+        [[  string label = "Color R",
+            string page = "Reflection",
+            string widget = "null" ]],
+	float i_reflection_color_g = 0.0
+        [[  string label = "Color G",
+            string page = "Reflection",
+            string widget = "null" ]],
+	float i_reflection_color_b = 0.0
+        [[  string label = "Color B",
+            string page = "Reflection",
+            string widget = "null" ]],
+    int i_override_refraction_color = 0
+        [[  string help = "Define whether or not the color used by a 'refraction' ray should be overriden.",
+            string label = "Override",
+            string page = "Refraction",
+            string widget = "checkBox" ]],
+	color i_refraction_color_rgb = color(0.0)
+        [[  string help = "Color to be used by a 'refraction' ray if it is meant to be overriden.",
+            string label = "Color RGB",
+            string page = "Refraction",
+            string widget = "number" ]],
+	float i_refraction_color_r = 0.0
+        [[  string label = "Color R",
+            string page = "Refraction",
+            string widget = "null" ]],
+	float i_refraction_color_g = 0.0
+        [[  string label = "Color G",
+            string page = "Refraction",
+            string widget = "null" ]],
+	float i_refraction_color_b = 0.0
+        [[  string label = "Color B",
+            string page = "Refraction",
+            string widget = "null" ]],
+    int i_override_subsurface_color = 0
+        [[  string help = "Define whether or not the color used by a 'subsurface' ray should be overriden.",
+            string label = "Override",
+            string page = "Subsurface",
+            string widget = "checkBox" ]],
+	color i_subsurface_color_rgb = color(0.0)
+        [[  string help = "Color to be used by a 'subsurface' ray if it is meant to be overriden.",
+            string label = "Color RGB",
+            string page = "Subsurface",
+            string widget = "number" ]],
+	float i_subsurface_color_r = 0.0
+        [[  string label = "Color R",
+            string page = "Subsurface",
+            string widget = "null" ]],
+	float i_subsurface_color_g = 0.0
+        [[  string label = "Color G",
+            string page = "Subsurface",
+            string widget = "null" ]],
+	float i_subsurface_color_b = 0.0
+        [[  string label = "Color B",
+            string page = "Subsurface",
+            string widget = "null" ]],
+    int i_override_hair_color = 0
+        [[  string help = "Define whether or not the color used by a 'hair' ray should be overriden.",
+            string label = "Override",
+            string page = "Hair",
+            string widget = "checkBox" ]],
+	color i_hair_color_rgb = color(0.0)
+        [[  string help = "Color to be used by a 'hair' ray if it is meant to be overriden.",
+            string label = "Color RGB",
+            string page = "Hair",
+            string widget = "number" ]],
+	float i_hair_color_r = 0.0
+        [[  string label = "Color R",
+            string page = "Hair",
+            string widget = "null" ]],
+	float i_hair_color_g = 0.0
+        [[  string label = "Color G",
+            string page = "Hair",
+            string widget = "null" ]],
+	float i_hair_color_b = 0.0
+        [[  string label = "Color B",
+            string page = "Hair",
+            string widget = "null" ]],
+    int i_override_volume_color = 0
+        [[  string help = "Define whether or not the color used by a 'volume' ray should be overriden.",
+            string label = "Override",
+            string page = "Volume",
+            string widget = "checkBox" ]],
+	color i_volume_color_rgb = color(0.0)
+        [[  string help = "Color to be used by a 'volume' ray if it is meant to be overriden.",
+            string label = "Color RGB",
+            string page = "Volume",
+            string widget = "number" ]],
+	float i_volume_color_r = 0.0
+        [[  string label = "Color R",
+            string page = "Volume",
+            string widget = "null" ]],
+	float i_volume_color_g = 0.0
+        [[  string label = "Color G",
+            string page = "Volume",
+            string widget = "null" ]],
+	float i_volume_color_b = 0.0
+        [[  string label = "Color B",
+            string page = "Volume",
+            string widget = "null" ]],
+
+	output color outColor = color(0.0),
+	output float outColorR = 0.0,
+	output float outColorG = 0.0,
+	output float outColorB = 0.0)
+{
+    color color_rgb = getComposedColor(
+        i_color_rgb,
+        i_color_r,
+        i_color_g,
+        i_color_b
+    );
+    color camera_color_rgb = getComposedColor(
+        i_camera_color_rgb,
+        i_camera_color_r,
+        i_camera_color_g,
+        i_camera_color_b
+    );
+    color shadow_color_rgb = getComposedColor(
+        i_shadow_color_rgb,
+        i_shadow_color_r,
+        i_shadow_color_g,
+        i_shadow_color_b
+    );
+    color diffuse_color_rgb = getComposedColor(
+        i_diffuse_color_rgb,
+        i_diffuse_color_r,
+        i_diffuse_color_g,
+        i_diffuse_color_b
+    );
+    color glossy_color_rgb = getComposedColor(
+        i_glossy_color_rgb,
+        i_glossy_color_r,
+        i_glossy_color_g,
+        i_glossy_color_b
+        );
+    color reflection_color_rgb = getComposedColor(
+        i_reflection_color_rgb,
+        i_reflection_color_r,
+        i_reflection_color_g,
+        i_reflection_color_b
+    );
+    color refraction_color_rgb = getComposedColor(
+        i_refraction_color_rgb,
+        i_refraction_color_r,
+        i_refraction_color_g,
+        i_refraction_color_b
+    );
+    color subsurface_color_rgb = getComposedColor(
+        i_subsurface_color_rgb,
+        i_subsurface_color_r,
+        i_subsurface_color_g,
+        i_subsurface_color_b
+    );
+    color hair_color_rgb = getComposedColor(
+        i_hair_color_rgb,
+        i_hair_color_r,
+        i_hair_color_g,
+        i_hair_color_b
+    );
+    color volume_color_rgb = getComposedColor(
+        i_volume_color_rgb,
+        i_volume_color_r,
+        i_volume_color_g,
+        i_volume_color_b
+    );
+
+    // We default to the input color, so that it gets picked up normally for rays that are not
+    // meant to get overriden. This allows use to avoid producing additional branches in the if/else if blocks
+    // below just to fallback to the input color if we do not satisfy the conditions.
+    outColor = color_rgb;
+
+    // We change the input type depending on the current type of ray being used and sampled.
+    if (i_override_camera_color && raytype("camera"))
+        outColor = camera_color_rgb;
+    else if (i_override_shadow_color && raytype("shadow"))
+        outColor = shadow_color_rgb;
+    else if (i_override_diffuse_color && raytype("diffuse"))
+        outColor = diffuse_color_rgb;
+    else if (i_override_glossy_color && raytype("glossy"))
+        outColor = glossy_color_rgb;
+    else if (i_override_reflection_color && raytype("reflection"))
+        outColor = reflection_color_rgb;
+    else if (i_override_refraction_color && raytype("refraction"))
+        outColor = refraction_color_rgb;
+    else if (i_override_subsurface_color && raytype("subsurface"))
+        outColor = subsurface_color_rgb;
+    else if (i_override_hair_color && raytype("hair"))
+        outColor = hair_color_rgb;
+    else if (i_override_volume_color && raytype("volume"))
+        outColor = volume_color_rgb;
+
+    outColorR = outColor[0];
+    outColorG = outColor[1];
+    outColorB = outColor[2];
+}

@@ -96,7 +96,6 @@ surface jsVolume
     color emission_color_rgb = getComposedColor(i_emission_color_rgb, i_emission_color_r, i_emission_color_g, i_emission_color_b);
     color volume_extinction = 1.0 - i_transparency;
     color volume_color = color_rgb * volume_extinction;
-    float emission_scale = 1.0;
     float exposure = pow(2.0, i_exposure);
 
     closure color absorption_component = absorption() * i_density * (volume_extinction - (volume_color * volume_extinction));
@@ -129,7 +128,7 @@ surface jsVolume
     // coming from a mesh, thus blocking the volume from the view, but from the actual volume.
     color emission_color = raytype("camera") ? color(0.0) : emission_color_rgb * i_intensity * exposure;
 
-    closure color emission_component = emission() * emission_color * emission_scale;
+    closure color emission_component = emission() * emission_color;
 
     outColor += emission_component;
 }

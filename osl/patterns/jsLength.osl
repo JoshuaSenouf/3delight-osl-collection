@@ -11,7 +11,7 @@ shader jsLength
                 "<br/>* Euclidian <b>sqrt(pow(vector.r, 2) + pow(vector.g, 2) + pow(vector.b, 2))</b>"
                 "<br/>* Quadrance <b>pow(vector.r, 2) + pow(vector.g, 2) + pow(vector.b, 2)</b>"
                 "<br/>* Manhattan <b>fabs(vector.r) + fabs(vector.g) + fabs(vector.b)</b>",
-            string label = "Vector XYZ",
+            string label = "Vector",
             string widget = "number" ]],
 	float i_vector_x = 0.0
         [[  string label = "Vector X",

@@ -8,7 +8,7 @@ shader jsLog
 	color i_color_rgb = color(0.0)
         [[  string help = "Color that will be used to produce its logarithm, and return it as the output color."
                 "<br/><br/>Formula: <b>log(base) (color)</b>",
-            string label = "Color RGB",
+            string label = "Color",
             string widget = "number" ]],
 	float i_color_r = 0.0
         [[  string label = "Color R",
@@ -20,7 +20,7 @@ shader jsLog
         [[  string label = "Color B",
             string widget = "null" ]],
 	color i_base_rgb = color(2.7183, 2.7183, 2.7183)
-        [[  string help = "Logarithmic base, defaulting to the natural logarithmic base, e."
+        [[  string help = "Logarithmic base, defaulting to the natural logarithmic base, 'e'."
                 "<br/><br/>Formula: <b>log(base) (color)</b>",
             string label = "Base RGB",
             string widget = "number" ]],

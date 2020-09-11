@@ -9,7 +9,7 @@ shader jsReciprocal
         [[  string help = "Color that will be used to return its reciprocal, i.e. its multiplicative inverse, "
                 "as the output color."
                 "<br/><br/>Formula: <b>1 / color</b>",
-            string label = "Color RGB",
+            string label = "Color",
             string widget = "number" ]],
 	float i_color_r = 0.0
         [[  string label = "Color R",

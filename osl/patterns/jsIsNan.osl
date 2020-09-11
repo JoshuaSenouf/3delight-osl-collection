@@ -9,7 +9,7 @@ shader jsIsNan
         [[  string help = "Color that will be used to check if at least one of its channels is a NaN, "
                 "and output the result as the output boolean."
                 "<br/><br/>Formula: <b>isnan(color)</b>",
-            string label = "Color RGB",
+            string label = "Color",
             string widget = "number" ]],
 	float i_color_r = 0.0
         [[  string label = "Color R",

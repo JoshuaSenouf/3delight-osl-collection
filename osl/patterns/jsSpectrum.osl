@@ -15,7 +15,7 @@ shader jsSpectrum
             float min = 380.0,
             float max = 780.0 ]],
 
-	output color outColor = 0.0,
+	output color outColor = color(0.0),
 	output float outColorR = 0.0,
 	output float outColorG = 0.0,
 	output float outColorB = 0.0

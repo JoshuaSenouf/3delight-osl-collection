@@ -34,12 +34,14 @@ shader jsWireframe
 	float i_width = 1.0
         [[  string help = "Width that will be used to set the wireframe width/thickness.",
             string label = "Width",
+            string page = "Wireframe",
             string widget = "number",
             float min = 0.0,
             float max = 5.0 ]],
     float i_opacity = 1.0
     [[  string help = "Opacity that will be used to set the wireframe opacity/visibility.",
         string label = "Opacity",
+        string page = "Wireframe",
         string widget = "number",
         float min = 0.0,
         float max = 1.0 ]],

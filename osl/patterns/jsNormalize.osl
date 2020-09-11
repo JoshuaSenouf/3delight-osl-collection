@@ -8,7 +8,7 @@ shader jsNormalize
 	vector i_vector_xyz = vector(0.0)
         [[  string help = "Vector that will be returned normalized as the output vector."
                 "<br/><br/>Formula: <b>normalize(vector)</b>",
-            string label = "Vector XYZ",
+            string label = "Vector",
             string widget = "number" ]],
 	float i_vector_x = 0
         [[  string label = "Vector X",

@@ -1,40 +1,63 @@
 3delight-osl-collection
-===
+=======================
 
 Collection of OSL shaders for the 3Delight renderer.
 
 Materials
-===
+=========
 
+* jsConstant
+  * Opacity:
+    * Camera
+    * Shadow
+  * (No) Indirect
+* jsVolume
+  * Density
+  * Anisotropy
+  * Transparency
+  * Emission:
+    * Artistic (Color)
+    * Physical (Blackbody)
+
+Lobes
+-----
+
+* jsLobeAbsorption
+  * Density
 * **TODO:** jsLobeCoat
 * jsLobeDiffuse
-    * Oren-Nayar
-    * **TODO:** Subsurface
+  * Oren-Nayar
+  * **TODO:** Subsurface
 * jsLobeEmission
-    * Controls:
-        * Intensity
-        * Exposure
-        * Normalization
-    * Contributions:
-        * Diffuse
-        * Specular
-        * Hair
-        * Volume
+  * Intensity
+  * Exposure
+  * Normalization
+  * Contributions:
+    * Diffuse
+    * Specular
+    * Hair
+    * Volume
 * jsLobeLayering
-    * Modes:
-        * Physical
-        * Artistic
+  * Modes:
+    * Physical (Balanced)
+    * Artistic (Additive)
+* jsLobeScattering
+  * Density
+  * Anisotropy
 * jsLobeSpecular
-    * Distributions:
-        * GGX
-        * Beckmann
-        * **TODO:** GTR
-    * **TODO:** Metalness
-    * **TODO:** Anisotropy
+  * Distributions:
+    * GGX
+    * Beckmann
+    * **TODO:** GTR
+  * **TODO:** Metalness
+  * **TODO:** Anisotropy
 * jsLobeTerminal
+* jsLobeTransparent
+  * Camera
+  * Shadow
 
 Patterns
-===
+========
 
 * jsAbs
 * jsAdd
@@ -44,7 +67,6 @@ Patterns
 * jsColorTransform
 * jsCompare
 * jsComplement
-* jsConstant
 * jsCross
 * jsDivide
 * jsDot

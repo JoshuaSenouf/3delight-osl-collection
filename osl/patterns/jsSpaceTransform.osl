@@ -8,7 +8,7 @@ shader jsSpaceTransform
 	point i_point_xyz = point(0.0)
         [[  string help = "Point that will be transformed from one space to another, and "
                 "return the result as the output point.",
-            string label = "Point XYZ",
+            string label = "Point",
             string widget = "number" ]],
 	float i_point_x = 0.0
         [[  string label = "Point X",
@@ -22,7 +22,7 @@ shader jsSpaceTransform
 	vector i_vector_xyz = vector(0.0)
         [[  string help = "Vector that will be transformed from one space to another, and "
                 "return the result as the output vector.",
-            string label = "Vector XYZ",
+            string label = "Vector",
             string widget = "number" ]],
 	float i_vector_x = 0.0
         [[  string label = "Vector X",
@@ -36,7 +36,7 @@ shader jsSpaceTransform
 	normal i_normal_xyz = normal(0.0)
         [[  string help = "Normal that will be transformed from one space to another, and "
                 "return the result as the output normal.",
-            string label = "Normal XYZ",
+            string label = "Normal",
             string widget = "number" ]],
 	float i_normal_x = 0.0
         [[  string label = "Normal X",

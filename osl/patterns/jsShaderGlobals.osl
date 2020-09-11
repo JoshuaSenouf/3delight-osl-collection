@@ -14,20 +14,20 @@ shader jsShaderGlobals(
             string options = ""
                 "P|I|N|Ng|dPdu|dPdv|Ps|u|v|time|dtime|dPdtime|Ci" ]],
 
-	output float outFloat = 0,
+	output float outFloat = 0.0,
     output closure color outColor = 0,
-	output point outPoint = point(0),
-	output float outPointX = 0,
-	output float outPointY = 0,
-	output float outPointZ = 0,
-    output vector outVector = vector(0),
-	output float outVectorX = 0,
-	output float outVectorY = 0,
-	output float outVectorZ = 0,
-    output normal outNormal = normal(0),
-	output float outNormalX = 0,
-	output float outNormalY = 0,
-	output float outNormalZ = 0)
+	output point outPoint = point(0.0),
+	output float outPointX = 0.0,
+	output float outPointY = 0.0,
+	output float outPointZ = 0.0,
+    output vector outVector = vector(0.0),
+	output float outVectorX = 0.0,
+	output float outVectorY = 0.0,
+	output float outVectorZ = 0.0,
+    output normal outNormal = normal(0.0),
+	output float outNormalX = 0.0,
+	output float outNormalY = 0.0,
+	output float outNormalZ = 0.0)
 {
     // We fill the correct output depending on the type of the global variable
     // requested by the user.

@@ -8,7 +8,7 @@ shader jsRaySwitch
 	color i_color_rgb = color(0.0)
         [[  string help = "Color that will be used as the output color for any ray types that are "
             "not overriden.",
-            string label = "Color RGB",
+            string label = "Color",
             string widget = "number" ]],
 	float i_color_r = 0.0
         [[  string label = "Color R",
@@ -26,7 +26,7 @@ shader jsRaySwitch
             string widget = "checkBox" ]],
 	color i_camera_color_rgb = color(0.0)
         [[  string help = "Color to be used by a 'camera' ray if it is meant to be overriden.",
-            string label = "Color RGB",
+            string label = "Color",
             string page = "Camera",
             string widget = "number" ]],
 	float i_camera_color_r = 0.0
@@ -48,7 +48,7 @@ shader jsRaySwitch
             string widget = "checkBox" ]],
 	color i_shadow_color_rgb = color(0.0)
         [[  string help = "Color to be used by a 'shadow' ray if it is meant to be overriden.",
-            string label = "Color RGB",
+            string label = "Color",
             string page = "Shadow",
             string widget = "number" ]],
 	float i_shadow_color_r = 0.0
@@ -70,7 +70,7 @@ shader jsRaySwitch
             string widget = "checkBox" ]],
 	color i_diffuse_color_rgb = color(0.0)
         [[  string help = "Color to be used by a 'diffuse' ray if it is meant to be overriden.",
-            string label = "Color RGB",
+            string label = "Color",
             string page = "Diffuse",
             string widget = "number" ]],
 	float i_diffuse_color_r = 0.0
@@ -92,7 +92,7 @@ shader jsRaySwitch
             string widget = "checkBox" ]],
 	color i_glossy_color_rgb = color(0.0)
         [[  string help = "Color to be used by a 'glossy' ray if it is meant to be overriden.",
-            string label = "Color RGB",
+            string label = "Color",
             string page = "Glossy",
             string widget = "number" ]],
 	float i_glossy_color_r = 0.0
@@ -114,7 +114,7 @@ shader jsRaySwitch
             string widget = "checkBox" ]],
 	color i_reflection_color_rgb = color(0.0)
         [[  string help = "Color to be used by a 'reflection' ray if it is meant to be overriden.",
-            string label = "Color RGB",
+            string label = "Color",
             string page = "Reflection",
             string widget = "number" ]],
 	float i_reflection_color_r = 0.0
@@ -136,7 +136,7 @@ shader jsRaySwitch
             string widget = "checkBox" ]],
 	color i_refraction_color_rgb = color(0.0)
         [[  string help = "Color to be used by a 'refraction' ray if it is meant to be overriden.",
-            string label = "Color RGB",
+            string label = "Color",
             string page = "Refraction",
             string widget = "number" ]],
 	float i_refraction_color_r = 0.0
@@ -158,7 +158,7 @@ shader jsRaySwitch
             string widget = "checkBox" ]],
 	color i_subsurface_color_rgb = color(0.0)
         [[  string help = "Color to be used by a 'subsurface' ray if it is meant to be overriden.",
-            string label = "Color RGB",
+            string label = "Color",
             string page = "Subsurface",
             string widget = "number" ]],
 	float i_subsurface_color_r = 0.0
@@ -180,7 +180,7 @@ shader jsRaySwitch
             string widget = "checkBox" ]],
 	color i_hair_color_rgb = color(0.0)
         [[  string help = "Color to be used by a 'hair' ray if it is meant to be overriden.",
-            string label = "Color RGB",
+            string label = "Color",
             string page = "Hair",
             string widget = "number" ]],
 	float i_hair_color_r = 0.0
@@ -202,7 +202,7 @@ shader jsRaySwitch
             string widget = "checkBox" ]],
 	color i_volume_color_rgb = color(0.0)
         [[  string help = "Color to be used by a 'volume' ray if it is meant to be overriden.",
-            string label = "Color RGB",
+            string label = "Color",
             string page = "Volume",
             string widget = "number" ]],
 	float i_volume_color_r = 0.0
@@ -252,7 +252,7 @@ shader jsRaySwitch
         i_glossy_color_r,
         i_glossy_color_g,
         i_glossy_color_b
-        );
+    );
     color reflection_color_rgb = getComposedColor(
         i_reflection_color_rgb,
         i_reflection_color_r,

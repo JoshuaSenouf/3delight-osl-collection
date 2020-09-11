@@ -1,0 +1,105 @@
+#include "3delightosl.h"
+
+#include "../include/jsUtils.h"
+
+
+/*
+*/
+surface jsLobeTransparent
+(
+    color i_color_rgb = color(1.0)
+        [[  string help = "Color that will be use to shade the transparency of the affected rays.",
+            string label = "Color",
+            string widget = "number" ]],
+    float i_color_r = 0.0
+        [[  string label = "Color R",
+            string widget = "null" ]],
+    float i_color_g = 0.0
+        [[  string label = "Color G",
+            string widget = "null" ]],
+    float i_color_b = 0.0
+        [[  string label = "Color B",
+            string widget = "null" ]],
+	int i_camera = 1
+        [[  string help = "Define whether or not the 'camera' rays are set to be transparent.",
+            string label = "Affects Camera",
+            string page = "Transparency",
+            string widget = "checkBox" ]],
+	int i_shadow = 1
+        [[  string help = "Define whether or not the 'shadow' rays are set to be transparent.",
+            string label = "Affects Shadow",
+            string page = "Transparency",
+            string widget = "checkBox" ]],
+    int i_override_camera_color = 0
+        [[  string help = "Define whether or not the color used to shade the transparency of a 'camera' ray should "
+                "be overriden.",
+            string label = "Override Color",
+            string page = "Camera",
+            string widget = "checkBox" ]],
+    color i_camera_color_rgb = color(1.0)
+        [[  string help = "Override the color that will be use to shade the transparency of the 'camera' rays.",
+            string label = "Camera Color",
+            string page = "Camera",
+            string widget = "number" ]],
+    float i_camera_color_r = 0.0
+        [[  string label = "Camera Color R",
+            string page = "Camera",
+            string widget = "null" ]],
+    float i_camera_color_g = 0.0
+        [[  string label = "Camera Color G",
+            string page = "Camera",
+            string widget = "null" ]],
+    float i_camera_color_b = 0.0
+        [[  string label = "Camera Color B",
+            string page = "Camera",
+            string widget = "null" ]],
+    int i_override_shadow_color = 0
+        [[  string help = "Define whether or not the color used to shade the transparency of a 'shadow' ray should "
+                "be overriden.",
+            string label = "Override Color",
+            string page = "Shadow",
+            string widget = "checkBox" ]],
+    color i_shadow_color_rgb = color(1.0)
+        [[  string help = "Override the color that will be use to shade the transparency of the 'shadow' rays.",
+            string label = "Shadow Color",
+            string page = "Shadow",
+            string widget = "number" ]],
+    float i_shadow_color_r = 0.0
+        [[  string label = "Shadow Color R",
+            string page = "Shadow",
+            string widget = "null" ]],
+    float i_shadow_color_g = 0.0
+        [[  string label = "Shadow Color G",
+            string page = "Shadow",
+            string widget = "null" ]],
+    float i_shadow_color_b = 0.0
+        [[  string label = "Shadow Color B",
+            string page = "Shadow",
+            string widget = "null" ]],
+
+    output closure color outColor = 0
+)
+{
+    color color_rgb = getComposedColor(i_color_rgb, i_color_r, i_color_g, i_color_b);
+    color camera_color_rgb = getComposedColor(
+        i_camera_color_rgb,
+        i_camera_color_r,
+        i_camera_color_g, i_camera_color_b
+    );
+    color shadow_color_rgb = getComposedColor(
+        i_shadow_color_rgb,
+        i_shadow_color_r,
+        i_shadow_color_g,
+        i_shadow_color_b
+    );
+
+	if(i_camera && raytype("camera"))
+	{
+		outColor = transparent() * (i_override_camera_color ? camera_color_rgb : color_rgb);
+	}
+
+	if(i_shadow && raytype("shadow"))
+	{
+		outColor = transparent() * (i_override_shadow_color ? shadow_color_rgb : color_rgb);
+	}
+}

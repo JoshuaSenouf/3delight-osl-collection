@@ -9,7 +9,7 @@ shader jsModulo
         [[  string help = "Color that will be used to produce a modulo, and return the result as the output "
                 "color."
                 "<br/><br/>Formula: <b>mod(color, divisor)</b>",
-            string label = "Color RGB",
+            string label = "Color",
             string widget = "number" ]],
 	float i_color_r = 0.0
         [[  string label = "Color R",

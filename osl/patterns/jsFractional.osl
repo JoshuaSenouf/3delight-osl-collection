@@ -9,7 +9,7 @@ shader jsFractional
         [[  string help = "Color that will be used to get its fractional part, and return it as the output "
                 "color."
                 "<br/><br/>Formula: <b>color - floor(color)</b> if <b>color >= 0</b>, else <b>color - ceil(color)</b>",
-            string label = "Color RGB",
+            string label = "Color",
             string widget = "number" ]],
 	float i_color_r = 0.0
         [[  string label = "Color R",

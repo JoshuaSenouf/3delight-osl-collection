@@ -1,0 +1,140 @@
+#include "3delightosl.h"
+
+#include "../include/jsUtils.h"
+
+
+/*
+*/
+surface jsVolume
+(
+    color i_color_rgb = color(1.0)
+        [[  string help = "Color that will be used to shade both the absorption and scattering components of the "
+                "volume.",
+            string label = "Color",
+            string widget = "number" ]],
+    float i_color_r = 0.0
+        [[  string label = "Color R",
+            string widget = "null" ]],
+    float i_color_g = 0.0
+        [[  string label = "Color G",
+            string widget = "null" ]],
+    float i_color_b = 0.0
+        [[  string label = "Color B",
+            string widget = "null" ]],
+    float i_density = 1.0
+        [[  string help = "Density of the volume.",
+            string label = "Density",
+            string page = "Volume",
+            string widget = "number",
+            float min = 0.0,
+            float max = 1.0 ]],
+    float i_anisotropy = 0.0
+        [[  string help = "Define how much of the .",
+            string label = "Anisotropy",
+            string page = "Volume",
+            string widget = "number",
+            float min = -1.0,
+            float max = 1.0 ]],
+    color i_transparency = color(0.0)
+        [[  string help = "Define which color are going to be absorbed by the volume, which means the closer "
+                " we get to a pure white, the more transparent the volume will be.",
+            string label = "Transparency",
+            string page = "Volume",
+            string widget = "number",
+            float min = 0.0,
+            float max = 1.0 ]],
+    float i_intensity = 0.0
+        [[  string help = "Intensity of the emission.",
+            string label = "Intensity",
+            string page = "Emission",
+            string widget = "number",
+            float min = 0.0,
+            float max = 10.0 ]],
+    float i_exposure = 0.0
+        [[  string help = "Exposure of the emission.",
+            string label = "Exposure",
+            string page = "Emission",
+            string widget = "number",
+            float min = -5.0,
+            float max = 10.0 ]],
+    int i_mode = 1
+        [[  string help = "Define the source of the emission color, i.e. a RGB color or a blackbody.",
+            string label = "Mode",
+            string page = "Emission",
+            string widget = "mapper",
+            string options = "Artistic:0|Physical:1" ]],
+    color i_emission_color_rgb = color(1.0)
+        [[  string help = "Color of the emission.",
+            string label = "Color",
+            string page = "Emission.Artistic",
+            string widget = "number" ]],
+    float i_emission_color_r = 0.0
+        [[  string label = "Color R",
+            string page = "Emission.Artistic",
+            string widget = "null" ]],
+    float i_emission_color_g = 0.0
+        [[  string label = "Color G",
+            string page = "Emission.Artistic",
+            string widget = "null" ]],
+    float i_emission_color_b = 0.0
+        [[  string label = "Color B",
+            string page = "Emission.Artistic",
+            string widget = "null" ]],
+	float i_temperature = 6500.0
+        [[  string help = "Temperature in Kelvin (K) that will be used to compute the emission color."
+                "<br/><br/>A value of 6500K is considered a standard daylight white. Below that would produce a "
+                "warmer color, getting closer to a red, and above would produce a cooler color, getting closer "
+                "to a blue.",
+            string label = "Temperature",
+            string page = "Emission.Physical",
+            string widget = "number" ]],
+
+    output closure color outColor = 0
+)
+{
+    color color_rgb = getComposedColor(i_color_rgb, i_color_r, i_color_g, i_color_b);
+    color emission_color_rgb = getComposedColor(i_emission_color_rgb, i_emission_color_r, i_emission_color_g, i_emission_color_b);
+    color volume_extinction = 1.0 - i_transparency;
+    color volume_color = color_rgb * volume_extinction;
+    float emission_scale = 1.0;
+    float exposure = pow(2.0, i_exposure);
+
+    closure color absorption_component = absorption() * i_density * (volume_extinction - (volume_color * volume_extinction));
+    closure color scattering_component = henyey_greenstein(i_anisotropy) * i_density * volume_color * volume_extinction;
+
+    // Transparency
+    if (raytype("camera") || raytype("shadow"))
+    {
+        outColor += transparent();
+    }
+
+    // Volume
+    closure color volume_aov = outputvariable(
+        "volume",
+        absorption_component + scattering_component
+    );
+
+    outColor += volume_aov;
+
+    // Emission
+    // If we want to use a blackbody to obtain the emission color...
+    if (i_mode == 1)
+    {
+        color blackbody_color = blackbody(i_temperature);
+        // We scale down the blackbody emission by its luminance in order to be able to see it.
+        emission_color_rgb = blackbody_color / luminance(blackbody_color);
+    }
+
+    color emission_color = emission_color_rgb * i_intensity * exposure;
+
+    // We override the color of the emission for camera rays, so that it does not look like that the emission is
+    // coming from a mesh, thus blocking the volume from the view, but from the actual volume.
+    if (raytype("camera"))
+    {
+        emission_color = color(0.0);
+    }
+
+    closure color emission_component = emission() * emission_color * emission_scale;
+
+    outColor += emission_component;
+}

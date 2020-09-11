@@ -125,14 +125,9 @@ surface jsVolume
         emission_color_rgb = blackbody_color / luminance(blackbody_color);
     }
 
-    color emission_color = emission_color_rgb * i_intensity * exposure;
-
     // We override the color of the emission for camera rays, so that it does not look like that the emission is
     // coming from a mesh, thus blocking the volume from the view, but from the actual volume.
-    if (raytype("camera"))
-    {
-        emission_color = color(0.0);
-    }
+    color emission_color = raytype("camera") ? color(0.0) : emission_color_rgb * i_intensity * exposure;
 
     closure color emission_component = emission() * emission_color * emission_scale;
 

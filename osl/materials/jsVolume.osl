@@ -80,7 +80,7 @@ surface jsVolume
         [[  string label = "Color B",
             string page = "Emission.Artistic",
             string widget = "null" ]],
-	float i_temperature = 6500.0
+    float i_temperature = 6500.0
         [[  string help = "Temperature in Kelvin (K) that will be used to compute the emission color."
                 "<br/><br/>A value of 6500K is considered a standard daylight white. Below that would produce a "
                 "warmer color, getting closer to a red, and above would produce a cooler color, getting closer "

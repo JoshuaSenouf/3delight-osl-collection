@@ -1,6 +1,6 @@
 #include "3delightosl.h"
 
-#include "../include/jsUtils.h"
+#include "../../include/jsUtils.h"
 
 
 /*

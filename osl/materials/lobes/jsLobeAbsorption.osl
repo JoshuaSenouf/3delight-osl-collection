@@ -1,14 +1,14 @@
 #include "3delightosl.h"
 
-#include "../include/jsUtils.h"
+#include "../../include/jsUtils.h"
 
 
 /*
 */
-volume jsLobeScattering
+volume jsLobeAbsorption
 (
-    color i_color_rgb = color(0.8)
-        [[  string help = "Color that will be used to shade the scattering component of the volume.",
+    color i_color_rgb = color(1.0)
+        [[  string help = "Color that will be used to shade the absorption component of the volume.",
             string label = "Color",
             string widget = "number" ]],
     float i_color_r = 0.0
@@ -27,14 +27,6 @@ volume jsLobeScattering
             string widget = "number",
             float min = 0.0,
             float max = 1.0 ]],
-    float i_anisotropy = 0.0
-        [[  string help = "Define if the volume has forward scattering (positive values) or backward "
-                "scattering (negative values) properties.",
-            string label = "Anisotropy",
-            string page = "Volume",
-            string widget = "number",
-            float min = -1.0,
-            float max = 1.0 ]],
 
     output closure color outColor = 0
 )
@@ -43,7 +35,7 @@ volume jsLobeScattering
 
     closure color volume_aov = outputvariable(
         "volume",
-        henyey_greenstein(i_anisotropy) * i_density * color_rgb
+        absorption() * i_density * color_rgb
     );
 
     outColor = volume_aov;

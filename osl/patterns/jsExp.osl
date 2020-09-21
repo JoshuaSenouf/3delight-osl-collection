@@ -5,19 +5,19 @@
 */
 shader jsExp
 (
-	color i_exponent_rgb = color(0.0)
+    color i_exponent_rgb = color(0.0)
         [[  string help = "Exponent that will be used to produce the exponential of that exponent, and return "
                 "it as the output color."
                 "<br/><br/>Formula: <b>exp(exponent)</b>",
             string label = "Exponent RGB",
             string widget = "number" ]],
-	float i_exponent_r = 0.0
+    float i_exponent_r = 0.0
         [[  string label = "Exponent R",
             string widget = "null" ]],
-	float i_exponent_g = 0.0
+    float i_exponent_g = 0.0
         [[  string label = "Exponent G",
             string widget = "null" ]],
-	float i_exponent_b = 0.0
+    float i_exponent_b = 0.0
         [[  string label = "Exponent B",
             string widget = "null" ]],
     int i_red_channel = 1
@@ -39,10 +39,10 @@ shader jsExp
             string page = "Channels",
             string widget = "checkBox" ]],
 
-	output color outColor = color(0.0),
-	output float outColorR = 0.0,
-	output float outColorG = 0.0,
-	output float outColorB = 0.0
+    output color outColor = color(0.0),
+    output float outColorR = 0.0,
+    output float outColorG = 0.0,
+    output float outColorB = 0.0
 )
 {
     color exponent_rgb = getComposedColor(i_exponent_rgb, i_exponent_r, i_exponent_g, i_exponent_b);

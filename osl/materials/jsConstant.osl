@@ -5,34 +5,34 @@
 */
 surface jsConstant
 (
-	color i_color_rgb = color(0.18)
+    color i_color_rgb = color(0.18)
         [[  string help = "Constant color that will be used to shade the object as the output color.",
             string label = "Color",
             string widget = "number" ]],
-	float i_color_r = 0.0
+    float i_color_r = 0.0
         [[  string label = "Color R",
             string widget = "null" ]],
-	float i_color_g = 0.0
+    float i_color_g = 0.0
         [[  string label = "Color G",
             string widget = "null" ]],
-	float i_color_b = 0.0
+    float i_color_b = 0.0
         [[  string label = "Color B",
             string widget = "null" ]],
-	float i_object_opacity = 1.0
+    float i_object_opacity = 1.0
         [[  string help = "Opacity of the object.",
             string label = "Object",
             string page = "Opacity",
             string widget = "number",
             float min = 0.0,
             float max = 1.0 ]],
-	float i_shadow_opacity = 1.0
+    float i_shadow_opacity = 1.0
         [[  string help = "Opacity of the shadow of the object.",
             string label = "Shadow",
             string page = "Opacity",
             string widget = "number",
             float min = 0.0,
             float max = 1.0 ]],
-	int i_no_indirect = 1
+    int i_no_indirect = 1
         [[  string help = "Determine if the object is going to influence indirect lighting, i.e. further than camera/shadow rays.",
             string label = "No Indirect",
             string page = "Shading",

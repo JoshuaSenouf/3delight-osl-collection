@@ -20,12 +20,12 @@ surface jsLobeTransparent
     float i_color_b = 0.0
         [[  string label = "Color B",
             string widget = "null" ]],
-	int i_camera = 1
+    int i_camera = 1
         [[  string help = "Define whether or not the 'camera' rays are set to be transparent.",
             string label = "Affects Camera",
             string page = "Transparency",
             string widget = "checkBox" ]],
-	int i_shadow = 1
+    int i_shadow = 1
         [[  string help = "Define whether or not the 'shadow' rays are set to be transparent.",
             string label = "Affects Shadow",
             string page = "Transparency",
@@ -93,13 +93,13 @@ surface jsLobeTransparent
         i_shadow_color_b
     );
 
-	if(i_camera && raytype("camera"))
-	{
-		outColor = transparent() * (i_override_camera_color ? camera_color_rgb : color_rgb);
-	}
+    if(i_camera && raytype("camera"))
+    {
+        outColor = transparent() * (i_override_camera_color ? camera_color_rgb : color_rgb);
+    }
 
-	if(i_shadow && raytype("shadow"))
-	{
-		outColor = transparent() * (i_override_shadow_color ? shadow_color_rgb : color_rgb);
-	}
+    if(i_shadow && raytype("shadow"))
+    {
+        outColor = transparent() * (i_override_shadow_color ? shadow_color_rgb : color_rgb);
+    }
 }

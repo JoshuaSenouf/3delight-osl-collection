@@ -5,49 +5,49 @@
 */
 shader jsClamp
 (
-	color i_color_rgb = color(0.0)
+    color i_color_rgb = color(0.0)
         [[  string help = "Color that will be clamped between the minimum and maximum, and "
                 "return the result as the output color."
                 "<br/><br/>Formula: <b>clamp(color, min, max)</b>",
             string label = "Color",
             string widget = "number" ]],
-	float i_color_r = 0.0
+    float i_color_r = 0.0
         [[  string label = "Color R",
             string widget = "null" ]],
-	float i_color_g = 0.0
+    float i_color_g = 0.0
         [[  string label = "Color G",
             string widget = "null" ]],
-	float i_color_b = 0.0
+    float i_color_b = 0.0
         [[  string label = "Color B",
             string widget = "null" ]],
-	color i_min_rgb = color(0.0)
+    color i_min_rgb = color(0.0)
         [[  string help = "Minimum color that will be used to clamp the color, and "
                 "return the result as the output color."
                 "<br/><br/>Formula: <b>clamp(color, min, max)</b>",
             string label = "Min",
             string widget = "number" ]],
-	float i_min_r = 0.0
+    float i_min_r = 0.0
         [[  string label = "Min R",
             string widget = "null" ]],
-	float i_min_g = 0.0
+    float i_min_g = 0.0
         [[  string label = "Min G",
             string widget = "null" ]],
-	float i_min_b = 0.0
+    float i_min_b = 0.0
         [[  string label = "Min B",
             string widget = "null" ]],
-	color i_max_rgb = color(1.0)
+    color i_max_rgb = color(1.0)
         [[  string help = "Maximum color that will be used to clamp the color, and "
                 "return the result as the output color."
                 "<br/><br/>Formula: <b>clamp(color, min, max)</b>",
             string label = "Max",
             string widget = "number" ]],
-	float i_max_r = 0.0
+    float i_max_r = 0.0
         [[  string label = "Max R",
             string widget = "null" ]],
-	float i_max_g = 0.0
+    float i_max_g = 0.0
         [[  string label = "Max G",
             string widget = "null" ]],
-	float i_max_b = 0.0
+    float i_max_b = 0.0
         [[  string label = "Max B",
             string widget = "null" ]],
     int i_red_channel = 1
@@ -72,10 +72,10 @@ shader jsClamp
             string page = "Channels",
             string widget = "checkBox" ]],
 
-	output color outColor = color(0.0),
-	output float outColorR = 0.0,
-	output float outColorG = 0.0,
-	output float outColorB = 0.0
+    output color outColor = color(0.0),
+    output float outColorR = 0.0,
+    output float outColorG = 0.0,
+    output float outColorB = 0.0
 )
 {
     color color_rgb = getComposedColor(i_color_rgb, i_color_r, i_color_g, i_color_b);

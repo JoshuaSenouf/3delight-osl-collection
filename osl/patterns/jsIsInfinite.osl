@@ -5,19 +5,19 @@
 */
 shader jsIsInfinite
 (
-	color i_color_rgb = color(0.0)
+    color i_color_rgb = color(0.0)
         [[  string help = "Color that will be used to check if at least one of its channels is an infinite "
                 "number, and output the result as the output boolean."
                 "<br/><br/>Formula: <b>isinf(color)</b>",
             string label = "Color",
             string widget = "number" ]],
-	float i_color_r = 0.0
+    float i_color_r = 0.0
         [[  string label = "Color R",
             string widget = "null" ]],
-	float i_color_g = 0.0
+    float i_color_g = 0.0
         [[  string label = "Color G",
             string widget = "null" ]],
-	float i_color_b = 0.0
+    float i_color_b = 0.0
         [[  string label = "Color B",
             string widget = "null" ]],
     int i_red_channel = 1
@@ -45,7 +45,7 @@ shader jsIsInfinite
             string page = "Channels",
             string widget = "checkBox" ]],
 
-	output int outBoolean = 0
+    output int outBoolean = 0
 )
 {
     color color_rgb = getComposedColor(i_color_rgb, i_color_r, i_color_g, i_color_b);

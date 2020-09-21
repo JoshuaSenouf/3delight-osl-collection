@@ -5,32 +5,32 @@
 */
 shader jsLog
 (
-	color i_color_rgb = color(0.0)
+    color i_color_rgb = color(0.0)
         [[  string help = "Color that will be used to produce its logarithm, and return it as the output color."
                 "<br/><br/>Formula: <b>log(base) (color)</b>",
             string label = "Color",
             string widget = "number" ]],
-	float i_color_r = 0.0
+    float i_color_r = 0.0
         [[  string label = "Color R",
             string widget = "null" ]],
-	float i_color_g = 0.0
+    float i_color_g = 0.0
         [[  string label = "Color G",
             string widget = "null" ]],
-	float i_color_b = 0.0
+    float i_color_b = 0.0
         [[  string label = "Color B",
             string widget = "null" ]],
-	color i_base_rgb = color(2.7183, 2.7183, 2.7183)
+    color i_base_rgb = color(2.7183, 2.7183, 2.7183)
         [[  string help = "Logarithmic base, defaulting to the natural logarithmic base, 'e'."
                 "<br/><br/>Formula: <b>log(base) (color)</b>",
             string label = "Base RGB",
             string widget = "number" ]],
-	float i_base_r = 0.0
+    float i_base_r = 0.0
         [[  string label = "Base R",
             string widget = "null" ]],
-	float i_base_g = 0.0
+    float i_base_g = 0.0
         [[  string label = "Base G",
             string widget = "null" ]],
-	float i_base_b = 0.0
+    float i_base_b = 0.0
         [[  string label = "Base B",
             string widget = "null" ]],
     int i_red_channel = 1
@@ -55,10 +55,10 @@ shader jsLog
             string page = "Channels",
             string widget = "checkBox" ]],
 
-	output color outColor = color(0.0),
-	output float outColorR = 0.0,
-	output float outColorG = 0.0,
-	output float outColorB = 0.0
+    output color outColor = color(0.0),
+    output float outColorR = 0.0,
+    output float outColorG = 0.0,
+    output float outColorB = 0.0
 )
 {
     color color_rgb = getComposedColor(i_color_rgb, i_color_r, i_color_g, i_color_b);

@@ -1,7 +1,7 @@
 /*
 */
 shader jsBlackbody(
-	float i_temperature = 6500.0
+    float i_temperature = 6500.0
         [[  string help = "Temperature in Kelvin (K) that will be used to compute the corresponding color, and "
                 "return the result as the output color."
                 "<br/><br/>A value of 6500K is considered a standard daylight white. Below that would produce a "
@@ -10,10 +10,10 @@ shader jsBlackbody(
             string label = "Temperature",
             string widget = "number" ]],
 
-	output color outColor = color(0.0),
-	output float outColorR = 0.0,
-	output float outColorG = 0.0,
-	output float outColorB = 0.0)
+    output color outColor = color(0.0),
+    output float outColorR = 0.0,
+    output float outColorG = 0.0,
+    output float outColorB = 0.0)
 {
     color blackbody_color = blackbody(i_temperature);
 

@@ -5,34 +5,34 @@
 */
 shader jsPow
 (
-	color i_base_rgb = color(0.0)
+    color i_base_rgb = color(0.0)
         [[  string help = "Base that will be used to compute its power over the exponent, and return the "
                 "result as the output color."
                 "<br/><br/>Formula: <b>pow(base, exponent)</b>",
             string label = "Base RGB",
             string widget = "number" ]],
-	float i_base_r = 0.0
+    float i_base_r = 0.0
         [[  string label = "Base R",
             string widget = "null" ]],
-	float i_base_g = 0.0
+    float i_base_g = 0.0
         [[  string label = "Base G",
             string widget = "null" ]],
-	float i_base_b = 0.0
+    float i_base_b = 0.0
         [[  string label = "Base B",
             string widget = "null" ]],
-	color i_exponent_rgb = color(0.0)
+    color i_exponent_rgb = color(0.0)
         [[  string help = "Exponent that will be used to compute the power from the base, and return the "
                 "result as the output color."
                 "<br/><br/>Formula: <b>pow(base, exponent)</b>",
             string label = "Exponent RGB",
             string widget = "number" ]],
-	float i_exponent_r = 0.0
+    float i_exponent_r = 0.0
         [[  string label = "Exponent R",
             string widget = "null" ]],
-	float i_exponent_g = 0.0
+    float i_exponent_g = 0.0
         [[  string label = "Exponent G",
             string widget = "null" ]],
-	float i_exponent_b = 0.0
+    float i_exponent_b = 0.0
         [[  string label = "Exponent B",
             string widget = "null" ]],
     int i_red_channel = 1
@@ -54,10 +54,10 @@ shader jsPow
             string page = "Channels",
             string widget = "checkBox" ]],
 
-	output color outColor = color(0.0),
-	output float outColorR = 0.0,
-	output float outColorG = 0.0,
-	output float outColorB = 0.0
+    output color outColor = color(0.0),
+    output float outColorR = 0.0,
+    output float outColorG = 0.0,
+    output float outColorB = 0.0
 )
 {
     color base_rgb = getComposedColor(i_base_rgb, i_base_r, i_base_g, i_base_b);

@@ -5,34 +5,34 @@
 */
 shader jsMax
 (
-	color i_color1_rgb = color(0.0)
+    color i_color1_rgb = color(0.0)
         [[  string help = "First color that will be used to determine the maximum values with the second "
                 "one, and return the result as the output color."
                 "<br/><br/>Formula: <b>max(color1, color2)</b>",
             string label = "Color 1 RGB",
             string widget = "number" ]],
-	float i_color1_r = 0.0
+    float i_color1_r = 0.0
         [[  string label = "Color 1 R",
             string widget = "null" ]],
-	float i_color1_g = 0.0
+    float i_color1_g = 0.0
         [[  string label = "Color 1 G",
             string widget = "null" ]],
-	float i_color1_b = 0.0
+    float i_color1_b = 0.0
         [[  string label = "Color 1 B",
             string widget = "null" ]],
-	color i_color2_rgb = color(0)
+    color i_color2_rgb = color(0)
         [[  string help = "Second color that will be used to determine the maximum values with the first "
                 "one, and return the result as the output color."
                 "<br/><br/>Formula: <b>max(color1, color2)</b>",
             string label = "Color 2 RGB",
             string widget = "number" ]],
-	float i_color2_r = 0.0
+    float i_color2_r = 0.0
         [[  string label = "Color 2 R",
             string widget = "null" ]],
-	float i_color2_g = 0.0
+    float i_color2_g = 0.0
         [[  string label = "Color 2 G",
             string widget = "null" ]],
-	float i_color2_b = 0.0
+    float i_color2_b = 0.0
         [[  string label = "Color 2 B",
             string widget = "null" ]],
     int i_red_channel = 1
@@ -54,10 +54,10 @@ shader jsMax
             string page = "Channels",
             string widget = "checkBox" ]],
 
-	output color outColor = color(0.0),
-	output float outColorR = 0.0,
-	output float outColorG = 0.0,
-	output float outColorB = 0.0
+    output color outColor = color(0.0),
+    output float outColorR = 0.0,
+    output float outColorG = 0.0,
+    output float outColorB = 0.0
 )
 {
     color color1_rgb = getComposedColor(i_color1_rgb, i_color1_r, i_color1_g, i_color1_b);

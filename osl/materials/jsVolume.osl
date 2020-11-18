@@ -98,8 +98,8 @@ surface jsVolume
     color volume_color = color_rgb * volume_extinction;
     float exposure = pow(2.0, i_exposure);
 
-    closure color absorption_component = absorption() * i_density * (volume_extinction - (volume_color * volume_extinction));
-    closure color scattering_component = henyey_greenstein(i_anisotropy) * i_density * volume_color * volume_extinction;
+    closure color absorption_component = absorption() * i_density * (volume_extinction - volume_color);
+    closure color scattering_component = henyey_greenstein(i_anisotropy) * i_density * volume_color;
 
     // Transparency
     if (raytype("camera") || raytype("shadow"))
@@ -125,7 +125,7 @@ surface jsVolume
     }
 
     // We override the color of the emission for camera rays, so that it does not look like that the emission is
-    // coming from a mesh, thus blocking the volume from the view, but from the actual volume.
+    // coming from a mesh, thus blocking the volume from the view, but from the actual volume inside the mesh.
     color emission_color = raytype("camera") ? color(0.0) : emission_color_rgb * i_intensity * exposure;
 
     closure color emission_component = emission() * emission_color;
